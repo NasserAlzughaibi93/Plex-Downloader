@@ -1,6 +1,6 @@
-package com.naz.PlexDownloader.exception.rest;
+package com.naz.PlexDownloader.exceptions.rest;
 
-import com.naz.PlexDownloader.util.BaseRuntimeException;
+import com.naz.PlexDownloader.exceptions.BaseRuntimeException;
 
 public class RecordNotFoundException extends BaseRuntimeException {
 

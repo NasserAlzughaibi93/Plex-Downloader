@@ -1,4 +1,6 @@
-package com.naz.PlexDownloader.util;
+package com.naz.PlexDownloader.exceptions;
+
+import com.naz.PlexDownloader.util.I18nUtil;
 
 import java.util.Locale;
 

@@ -1,4 +1,4 @@
-package com.naz.PlexDownloader.exception;
+package com.naz.PlexDownloader.exceptions;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

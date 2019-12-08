@@ -1,6 +1,4 @@
-package com.naz.PlexDownloader.exception;
-
-import com.naz.PlexDownloader.util.BaseRuntimeException;
+package com.naz.PlexDownloader.exceptions;
 
 public class RestException extends BaseRuntimeException {
 
