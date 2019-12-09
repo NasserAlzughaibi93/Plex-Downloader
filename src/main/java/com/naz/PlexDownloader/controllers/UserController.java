@@ -3,13 +3,16 @@ package com.naz.PlexDownloader.controllers;
 
 import com.naz.PlexDownloader.dtos.UserDTO;
 import com.naz.PlexDownloader.models.User;
+import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.services.SecurityService;
 import com.naz.PlexDownloader.services.UserService;
+import com.naz.PlexDownloader.services.plex.auth.PlexAuthService;
 import com.naz.PlexDownloader.validators.UserValidator;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.MapBindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -30,7 +33,19 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
+    //Temp
+    @Autowired
+    private PlexAuthService plexAuthService;
 
+    @PostMapping("/plexTest")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void plexTest(@RequestBody UserDTO userDTO) {
+        PlexUser plexUser = plexAuthService.loginBasicAuth(userDTO.getUsername(), userDTO.getPassword());
+
+        plexUser = plexAuthService.savePlexUser(plexUser);
+
+        int i = 1;
+    }
 
     @RequestMapping("/registration")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -86,5 +101,13 @@ public class UserController {
 
     public void setUserValidator(UserValidator userValidator) {
         this.userValidator = userValidator;
+    }
+
+    public PlexAuthService getPlexAuthService() {
+        return plexAuthService;
+    }
+
+    public void setPlexAuthService(PlexAuthService plexAuthService) {
+        this.plexAuthService = plexAuthService;
     }
 }
