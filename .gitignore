@@ -177,3 +177,7 @@ $RECYCLE.BIN/
 */target
 /build
 */build
+
+*.mv.db
+*.trace.db
+*.trace.mv.db
