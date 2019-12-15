@@ -3,9 +3,14 @@ package com.naz.PlexDownloader.controllers;
 
 import com.naz.PlexDownloader.dtos.UserDTO;
 import com.naz.PlexDownloader.models.User;
+import com.naz.PlexDownloader.models.plex.Connection;
+import com.naz.PlexDownloader.models.plex.Device;
+import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.PlexUser;
+import com.naz.PlexDownloader.models.plex.Video;
 import com.naz.PlexDownloader.services.SecurityService;
 import com.naz.PlexDownloader.services.UserService;
+import com.naz.PlexDownloader.services.plex.PlexLibraryService;
 import com.naz.PlexDownloader.services.plex.auth.PlexAuthService;
 import com.naz.PlexDownloader.validators.UserValidator;
 import org.hibernate.cfg.NotYetImplementedException;
@@ -37,10 +42,46 @@ public class UserController {
     @Autowired
     private PlexAuthService plexAuthService;
 
+    @Autowired
+    private PlexLibraryService plexLibraryService;
+
     @PostMapping("/plexTest")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void plexTest(@RequestBody UserDTO userDTO) {
         PlexUser plexUser = plexAuthService.loginBasicAuth(userDTO.getUsername(), userDTO.getPassword());
+
+        MediaContainer mediaContainer = plexLibraryService.findPlexResources(plexUser);
+
+        for (Device device : mediaContainer.getDevice()) {
+            if (!device.getPresence().equals("0") && device.getProduct().equals("Plex Media Server")) {
+
+                for (Connection connection : device.getConnection() ) {
+                    if (connection.getLocal().equals("0")) {
+                        String serverIp = connection.getUri();
+                        MediaContainer mediaContainer1 =
+                                plexLibraryService.retrieveLibraryRecentlyAdded(plexUser, serverIp);
+
+                        for (Video video : mediaContainer1.getVideo()) {
+                            if (null != video.getKey()) {
+                                MediaContainer mediaContainer2 =
+                                        plexLibraryService.retrieveMediaMetadata(plexUser, serverIp, video.getKey());
+
+                                String downloadUrl =
+                                        plexLibraryService.retrieveMediaDownloadLink(plexUser, serverIp, mediaContainer2);
+
+                                System.out.println("The download URL: " + downloadUrl);
+                                break;
+                            }
+                        }
+
+                        int i = 1;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
 
         plexUser = plexAuthService.savePlexUser(plexUser);
 
@@ -109,5 +150,13 @@ public class UserController {
 
     public void setPlexAuthService(PlexAuthService plexAuthService) {
         this.plexAuthService = plexAuthService;
+    }
+
+    public PlexLibraryService getPlexLibraryService() {
+        return plexLibraryService;
+    }
+
+    public void setPlexLibraryService(PlexLibraryService plexLibraryService) {
+        this.plexLibraryService = plexLibraryService;
     }
 }
