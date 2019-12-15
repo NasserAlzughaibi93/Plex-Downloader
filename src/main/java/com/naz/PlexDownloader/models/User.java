@@ -21,6 +21,8 @@ public class User {
 
     private String password;
 
+    private String plexServerIp;
+
     @Transient
     private String passwordConfirm;
 
@@ -74,4 +76,11 @@ public class User {
         this.roles = roles;
     }
 
+    public String getPlexServerIp() {
+        return plexServerIp;
+    }
+
+    public void setPlexServerIp(String plexServerIp) {
+        this.plexServerIp = plexServerIp;
+    }
 }

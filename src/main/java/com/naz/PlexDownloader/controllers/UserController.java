@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -58,16 +59,16 @@ public class UserController {
                 for (Connection connection : device.getConnection() ) {
                     if (connection.getLocal().equals("0")) {
                         String serverIp = connection.getUri();
-                        MediaContainer mediaContainer1 =
+                        List<Video> videos =
                                 plexLibraryService.retrieveLibraryRecentlyAdded(plexUser, serverIp);
 
-                        for (Video video : mediaContainer1.getVideo()) {
+                        for (Video video : videos) {
                             if (null != video.getKey()) {
-                                MediaContainer mediaContainer2 =
+                                Video video2 =
                                         plexLibraryService.retrieveMediaMetadata(plexUser, serverIp, video.getKey());
 
                                 String downloadUrl =
-                                        plexLibraryService.retrieveMediaDownloadLink(plexUser, serverIp, mediaContainer2);
+                                        plexLibraryService.retrieveMediaDownloadLink(plexUser, serverIp, video2);
 
                                 System.out.println("The download URL: " + downloadUrl);
                                 break;
@@ -83,16 +84,16 @@ public class UserController {
         }
 
 
-        plexUser = plexAuthService.savePlexUser(plexUser);
+        //plexUser = plexAuthService.savePlexUser(plexUser);
 
-        int i = 1;
+        //int i = 1;
     }
 
     @RequestMapping("/registration")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void registration(@RequestBody UserDTO userDTO) {
 
-        Map<String,String> map = new HashMap<String,String>();
+        Map<String,String> map = new HashMap<>();
         MapBindingResult err = new MapBindingResult(map, UserDTO.class.getName());
 
         userValidator.validate(userDTO, err);
