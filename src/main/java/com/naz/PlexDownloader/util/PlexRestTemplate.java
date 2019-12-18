@@ -13,9 +13,13 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class PlexRestTemplate {
+import static com.naz.PlexDownloader.util.Constants.PLEX_PRODUCT;
+import static com.naz.PlexDownloader.util.Constants.X_PLEX_CLIENT_ID;
+import static com.naz.PlexDownloader.util.Constants.X_PLEX_PRODUCT;
+import static com.naz.PlexDownloader.util.Constants.X_PLEX_TOKEN;
+import static com.naz.PlexDownloader.util.Constants.X_PLEX_VERSION;
 
-    private static final String PLEX_PRODUCT = "Plex-Downloader";
+public class PlexRestTemplate {
 
     /**
      * Prepare the rest template with headers that will always be used.
@@ -34,9 +38,9 @@ public class PlexRestTemplate {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("X-Plex-Product", PLEX_PRODUCT);
-        headers.add("X-Plex-Client-Identifier", PLEX_PRODUCT);
-        headers.add("X-Plex-Version", "0.0.1");
+        headers.add(X_PLEX_PRODUCT, PLEX_PRODUCT);
+        headers.add(X_PLEX_CLIENT_ID, PLEX_PRODUCT);
+        headers.add(X_PLEX_VERSION, BuildVersion.getBuildVersion());
         headers.setBasicAuth(username, password);
 
         HttpEntity<HttpHeaders> request = new HttpEntity<>(headers);
@@ -73,10 +77,10 @@ public class PlexRestTemplate {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("X-Plex-Product", PLEX_PRODUCT);
-        headers.add("X-Plex-Client-Identifier", PLEX_PRODUCT);
-        headers.add("X-Plex-Version", "0.0.1");
-        headers.add("X-Plex-Token", "authToken");
+        headers.add(X_PLEX_PRODUCT, PLEX_PRODUCT);
+        headers.add(X_PLEX_CLIENT_ID, PLEX_PRODUCT);
+        headers.add(X_PLEX_VERSION, BuildVersion.getBuildVersion());
+        headers.add(X_PLEX_TOKEN, authToken);
 
         HttpEntity<HttpHeaders> request = new HttpEntity<>(headers);
 
@@ -111,10 +115,10 @@ public class PlexRestTemplate {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("X-Plex-Product", PLEX_PRODUCT);
-        headers.add("X-Plex-Client-Identifier", PLEX_PRODUCT);
-        headers.add("X-Plex-Version", "0.0.1");
-        headers.add("X-Plex-Token", authToken);
+        headers.add(X_PLEX_PRODUCT, PLEX_PRODUCT);
+        headers.add(X_PLEX_CLIENT_ID, PLEX_PRODUCT);
+        headers.add(X_PLEX_VERSION, BuildVersion.getBuildVersion());
+        headers.add(X_PLEX_TOKEN, authToken);
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 
         HttpEntity<HttpHeaders> request = new HttpEntity<>(headers);
