@@ -3,6 +3,8 @@ package com.naz.PlexDownloader.models;
 import com.naz.PlexDownloader.dtos.UserDTO;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +24,11 @@ public class User {
     private String password;
 
     private String plexServerIp;
+
+    private String emailAddress;
+
+    @Enumerated(EnumType.ORDINAL)
+    private RoleType roleType;
 
     @Transient
     private String passwordConfirm;

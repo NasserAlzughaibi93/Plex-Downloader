@@ -12,6 +12,13 @@ repositories {
 	mavenCentral()
 }
 
+//Update app version that's visible in the app.
+def configFile = new File('src/main/resources/application.properties')
+println "updating version to '${version}' in ${configFile}"
+String configContent = configFile.getText('UTF-8')
+configContent = configContent.replaceAll(/info\.build\.version=.*/, "info.build.version=${version}")
+configFile.write(configContent, 'UTF-8')
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'

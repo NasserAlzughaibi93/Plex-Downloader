@@ -43,13 +43,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        /*http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/registration", "/login", "/plexTest").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+                .httpBasic();*/
+        http.csrf().disable()
+            .exceptionHandling()
+            //.authenticationEntryPoint(restAuthenticationEntryPoint)
+            .and()
+            .authorizeRequests()
+            .antMatchers("/api/**").authenticated()
+            .antMatchers("/api/admin/**").hasRole("ADMIN")
+            .and()
+            .formLogin()
+            //.successHandler(mySuccessHandler)
+            //.failureHandler(myFailureHandler)
+            .and()
+            .logout();
     }
 
 

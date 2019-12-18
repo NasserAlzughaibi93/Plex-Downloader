@@ -109,7 +109,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/login")
+    /*@RequestMapping("/login")
     public User login(@RequestBody UserDTO userDTO) {
 
         User user = userService.findUserByUserNameAndPassword(userDTO.getUsername(), userDTO.getPassword());
@@ -119,7 +119,7 @@ public class UserController {
         }
 
         return user;
-    }
+    }*/
 
     public UserService getUserService() {
         return userService;
