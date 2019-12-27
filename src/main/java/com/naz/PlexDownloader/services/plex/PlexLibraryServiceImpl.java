@@ -1,16 +1,17 @@
 package com.naz.PlexDownloader.services.plex;
 
+import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.DirectoryKey;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Part;
-import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.models.plex.Video;
 import com.naz.PlexDownloader.util.CollectionUtil;
 import com.naz.PlexDownloader.util.PlexRestTemplate;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,16 +32,28 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     /**
      * Find available resources of a given server instance.
      *
-     * @param plexUser - The plex user.
+     * @param plexAuthToken - The plex auth token.
      * @return {@link MediaContainer}
      */
     @Override
-    public MediaContainer findPlexResources(PlexUser plexUser) {
+    public MediaContainer findPlexResources(String plexAuthToken) {
 
-        MediaContainer mediaContainer = this.buildPlexRestCall(plexUser, PLEX_RESOURCES_URL, false);
+        MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, PLEX_RESOURCES_URL, false);
 
         if (null == mediaContainer) {
             throw new NotYetImplementedException();
+        }
+
+        if (!CollectionUtil.isNullOrEmpty(mediaContainer.getDevice())) {
+            List<Device> serverDevices = new ArrayList<>();
+
+            for (Device device : mediaContainer.getDevice()) {
+                if (device.getProvides().contains("server")) {
+                    serverDevices.add(device);
+                }
+            }
+
+            mediaContainer.setDevice(serverDevices);
         }
 
         return mediaContainer;
@@ -49,16 +62,16 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     /**
      * Retrieves the On Deck Section of a given server instance.
      *
-     * @param plexUser - The plex user.
-     * @param serverIp - The plex instance server IP.
+     * @param plexAuthToken - The plex auth token.
+     * @param serverIp      - The plex instance server IP.
      * @return List of videos
      */
     @Override
-    public List<Video> retrieveLibraryOnDeck(PlexUser plexUser, String serverIp) {
+    public List<Video> retrieveLibraryOnDeck(String plexAuthToken, String serverIp) {
 
         String url = serverIp + PLEX_ONDECK;
 
-        MediaContainer mediaContainer = this.buildPlexRestCall(plexUser, url, false);
+        MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
         if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
             throw new NotYetImplementedException();
@@ -70,16 +83,16 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     /**
      * Retrieves the recently added section of a given server instance
      *
-     * @param plexUser - The plex user.
-     * @param serverIp - The plex instance server IP.
+     * @param plexAuthToken - The plex auth token.
+     * @param serverIp      - The plex instance server IP.
      * @return - Media part of the section.
      */
     @Override
-    public List<Video> retrieveLibraryRecentlyAdded(PlexUser plexUser, String serverIp) {
+    public List<Video> retrieveLibraryRecentlyAdded(String plexAuthToken, String serverIp) {
 
         String url = serverIp + PLEX_RECENTLY_ADDED;
 
-        MediaContainer mediaContainer = this.buildPlexRestCall(plexUser, url, false);
+        MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
         if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
             throw new NotYetImplementedException();
@@ -91,16 +104,16 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     /**
      * Retrieve the library sections of a given server instance.
      *
-     * @param plexUser - The plex user.
-     * @param serverIp - The plex instance server IP.
+     * @param plexAuthToken - The plex auth token.
+     * @param serverIp      - The plex instance server IP.
      * @return - List of media directories
      */
     @Override
-    public List<Directory> retrieveLibrarySections(PlexUser plexUser, String serverIp) {
+    public List<Directory> retrieveLibrarySections(String plexAuthToken, String serverIp) {
 
         String url = serverIp + PLEX_SECTIONS;
 
-        MediaContainer mediaContainer = this.buildPlexRestCall(plexUser, url, false);
+        MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
         if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory())) {
             throw new NotYetImplementedException();
@@ -112,18 +125,18 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     /**
      * Retrieves the media metadata.
      *
-     * @param plexUser   - The plex user.
-     * @param serverIp   - The plex instance server IP.
-     * @param libraryKey - The medias metadata url path.
+     * @param plexAuthToken - The plex auth token.
+     * @param serverIp      - The plex instance server IP.
+     * @param libraryKey    - The medias metadata url path.
      * @return - The {@link MediaContainer}
      */
     @Override
-    public Video retrieveMediaMetadata(PlexUser plexUser, String serverIp, String libraryKey) {
+    public Video retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey) {
 
 
         String url = serverIp + libraryKey;
 
-        MediaContainer mediaContainer = this.buildPlexRestCall(plexUser, url, false);
+        MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
         if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
             throw new NotYetImplementedException();
@@ -135,13 +148,13 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     /**
      * Generate the download link for the given media.
      *
-     * @param plexUser - The plex user.
-     * @param serverIp - The plex instance server IP.
-     * @param video    - The media
+     * @param plexAuthToken - The plex auth token.
+     * @param serverIp      - The plex instance server IP.
+     * @param video         - The media
      * @return - The download link
      */
     @Override
-    public String retrieveMediaDownloadLink(PlexUser plexUser, String serverIp, Video video) {
+    public String retrieveMediaDownloadLink(String plexAuthToken, String serverIp, Video video) {
 
         String downloadUrl;
 
@@ -150,7 +163,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
         }
 
         if (null == video.getMedia() || null == video.getMedia().getPart()) {
-            video = this.retrieveMediaMetadata(plexUser, serverIp, video.getKey());
+            video = this.retrieveMediaMetadata(plexAuthToken, serverIp, video.getKey());
         }
 
         Part part = video.getMedia().getPart();
@@ -159,23 +172,23 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
             throw new NotYetImplementedException();
         }
 
-        downloadUrl = serverIp + part.getKey() + "?download=1&X-Plex-Token=" + plexUser.getAuthToken();
+        downloadUrl = serverIp + part.getKey() + "?download=1&X-Plex-Token=" + plexAuthToken;
 
         return downloadUrl;
     }
 
     /**
-     * @param plexUser          - The plex user.
+     * @param plexAuthToken     - The plex auth token.
      * @param serverIp          - The plex instance server IP.
      * @param librarySectionKey - Specific section key. E.g. {server_ip}/library/sections/5
      * @return List of media directories.
      */
     @Override
-    public List<Directory> retrieveLibrarySectionBySectionKey(PlexUser plexUser, String serverIp, String librarySectionKey) {
+    public List<Directory> retrieveLibrarySectionBySectionKey(String plexAuthToken, String serverIp, String librarySectionKey) {
 
         String url = serverIp + PLEX_SECTIONS + librarySectionKey;
 
-        MediaContainer mediaContainer = this.buildPlexRestCall(plexUser, url, false);
+        MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
         if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory())) {
             throw new NotYetImplementedException();
@@ -186,10 +199,10 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
     //TODO check if this is even logical once front end is setup.
     @Override
-    public List<Directory> retrieveLibrarySectionBySectionKeyAndDirectoryKey(PlexUser plexUser, String serverIp, String librarySectionKey, DirectoryKey directoryKey) {
+    public List<Directory> retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, DirectoryKey directoryKey) {
         String url = serverIp + PLEX_SECTIONS + librarySectionKey + "/" + directoryKey.getDirectoryKey();
 
-        MediaContainer mediaContainer = this.buildPlexRestCall(plexUser, url, false);
+        MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
         if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory())) {
             throw new NotYetImplementedException();
@@ -201,16 +214,18 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     /**
      * Common rest call for plex MediaContainer apis
      *
-     * @param plexUser   - The plex user.
-     * @param url        - The plex instance server IP and api url.
-     * @param isPostCall - Whether to use a POST or GET.
+     * @param plexAuthToken - The plex auth token.
+     * @param url           - The plex instance server IP and api url.
+     * @param isPostCall    - Whether to use a POST or GET.
      * @return {@link MediaContainer}
      */
-    private MediaContainer buildPlexRestCall(PlexUser plexUser, String url, boolean isPostCall) {
+    private MediaContainer buildPlexRestCall(String plexAuthToken, String url, boolean isPostCall) {
 
-        String authToken = plexUser.getAuthToken();
+        if (!url.contains("http://") || !url.contains("https://")) {
+            url = "http://" + url;
+        }
 
-        return (MediaContainer) PlexRestTemplate.buildPlexRestTemplateForXMLResponse(url, authToken, MediaContainer.class, isPostCall);
+        return (MediaContainer) PlexRestTemplate.buildPlexRestTemplateForXMLResponse(url, plexAuthToken, MediaContainer.class, isPostCall);
     }
 }
 

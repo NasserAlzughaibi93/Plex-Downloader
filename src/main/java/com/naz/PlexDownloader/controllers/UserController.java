@@ -51,7 +51,7 @@ public class UserController {
     public void plexTest(@RequestBody UserDTO userDTO) {
         PlexUser plexUser = plexAuthService.loginBasicAuth(userDTO.getUsername(), userDTO.getPassword());
 
-        MediaContainer mediaContainer = plexLibraryService.findPlexResources(plexUser);
+        MediaContainer mediaContainer = plexLibraryService.findPlexResources(plexUser.getAuthToken());
 
         for (Device device : mediaContainer.getDevice()) {
             if (!device.getPresence().equals("0") && device.getProduct().equals("Plex Media Server")) {
@@ -60,15 +60,15 @@ public class UserController {
                     if (connection.getLocal().equals("0")) {
                         String serverIp = connection.getUri();
                         List<Video> videos =
-                                plexLibraryService.retrieveLibraryRecentlyAdded(plexUser, serverIp);
+                                plexLibraryService.retrieveLibraryRecentlyAdded(plexUser.getAuthToken(), serverIp);
 
                         for (Video video : videos) {
                             if (null != video.getKey()) {
                                 Video video2 =
-                                        plexLibraryService.retrieveMediaMetadata(plexUser, serverIp, video.getKey());
+                                        plexLibraryService.retrieveMediaMetadata(plexUser.getAuthToken(), serverIp, video.getKey());
 
                                 String downloadUrl =
-                                        plexLibraryService.retrieveMediaDownloadLink(plexUser, serverIp, video2);
+                                        plexLibraryService.retrieveMediaDownloadLink(plexUser.getAuthToken(), serverIp, video2);
 
                                 System.out.println("The download URL: " + downloadUrl);
                                 break;
