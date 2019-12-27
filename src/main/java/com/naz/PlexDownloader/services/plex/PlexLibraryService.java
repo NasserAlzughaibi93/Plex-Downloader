@@ -10,19 +10,19 @@ import java.util.List;
 
 public interface PlexLibraryService {
 
-    MediaContainer findPlexResources(PlexUser plexUser);
+    MediaContainer findPlexResources(String plexAuthToken);
 
-    List<Video> retrieveLibraryOnDeck(PlexUser plexUser, String serverIp);
+    List<Video> retrieveLibraryOnDeck(String plexAuthToken, String serverIp);
 
-    List<Video> retrieveLibraryRecentlyAdded(PlexUser plexUser, String serverIp);
+    List<Video> retrieveLibraryRecentlyAdded(String plexAuthToken, String serverIp);
 
-    List<Directory> retrieveLibrarySections(PlexUser plexUser, String serverIp);
+    List<Directory> retrieveLibrarySections(String plexAuthToken, String serverIp);
 
-    List<Directory> retrieveLibrarySectionBySectionKey(PlexUser plexUser, String serverIp, String librarySectionKey);
+    List<Directory> retrieveLibrarySectionBySectionKey(String plexAuthToken, String serverIp, String librarySectionKey);
 
-    List<Directory> retrieveLibrarySectionBySectionKeyAndDirectoryKey(PlexUser plexUser, String serverIp, String librarySectionKey, DirectoryKey directoryKey);
+    List<Directory> retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, DirectoryKey directoryKey);
 
-    Video retrieveMediaMetadata(PlexUser plexUser, String serverIp, String libraryKey);
+    Video retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey);
 
-    String retrieveMediaDownloadLink(PlexUser plexUser, String serverIp, Video video);
+    String retrieveMediaDownloadLink(String plexAuthToken, String serverIp, Video video);
 }

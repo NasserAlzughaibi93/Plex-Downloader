@@ -60,9 +60,13 @@ public class SimpleCORSFilter implements Filter {
     }
 
     public String getOriginToAllow(String incomingOrigin) {
-        if (allowedOrigins.contains(incomingOrigin.toLowerCase())) {
+        if (!CollectionUtil.isNullOrEmpty(allowedOrigins) &&
+                !NullUtil.isNullOrEmpty(incomingOrigin) &&
+                allowedOrigins.contains(incomingOrigin.toLowerCase())) {
+
             return incomingOrigin;
         } else {
+
             return null;
         }
     }
