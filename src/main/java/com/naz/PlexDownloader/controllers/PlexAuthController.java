@@ -19,7 +19,7 @@ public class PlexAuthController {
     @Autowired
     private PlexAuthService plexAuthService;
 
-    @PostMapping("/login")
+    @PostMapping("/basiclogin")//TODO resolve springs default login screen
     @ResponseStatus(HttpStatus.OK)
     public PlexUser loginBasicAuth(@RequestBody UserDTO userDTO) {
         return plexAuthService.loginBasicAuth(userDTO.getUsername(), userDTO.getPassword());
