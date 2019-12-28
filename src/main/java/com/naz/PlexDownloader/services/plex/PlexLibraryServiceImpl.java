@@ -221,7 +221,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
      */
     private MediaContainer buildPlexRestCall(String plexAuthToken, String url, boolean isPostCall) {
 
-        if (!url.contains("http://") || !url.contains("https://")) {
+        if (!url.contains("http://") && !url.contains("https://")) {
             url = "http://" + url;
         }
 

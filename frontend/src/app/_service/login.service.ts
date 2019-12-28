@@ -5,6 +5,7 @@ import {User} from '../models/user/user.model';
 import {Router} from '@angular/router';
 import {AlertifyService} from './alertify.service';
 import {LibraryService} from './library.service';
+import {Constants} from "../util/constants";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import {LibraryService} from './library.service';
 export class LoginService {
 
   // baseUrl = 'https://plex.tv/';
-  baseUrl = 'http://localhost:8081/api';
+  baseUrl = Constants.PLEX_DOWNLOADER_BASE_URL;
   //TODO update port
 
   constructor(
@@ -41,13 +42,14 @@ export class LoginService {
     return this.http.post(this.baseUrl + '/basiclogin', model)
       .pipe(
         map((response: any) => {
-          const user = new User().deserialize(response.user);
+          const user = new User().deserialize(response);
 
           this.alertify.message('Welcome, ' + user.username);
           console.log('Icon: ' + user.thumb);
 
           if (user) {
-            localStorage.setItem('token', user.authToken);
+            localStorage.setItem(Constants.PLEX_AUTH_TOKEN, user.authToken);
+            console.log("auth: " + user.authToken);
             // localStorage.setItem('user', user);
 
             /*this.libraryService.retrievePlexResources(authToken).subscribe(() => {

@@ -19,13 +19,14 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
-    "rxjs": "~6.5.3",
-    "tslib": "^1.10.0",
-    "zone.js": "~0.10.2",
     "alertifyjs": "^1.13.1",
     "bootstrap": "^4.4.1",
     "core-js": "^3.6.1",
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.4.1",
+    "rxjs": "~6.5.3",
+    "tslib": "^1.10.0",
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.21",
