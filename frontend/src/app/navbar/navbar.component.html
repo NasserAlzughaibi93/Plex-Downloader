@@ -8,23 +8,16 @@
     <li class="nav-item">
       <a class="nav-link" href="#">Settings</a>
     </li>
-    <!--<li class="nav-item">
-      <a class="nav-link" href="#">Messages</a>
-    </li>-->
+
+    <li class="nav-item">
+      <label>
+        <select [(ngModel)]="selected" name="status" (ngModelChange)="onOptionsSelected()">
+<!--          <option>&#45;&#45;Server&#45;&#45;</option>-->
+          <option *ngFor="let device of devices" [ngValue]="device.name">{{device.name}}</option>
+        </select>
+      </label>
+    </li>
+
   </ul>
 
-
-
-  <div class="dropdown" *ngIf="user">
-    <a class="dropdown-toggle text-light" >
-      <img src="{{user.thumb}}" alt="Avatar">
-      Hi {{user.username}}!
-    </a>
-
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Edit Profile</a>
-      <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i> Logout</a>
-    </div>
-  </div>
 </nav>

@@ -1,6 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
-/* You can add global styles to this file, and also import other style files */
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 @import '../node_modules/font-awesome/css/font-awesome.min.css';
 @import '../node_modules/alertifyjs/build/css/alertify.min.css';
 @import '../node_modules/alertifyjs/build/css/themes/bootstrap.min.css';
+
+div.scrollmenu {
+  background-color: #333;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}

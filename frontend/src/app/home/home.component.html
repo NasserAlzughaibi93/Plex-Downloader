@@ -1,7 +1,22 @@
+<app-navbar></app-navbar>
 <p>
   home works!
 </p>
 
-<div *ngFor="let item of list">
+<button (click)="retrieveOnDeckLibrary()">Get On Deck Library</button>
 
+<div class="scrollmenu">
+  <a href="#home">Home</a>
+  <a href="#news">News</a>
+  <a href="#contact">Contact</a>
+  <a href="#about">About</a>
+</div>
+
+<div *ngIf="videos">
+  <div *ngFor="let video of videos" style="display: inline-block">
+    <img src="{{resolvePosterURL(video)}}" alt="">
+  </div>
+</div>
+<div *ngIf="!videos">
+  <p>Please select a server on the navbar</p>
 </div>
