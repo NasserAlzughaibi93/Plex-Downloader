@@ -25,10 +25,6 @@ export class LibraryService {
       authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
     }
 
-    console.log('calling library + auth token: ' + authToken);
-    /*this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Basic ' + authToken);
-    console.log('headers: ' + this.httpOptions.headers.get('Authorization'));*/
-
     const params = new HttpParams().set('authToken', authToken);
 
     return this.http.get<MediaContainer>(this.baseUrl + '/plexResources', {params})
@@ -46,11 +42,6 @@ export class LibraryService {
 
     let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
 
-
-    console.log('calling library + auth token: ' + authToken);
-    /*this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Basic ' + authToken);
-    console.log('headers: ' + this.httpOptions.headers.get('Authorization'));*/
-
     const params = new HttpParams().set('authToken', authToken);
 
     return this.http.get<Video[]>(this.baseUrl + '/library/' + serverIp + '/onDeck', {params})
@@ -61,6 +52,32 @@ export class LibraryService {
           console.log("retrieved videos");
 
           return response;
+        })
+      );
+  }
+
+  retrieveMediaDownloadLink(video: Video, serverIp: string): Observable<string> {
+
+    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+
+    let httpOptions = {
+      params: new HttpParams().set('authToken', authToken),
+      responseType: 'text' as 'json'
+    };
+
+
+    return this.http.post(this.baseUrl + '/library/' + serverIp + '/metadata', video, httpOptions)
+      .pipe(
+        map((response: any) => {
+
+          let url: string = response;
+          if (!url.includes('http://') && !url.includes('htts://')) {
+            url = 'http://' + url;
+          }
+
+          //console.log("Download link retrieved: " + url);
+
+          return url;
         })
       );
   }

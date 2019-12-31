@@ -24,11 +24,7 @@ export class LoginService {
 
   login(model: any) {
 
-    // const authToken = btoa(model.username + ':' + model.password);
-
-    // console.log('Token: ' + authToken);
-
-    const httpOptions = {
+    /*const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/x-www-form-urlencoded',
         'Access-Control-Allow-Origin': '*',
@@ -37,7 +33,7 @@ export class LoginService {
         // 'X-Plex-Version' : '0.0.1',
         // Authorization: 'Basic ' + authToken
       })
-    };
+    };*/
 
     return this.http.post(this.baseUrl + '/basiclogin', model)
       .pipe(
