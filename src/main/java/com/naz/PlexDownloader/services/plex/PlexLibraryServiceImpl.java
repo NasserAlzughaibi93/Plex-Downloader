@@ -186,7 +186,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     @Override
     public List<Directory> retrieveLibrarySectionBySectionKey(String plexAuthToken, String serverIp, String librarySectionKey) {
 
-        String url = serverIp + PLEX_SECTIONS + librarySectionKey;
+        String url = serverIp + PLEX_SECTIONS + "/" + librarySectionKey;
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
@@ -199,16 +199,16 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
     //TODO check if this is even logical once front end is setup.
     @Override
-    public List<Directory> retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, DirectoryKey directoryKey) {
-        String url = serverIp + PLEX_SECTIONS + librarySectionKey + "/" + directoryKey.getDirectoryKey();
+    public List<Video> retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, String directoryKey) {
+        String url = serverIp + PLEX_SECTIONS + "/" + librarySectionKey + "/" + directoryKey;
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-        if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory())) {
+        if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
             throw new NotYetImplementedException();
         }
 
-        return mediaContainer.getDirectory();
+        return mediaContainer.getVideo();
     }
 
     /**
