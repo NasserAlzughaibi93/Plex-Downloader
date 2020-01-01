@@ -71,6 +71,15 @@ public class Directory
     private String scanner;
 
     @XmlAttribute
+    private String secondary;
+
+    @XmlAttribute
+    private String prompt;
+
+    @XmlAttribute
+    private String search;
+
+    @XmlAttribute
     private String key;
 
     @XmlAttribute
@@ -286,6 +295,30 @@ public class Directory
 
     public void setDirectoryId(Long directoryId) {
         this.directoryId = directoryId;
+    }
+
+    public String getSecondary() {
+        return secondary;
+    }
+
+    public void setSecondary(String secondary) {
+        this.secondary = secondary;
+    }
+
+    public String getPrompt() {
+        return prompt;
+    }
+
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     @Override
