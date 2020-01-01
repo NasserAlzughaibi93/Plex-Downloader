@@ -1,23 +1,43 @@
 <app-navbar></app-navbar>
-<p>
-  home works!
-</p>
 
-<button (click)="retrieveOnDeckLibrary()">Get On Deck Library</button>
+<!--<button (click)="retrieveOnDeckLibrary()">Get On Deck Library</button>-->
 
-<div class="scrollmenu">
-  <!--<a href="#home">Home</a>
-  <a href="#news">News</a>
-  <a href="#contact">Contact</a>
-  <a href="#about">About</a>-->
-  <div *ngIf="videos">
-    <div *ngFor="let video of videos" style="display: inline-block">
-      <a (click)="startDownloadingMedia(video)"><img height="289" width="200" src="{{resolvePosterURL(video)}}" alt="Click to download: {{video.title}}"></a>
+<br><br><hr>
+
+<!--<div class="scrollmenu">
+  <div *ngIf="onDeckVideos">
+    <div *ngFor="let video of onDeckVideos" style="display: inline-block">
+      <a (click)="startDownloadingMedia(video)"><img height="289" width="200" src="{{resolvePosterURL(video)}}" alt="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}"></a>
     </div>
   </div>
-</div>
+</div>-->
 
+<ul *ngIf="sectionVideoMap">
+  <li *ngFor="let directory of sectionVideoMapKeys">
+    <h2>{{directory.title}}</h2>
+    <div class="scrollmenu">
+      <div *ngIf="sectionVideoMap.get(directory)">
+        <div *ngFor="let video of sectionVideoMap.get(directory)" style="display: inline-block">
+          <a *ngIf="video.type === 'episode'" (click)="startDownloadingMedia(video)">
 
-<div *ngIf="videos == null || videos.length == 0">
+            <img class="img" height="289" width="200" src="{{resolvePosterURL(video)}}" alt="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}">
+          </a>
+
+          <a *ngIf="video.type === 'movie'" (click)="startDownloadingMedia(video)">
+
+            <img class="img" height="289" width="200" src="{{resolvePosterURL(video)}}" alt="{{video.title}}">
+          </a>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>
+
+<div *ngIf="onDeckVideos == null || onDeckVideos.length == 0">
   <p>Please select a server on the navbar</p>
 </div>
+
+<br><br><hr>
+
+
+
