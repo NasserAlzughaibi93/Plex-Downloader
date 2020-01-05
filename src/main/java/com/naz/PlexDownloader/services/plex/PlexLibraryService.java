@@ -20,7 +20,7 @@ public interface PlexLibraryService {
 
     List<Directory> retrieveLibrarySectionBySectionKey(String plexAuthToken, String serverIp, String librarySectionKey);
 
-    List<Directory> retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, DirectoryKey directoryKey);
+    List<Video> retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, String directoryKey);
 
     Video retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey);
 
