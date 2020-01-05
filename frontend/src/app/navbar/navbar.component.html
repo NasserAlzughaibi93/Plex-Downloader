@@ -11,12 +11,23 @@
 
     <li class="nav-item">
       <label>
-        <select [(ngModel)]="selected" name="status" (ngModelChange)="onOptionsSelected()">
+        <select [(ngModel)]="selectedServer" name="servers-select" (ngModelChange)="onServerSelect()">
 <!--          <option>&#45;&#45;Server&#45;&#45;</option>-->
           <option *ngFor="let device of devices" [ngValue]="device.name">{{device.name}}</option>
         </select>
       </label>
     </li>
+
+    <li *ngIf="directories" class="nav-item">
+      <label>
+        <select [(ngModel)]="selectedLibrary" name="libraries-select" (ngModelChange)="onLibrarySelect()">
+<!--          <option>&#45;&#45;Server&#45;&#45;</option>-->
+          <option *ngFor="let directory of directories" [ngValue]="directory.title">{{directory.title}}</option>
+        </select>
+      </label>
+    </li>
+
+
 
   </ul>
 

@@ -13,6 +13,9 @@ export interface Directory {
   directoryId?:      number;
   filters?:          string;
   key?:              string;
+  secondary?:        string;
+  prompt?:           string;
+  search?:           string;
   language?:         string;
   location?:         Location;
   refreshing?:       string;
