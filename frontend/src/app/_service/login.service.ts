@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {User} from '../models/user/user.model';
 import {Router} from '@angular/router';
 import {AlertifyService} from './alertify.service';
 import {LibraryService} from './library.service';
 import {Constants} from "../util/constants";
+import {Observable} from "rxjs";
+import {PlexPin} from "../models/plexpin.model";
 
 @Injectable({
   providedIn: 'root'
@@ -24,17 +26,6 @@ export class LoginService {
 
   login(model: any) {
 
-    /*const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/x-www-form-urlencoded',
-        'Access-Control-Allow-Origin': '*',
-        // 'X-Plex-Product' : 'PlexDownloader',
-        // 'X-Plex-Client-Identifier' : 'PC',
-        // 'X-Plex-Version' : '0.0.1',
-        // Authorization: 'Basic ' + authToken
-      })
-    };*/
-
     return this.http.post(this.baseUrl + '/basiclogin', model)
       .pipe(
         map((response: any) => {
@@ -45,16 +36,27 @@ export class LoginService {
 
           if (user) {
             localStorage.setItem(Constants.PLEX_AUTH_TOKEN, user.authToken);
-            console.log("auth: " + user.authToken);
-            // localStorage.setItem('user', user);
-
-            /*this.libraryService.retrievePlexResources(authToken).subscribe(() => {
-              console.log('Success!');
-            }, error => {
-              console.log('error: ' + error);
-            });*/
-            this.router.navigate(['/home']);
           }
+        })
+      );
+  }
+
+  retrieveOAuthLoginPinAndUrl(): Observable<PlexPin>{
+
+    return this.http.get<PlexPin>(this.baseUrl + '/oAuth')
+      .pipe(
+        map((response: any) => {
+
+          return response;
+        })
+      );
+  }
+
+  retrieveOAuthPinResults(pinId: number): Observable<PlexPin> {
+    return this.http.get<PlexPin>(this.baseUrl + '/oAuth/' + pinId)
+      .pipe(
+        map((response: any) => {
+          return response;
         })
       );
   }
