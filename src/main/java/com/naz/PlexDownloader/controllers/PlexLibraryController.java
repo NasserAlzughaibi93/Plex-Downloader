@@ -61,14 +61,14 @@ public class PlexLibraryController {
 
     @GetMapping("/library/{serverIp}/sections/{sectionKey}/directory/{directoryKey}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Directory> retrieveLibrarySectionBySectionKeyAndDirectoryKey(@PathVariable String serverIp,
+    public List<Video> retrieveLibrarySectionBySectionKeyAndDirectoryKey(@PathVariable String serverIp,
                                                               @PathVariable String sectionKey,
                                                               @PathVariable String directoryKey,
                                                               @RequestParam String authToken) {
 
-        DirectoryKey theDirectoryKey = DirectoryKey.valueOf(directoryKey);
+        //DirectoryKey theDirectoryKey = DirectoryKey.valueOf(directoryKey);
 
-        return this.plexLibraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(authToken, serverIp, sectionKey, theDirectoryKey);
+        return this.plexLibraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(authToken, serverIp, sectionKey, directoryKey);
     }
 
 
