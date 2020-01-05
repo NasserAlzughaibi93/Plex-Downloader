@@ -21,3 +21,31 @@ div.scrollmenu a {
 div.scrollmenu a:hover {
   background-color: #777;
 }
+
+div.form-signin {
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  margin: auto;
+}
+
+div.sign-in-alternative h2 {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #000;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+
+div.sign-in-alternative h2 span {
+  background:#fff;
+  padding:0 10px;
+}
+.btn-primary {
+  background-color: darkorange;
+}

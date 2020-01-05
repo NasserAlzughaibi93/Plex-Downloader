@@ -31,7 +31,7 @@ public class PlexAuthController {
         return plexAuthService.retrievePlexOAuthPin();
     }
 
-    @PostMapping("/oAuth/{oAuthPin}")
+    @GetMapping("/oAuth/{oAuthPin}")
     @ResponseStatus(HttpStatus.OK)
     public Pin retrieveOAuthToken(@PathVariable String oAuthPin) {
         return plexAuthService.retrieveOAuthToken(oAuthPin);
