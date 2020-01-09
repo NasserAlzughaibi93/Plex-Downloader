@@ -37,7 +37,7 @@ public class Media {
     @XmlAttribute(name = "videoCodec")
     private String videoCodec;
     @XmlAttribute(name = "videoResolution")
-    private Integer videoResolution;
+    private String videoResolution;
     @XmlAttribute(name = "container")
     private String container;
     @XmlAttribute(name = "videoFrameRate")
@@ -125,11 +125,11 @@ public class Media {
         this.videoCodec = videoCodec;
     }
 
-    public Integer getVideoResolution() {
+    public String  getVideoResolution() {
         return videoResolution;
     }
 
-    public void setVideoResolution(Integer videoResolution) {
+    public void setVideoResolution(String videoResolution) {
         this.videoResolution = videoResolution;
     }
 
