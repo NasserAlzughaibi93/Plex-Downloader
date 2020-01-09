@@ -2,7 +2,8 @@
 
 <!--<button (click)="retrieveOnDeckLibrary()">Get On Deck Library</button>-->
 
-<br><br><hr>
+<br><br>
+<hr>
 
 <!--<div class="scrollmenu">
   <div *ngIf="onDeckVideos">
@@ -12,32 +13,60 @@
   </div>
 </div>-->
 
-<ul *ngIf="sectionVideoMap">
-  <li *ngFor="let directory of sectionVideoMapKeys">
-    <h2>{{directory.title}}</h2>
-    <div class="scrollmenu">
-      <div *ngIf="sectionVideoMap.get(directory)">
-        <div *ngFor="let video of sectionVideoMap.get(directory)" style="display: inline-block">
-          <a *ngIf="video.type === 'episode'" (click)="startDownloadingMedia(video)">
 
-            <img class="img" height="289" width="200" src="{{resolvePosterURL(video)}}" alt="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}">
-          </a>
-
-          <a *ngIf="video.type === 'movie'" (click)="startDownloadingMedia(video)">
-
-            <img class="img" height="289" width="200" src="{{resolvePosterURL(video)}}" alt="{{video.title}}">
-          </a>
-        </div>
-      </div>
-    </div>
-  </li>
-</ul>
-
-<div *ngIf="onDeckVideos == null || onDeckVideos.length == 0">
-  <p>Please select a server on the navbar</p>
+<div *ngIf="!firstTimeSetupCompleted" class="first-time-setup">
+  <h2>Please select the Plex Media Server</h2>
+  <div class="nav-item">
+    <label>
+      <select [(ngModel)]="selectedServer" name="servers-select" (ngModelChange)="onServerSelect()">
+        <!--          <option>&#45;&#45;Server&#45;&#45;</option>-->
+        <option *ngFor="let device of devices" [ngValue]="device.name">{{device.name}}</option>
+      </select>
+    </label>
+  </div>
 </div>
 
-<br><br><hr>
+<br><br>
+
+
+<div class="main-videos-view" *ngIf="firstTimeSetupCompleted">
+
+  <mat-tab-group [selectedIndex]="tabSelected.value"
+                 (selectedIndexChange)="tabSelected.setValue($event)">
+    <mat-tab *ngFor="let library of plexLibraries" label="{{library.title}}">
+      <!-- TODO: Add ngIf that shows a loading animation while results are returned.   -->
+      <div class="videos-view">
+        <ul *ngIf="sectionVideoMap">
+          <li *ngFor="let directory of sectionVideoMapKeys">
+            <h2>{{directory.title}}</h2>
+            <div class="scrollmenu">
+              <div *ngIf="sectionVideoMap.get(directory)">
+                <div *ngFor="let video of sectionVideoMap.get(directory)" style="display: inline-block">
+                  <a *ngIf="video.type === 'episode'" (click)="startDownloadingMedia(video)">
+
+                    <img class="img" height="289" width="200" src="{{resolvePosterURL(video)}}"
+                         alt="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}">
+                  </a>
+
+                  <a *ngIf="video.type === 'movie'" (click)="startDownloadingMedia(video)">
+
+                    <img class="img" height="289" width="200" src="{{resolvePosterURL(video)}}" alt="{{video.title}}">
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </mat-tab>
+    <!--<mat-tab label="Second"> Content 2 </mat-tab>
+    <mat-tab label="Third"> Content 3 </mat-tab>-->
+  </mat-tab-group>
+</div>
+
+
+<br><br>
+<hr>
 
 
 
