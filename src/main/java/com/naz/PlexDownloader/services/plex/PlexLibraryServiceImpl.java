@@ -205,7 +205,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
         if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
-            throw new NotYetImplementedException();
+            //throw new NotYetImplementedException();
         }
 
         return mediaContainer.getVideo();
