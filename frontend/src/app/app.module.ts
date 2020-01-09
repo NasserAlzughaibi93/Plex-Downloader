@@ -12,6 +12,9 @@ import {appRoutes} from './routes';
 import {AlertifyService} from './_service/alertify.service';
 import {LoginService} from './_service/login.service';
 import {LibraryService} from './_service/library.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatTabsModule} from '@angular/material/tabs';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +27,9 @@ import {LibraryService} from './_service/library.service';
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    BrowserAnimationsModule,
+    MatTabsModule
   ],
   providers: [
     LoginService,
