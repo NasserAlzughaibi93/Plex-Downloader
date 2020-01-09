@@ -9,7 +9,7 @@
       <a class="nav-link" href="#">Settings</a>
     </li>
 
-    <li class="nav-item">
+    <li *ngIf="devices" class="nav-item">
       <label>
         <select [(ngModel)]="selectedServer" name="servers-select" (ngModelChange)="onServerSelect()">
 <!--          <option>&#45;&#45;Server&#45;&#45;</option>-->
@@ -18,14 +18,14 @@
       </label>
     </li>
 
-    <li *ngIf="directories" class="nav-item">
+    <!--<li *ngIf="directories" class="nav-item">
       <label>
         <select [(ngModel)]="selectedLibrary" name="libraries-select" (ngModelChange)="onLibrarySelect()">
-<!--          <option>&#45;&#45;Server&#45;&#45;</option>-->
+&lt;!&ndash;          <option>&#45;&#45;Server&#45;&#45;</option>&ndash;&gt;
           <option *ngFor="let directory of directories" [ngValue]="directory.title">{{directory.title}}</option>
         </select>
       </label>
-    </li>
+    </li>-->
 
 
 

@@ -6,7 +6,6 @@ import {ComponentMessagingService} from "../_service/component-messaging.service
 import {ComponentMessage} from "../models/component-message.model";
 import {ComponentAction, ComponentName} from "../models/component-name.model";
 import {Directory} from "../models/directory.model";
-import {Video} from "../models/video.model";
 
 @Component({
   selector: 'app-navbar',
@@ -23,30 +22,33 @@ export class NavbarComponent implements OnInit {
   selectedLibrary: any;
   filteredLibrary:any;
 
+  subscription: any;
+
   constructor(private libraryService: LibraryService,
               private componentMessagingService: ComponentMessagingService) { }
 
   ngOnInit() {
-    this.user = localStorage.getItem('user');
-    this.devices = JSON.parse(localStorage.getItem(Constants.PLEX_SELECTED_SERVERS));
-    this.selectedServer = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_NAME);
+
     this.directories = JSON.parse(localStorage.getItem(Constants.PLEX_SELECTED_LIBRARIES));
-    this.selectedLibrary = localStorage.getItem(Constants.PLEX_SELECTED_LIBRARY_NAME);
+    this.selectedServer = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_NAME);
 
     if (this.devices == null || this.devices.length == 0) {
       this.retrievePlexResources();
-
     } else {
       this.filteredServer = this.devices.filter(t=>t.name == this.selectedServer);
-      this.filteredLibrary = this.directories.filter(t=>t.title == this.selectedLibrary);
-      let message = new ComponentMessage();
-      message.fromComponent = ComponentName.NAVBAR;
-      message.toComponent = ComponentName.HOME;
-      message.componentAction = ComponentAction.LOAD_LIBRARIES;
-      message.message = "Hello there!";
-
-      this.componentMessagingService.updateMessage(message);
     }
+
+    this.subscription = this.componentMessagingService.getMessage()
+      .subscribe(message => {
+        console.log('Printing message from message service: ');
+        console.log(message);
+        console.log(message.componentAction);
+
+        if (message.componentAction == ComponentAction.FIRST_TIME_SETUP) {
+          this.devices = JSON.parse(localStorage.getItem(Constants.PLEX_SELECTED_SERVERS));
+          this.selectedServer = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_NAME);
+        }
+      });
   }
 
   retrievePlexResources() {
@@ -97,41 +99,5 @@ export class NavbarComponent implements OnInit {
     });
 
     this.retrieveLibrarySections();
-
-    //console.log(localStorage.getItem(Constants.PLEX_SELECTED_SERVER_NAME));
   }
-
-  onLibrarySelect() {
-    console.log('library selected: ' + this.selectedLibrary);
-    this.filteredLibrary = this.directories.filter(t=>t.title == this.selectedLibrary);
-
-    localStorage.setItem(Constants.PLEX_SELECTED_LIBRARY_NAME, this.selectedLibrary);
-
-    this.directories.forEach(directory => {
-      if (this.selectedLibrary == directory.title) {
-        console.log('library name: ' + directory.title);
-        localStorage.setItem(Constants.PLEX_SELECTED_LIBRARY_KEY, directory.key);
-
-        let message = new ComponentMessage();
-        message.fromComponent = ComponentName.NAVBAR;
-        message.toComponent = ComponentName.HOME;
-        message.message = "Hello there!";
-
-        this.componentMessagingService.updateMessage(message);
-        /*if (device.connection.length > 0 ) {
-          device.connection.forEach(connection => {
-            if (connection.local === '0') {
-              localStorage.setItem(Constants.PLEX_SELECTED_SERVER_URI, 'http://' + connection.address + ':' + connection.port);
-            }
-          });
-        } else {
-          console.log('Error: no connections found')
-          //TODO add error call
-        }*/
-      }
-    });
-
-    //console.log(localStorage.getItem(Constants.PLEX_SELECTED_LIBRARY_NAME));
-  }
-
 }

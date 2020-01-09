@@ -17,7 +17,13 @@ export class LoginComponent implements OnInit {
   oAuthPinTimer: any;
 
   constructor(private loginService: LoginService,
-              private router: Router,) {}
+              private router: Router,) {
+    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+    if (authToken != null && authToken.trim().length != 0) {
+      authToken = null;
+      this.router.navigate(['/home'])
+    }
+  }
 
   ngOnInit() {}
 
