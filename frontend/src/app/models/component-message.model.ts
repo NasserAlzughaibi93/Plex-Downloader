@@ -10,6 +10,13 @@ export class ComponentMessage implements Deserializable {
   componentAction: ComponentAction;
   message: any;
 
+  constructor(toComponent: ComponentName,
+              fromComponent: ComponentName,
+              componentAction: ComponentAction,
+              message: any) {
+  }
+
+
   deserialize(input: any): this {
     return Object.assign(this, input);
   }

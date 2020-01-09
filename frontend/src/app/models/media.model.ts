@@ -13,6 +13,6 @@ export interface Media {
   videoCodec?:      string;
   videoFrameRate?:  string;
   videoProfile?:    string;
-  videoResolution?: number;
+  videoResolution?: string;
   width?:           number;
 }

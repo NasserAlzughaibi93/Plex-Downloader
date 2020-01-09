@@ -15,4 +15,6 @@ export class Constants {
   static readonly PLEX_SELECTED_LIBRARY_KEY = 'library_section_key';
 
   static readonly PLEX_SELECTED_LIBRARIES = 'libraries';
+
+  static readonly FIRST_TIME_SETUP_COMPLETE = 'first_time_setup_complete';
 }
