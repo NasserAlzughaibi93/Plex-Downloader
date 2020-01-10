@@ -1,1 +1,3 @@
-rootProject.name = 'PlexDownloader'
+rootProject.name = 'plex-downloader'
+
+include 'plex-downloader-api', 'plex-downloader-ui'
