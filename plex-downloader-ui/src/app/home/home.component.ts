@@ -37,7 +37,8 @@ export class HomeComponent implements OnInit {
               private libraryService: LibraryService,
               private componentMessagingService: ComponentMessagingService) {
     this.firstTimeSetupCompleted = localStorage.getItem(Constants.FIRST_TIME_SETUP_COMPLETE) === 'true';
-    if (this.firstTimeSetupCompleted) {
+    if (!this.firstTimeSetupCompleted) {
+      console.log("getting server lists.");
       let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
       this.libraryService.retrievePlexResources(authToken).subscribe((mediaContainer) => {
         // console.log('worked');
@@ -47,7 +48,6 @@ export class HomeComponent implements OnInit {
       }, () => {
         console.log('Error');
       });
-      this.retrieveLibrarySections();
       //this.retrieveLibrarySectionBySectionKey();
     } else {
       //Maybe?
@@ -212,6 +212,7 @@ export class HomeComponent implements OnInit {
           this.componentMessagingService.updateMessage(message);
           this.firstTimeSetupCompleted = true;
           localStorage.setItem(Constants.FIRST_TIME_SETUP_COMPLETE, String(this.firstTimeSetupCompleted));
+          this.retrieveLibrarySections();
 
         } else {
           console.log('Error: no connections found')
