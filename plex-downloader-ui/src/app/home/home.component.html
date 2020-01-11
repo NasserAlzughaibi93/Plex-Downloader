@@ -1,18 +1,7 @@
 <app-navbar></app-navbar>
 
-<!--<button (click)="retrieveOnDeckLibrary()">Get On Deck Library</button>-->
-
 <br><br>
 <hr>
-
-<!--<div class="scrollmenu">
-  <div *ngIf="onDeckVideos">
-    <div *ngFor="let video of onDeckVideos" style="display: inline-block">
-      <a (click)="startDownloadingMedia(video)"><img height="289" width="200" src="{{resolvePosterURL(video)}}" alt="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}"></a>
-    </div>
-  </div>
-</div>-->
-
 
 <div *ngIf="!firstTimeSetupCompleted" class="first-time-setup">
   <h2>Please select the Plex Media Server</h2>
@@ -45,12 +34,13 @@
                   <a *ngIf="video.type === 'episode'" (click)="startDownloadingMedia(video)">
 
                     <img class="img" height="289" width="200" src="{{resolvePosterURL(video)}}"
-                         alt="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}">
+                         alt="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}"
+                         title="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}">
                   </a>
 
                   <a *ngIf="video.type === 'movie'" (click)="startDownloadingMedia(video)">
 
-                    <img class="img" height="289" width="200" src="{{resolvePosterURL(video)}}" alt="{{video.title}}">
+                    <img class="img" height="289" width="200" src="{{resolvePosterURL(video)}}" alt="{{video.title}}" title="{{video.title}}">
                   </a>
                 </div>
               </div>
@@ -63,7 +53,6 @@
     <mat-tab label="Third"> Content 3 </mat-tab>-->
   </mat-tab-group>
 </div>
-
 
 <br><br>
 <hr>
