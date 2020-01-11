@@ -67,7 +67,7 @@ export class LibraryService {
       .pipe(
         map((response: any) => {
 
-          this.alertify.message('Sections loaded!');
+          this.alertify.message('Retrieved all sections!');
           console.log("retrieved sections");
 
           return response;
@@ -85,7 +85,7 @@ export class LibraryService {
       .pipe(
         map((response: Directory[]) => {
 
-          this.alertify.message('Sections loaded!');
+          this.alertify.message('Retrieved Section by section key');
           console.log("retrieved sections");
 
           let directories: Directory[] = [];
@@ -124,7 +124,7 @@ export class LibraryService {
       .pipe(
         map((response: any) => {
 
-          this.alertify.message('Sections loaded!');
+          this.alertify.message('Retrieved section by section key and directory key!');
           console.log("retrieved sections");
 
           return response;
