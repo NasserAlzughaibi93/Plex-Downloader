@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import {RouterModule} from '@angular/router';
 import {appRoutes} from './routes';
@@ -14,6 +14,7 @@ import {LoginService} from './_service/login.service';
 import {LibraryService} from './_service/library.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTabsModule} from '@angular/material/tabs';
+import {RestInterceptor} from "./util/rest-interceptor";
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {MatTabsModule} from '@angular/material/tabs';
   providers: [
     LoginService,
     AlertifyService,
-    LibraryService
+    LibraryService,
+    {provide: HTTP_INTERCEPTORS, useClass: RestInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

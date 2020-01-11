@@ -52,6 +52,7 @@ export class HomeComponent implements OnInit {
     } else {
       //Maybe?
       //localStorage.clear();
+      this.retrieveLibrarySections();
     }
     this.subscription = this.componentMessagingService.getMessage()
       .subscribe(message => {
@@ -188,7 +189,12 @@ export class HomeComponent implements OnInit {
   }
 
   beginDownload(url: string) {
-    window.open(url);
+    var link = document.createElement("a");
+    link.download = "a";
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    //window.open(url);
   }
 
   //First time setup:
