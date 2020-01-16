@@ -1,4 +1,3 @@
 allprojects {
     group = 'com.naz'
-    version = '0.0.1-SNAPSHOT'
 }
