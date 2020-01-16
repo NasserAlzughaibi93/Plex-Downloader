@@ -1,7 +1,11 @@
 package com.naz.PlexDownloader.util;
 
+import com.naz.PlexDownloader.models.plex.Video;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 public class CollectionUtil {
 
@@ -32,4 +36,41 @@ public class CollectionUtil {
     public static boolean isNullOrEmpty(Collection<?> collection) {
         return collection == null || !collection.iterator().hasNext();
     }
+
+    /**
+     * Create a quick list
+     * @param objects
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> createList(Object...objects) {
+
+        List theList = new ArrayList();
+
+        for (Object object :
+                objects) {
+            theList.add(object);
+        }
+
+        return theList;
+    }
+
+    /**
+     * Quickly build a collection
+     * @param objects
+     * @param <T>
+     * @return
+     */
+    public static <T> Collection<T> createCollection(Object...objects) {
+
+        Collection theCollection = new ArrayList();
+
+        for (Object object :
+                objects) {
+            theCollection.add(object);
+        }
+
+        return theCollection;
+    }
+
 }
