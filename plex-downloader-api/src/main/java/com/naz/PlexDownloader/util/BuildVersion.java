@@ -9,6 +9,7 @@ import java.util.Properties;
 public class BuildVersion {
 
     private static String projectVersion;
+    private static String projectBranch;
 
 
     @Value("${info.build.version}")
@@ -16,8 +17,17 @@ public class BuildVersion {
         projectVersion = version;
     }
 
-    public static String getBuildVersion(){
+    @Value("${info.build.branch}")
+    public void setProjectBranch(String branch) {
+        projectBranch = branch;
+    }
+
+    public static String getProjectVersion(){
         return projectVersion;
+    }
+
+    public static String getProjectBranch() {
+        return projectBranch;
     }
 
     public static void getOSInfo() {

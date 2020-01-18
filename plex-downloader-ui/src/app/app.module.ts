@@ -15,6 +15,8 @@ import {LibraryService} from './_service/library.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTabsModule} from '@angular/material/tabs';
 import {RestInterceptor} from "./util/rest-interceptor";
+import { SettingsComponent } from './settings/settings.component';
+import { AboutComponent } from './settings/about/about.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import {RestInterceptor} from "./util/rest-interceptor";
     AppComponent,
     HomeComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    SettingsComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
