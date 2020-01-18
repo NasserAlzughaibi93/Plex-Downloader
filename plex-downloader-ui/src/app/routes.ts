@@ -3,6 +3,7 @@ import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './login/login.component';
 import {SettingsComponent} from "./settings/settings.component";
 import {AboutComponent} from "./settings/about/about.component";
+import {SearchComponent} from "./search/search.component";
 
 export const appRoutes: Routes = [
   {path: '', component: LoginComponent},
@@ -14,6 +15,7 @@ export const appRoutes: Routes = [
       {path: 'home', component: HomeComponent},
       {path: 'settings', component: SettingsComponent},
       {path: 'about', component: AboutComponent},
+      {path: 'search/:searchQuery', component: SearchComponent},
     ],
 
   },

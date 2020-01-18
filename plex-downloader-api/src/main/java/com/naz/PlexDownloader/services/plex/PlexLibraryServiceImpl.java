@@ -2,7 +2,6 @@ package com.naz.PlexDownloader.services.plex;
 
 import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
-import com.naz.PlexDownloader.models.plex.DirectoryKey;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Part;
 import com.naz.PlexDownloader.models.plex.Video;
@@ -28,6 +27,8 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     private static final String PLEX_SECTIONS = PLEX_LIBRARY + "/sections";
 
     private static final String PLEX_RECENTLY_ADDED = PLEX_LIBRARY + "/recentlyAdded";
+
+    private static final String PLEX_SEARCH = "/search?query=";
 
     /**
      * Find available resources of a given server instance.
@@ -175,6 +176,23 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
         downloadUrl = serverIp + part.getKey() + "?download=1&X-Plex-Token=" + plexAuthToken;
 
         return downloadUrl;
+    }
+
+    @Override
+    public MediaContainer retrieveSearchResults(String serverIp, String searchQuery, String authToken) {
+
+        String url = serverIp + PLEX_SEARCH + searchQuery;
+
+        MediaContainer mediaContainer = this.buildPlexRestCall(authToken, url, false);
+
+        if (null == mediaContainer ||
+                (CollectionUtil.isNullOrEmpty(mediaContainer.getVideo()) &&
+                        CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory()))) {
+            throw new NotYetImplementedException();
+        }
+
+
+        return mediaContainer;
     }
 
     /**

@@ -157,4 +157,22 @@ export class LibraryService {
         })
       );
   }
+
+  retrieveSearchResults(serverIp: string, searchQuery: string) : Observable<MediaContainer> {
+
+    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+
+    const params = new HttpParams().set('authToken', authToken);
+
+    return this.http.get<MediaContainer>(this.baseUrl + '/library/' + serverIp + '/search/' + searchQuery, {params})
+      .pipe(
+        map((response: any) => {
+
+          this.alertify.message('Search results retrieved!');
+          console.log('Search results retrieved');
+
+          return response;
+        })
+      );
+  }
 }
