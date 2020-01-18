@@ -17,6 +17,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {RestInterceptor} from "./util/rest-interceptor";
 import { SettingsComponent } from './settings/settings.component';
 import { AboutComponent } from './settings/about/about.component';
+import { SearchComponent } from './search/search.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { AboutComponent } from './settings/about/about.component';
     LoginComponent,
     NavbarComponent,
     SettingsComponent,
-    AboutComponent
+    AboutComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
