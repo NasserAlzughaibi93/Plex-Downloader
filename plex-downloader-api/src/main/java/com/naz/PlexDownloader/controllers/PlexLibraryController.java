@@ -89,6 +89,15 @@ public class PlexLibraryController {
         return this.plexLibraryService.retrieveMediaDownloadLink(authToken, serverIp, video);
     }
 
+    @GetMapping("/library/{serverIp}/search/{searchQuery}")
+    @ResponseStatus(HttpStatus.OK)
+    public MediaContainer retrieveSearchResults(@PathVariable String serverIp,
+                                             @PathVariable String searchQuery,
+                                             @RequestParam String authToken) {
+
+        return this.plexLibraryService.retrieveSearchResults(serverIp, searchQuery, authToken);
+    }
+
     public PlexLibraryService getPlexLibraryService() {
         return plexLibraryService;
     }

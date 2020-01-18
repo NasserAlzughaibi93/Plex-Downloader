@@ -6,6 +6,7 @@ import {ComponentMessagingService} from "../_service/component-messaging.service
 import {ComponentMessage} from "../models/component-message.model";
 import {ComponentAction, ComponentName} from "../models/component-name.model";
 import {Directory} from "../models/directory.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-navbar',
@@ -24,7 +25,8 @@ export class NavbarComponent implements OnInit {
 
   subscription: any;
 
-  constructor(private libraryService: LibraryService,
+  constructor(private router: Router,
+              private libraryService: LibraryService,
               private componentMessagingService: ComponentMessagingService) { }
 
   ngOnInit() {
@@ -104,5 +106,10 @@ export class NavbarComponent implements OnInit {
     });
 
     this.retrieveLibrarySections();
+  }
+
+  searchQ(searchQuery: string) {
+    console.log('Searching for query: ' + searchQuery);
+    this.router.navigate(['/search', searchQuery])
   }
 }
