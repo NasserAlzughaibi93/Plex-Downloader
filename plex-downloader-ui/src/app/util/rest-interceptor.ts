@@ -18,11 +18,13 @@ export class RestInterceptor implements HttpInterceptor {
 
     //kick out whoever doesn't belong.
     if (!req.url.endsWith('/basiclogin') && !req.url.endsWith('/oAuth')) {
-      let authToken = req.params.get('authToken');
-      if (authToken === null || authToken.trim().length === 0) {
-        console.log('Error, not signed in. Returning back to login page.');
-        this.router.navigate(['/']);
-        return;
+      if (req.params.get('authToken')) {
+        let authToken = req.params.get('authToken');
+        if (authToken === null || authToken.trim().length === 0) {
+          console.log('Error, not signed in. Returning back to login page.');
+          this.router.navigate(['/']);
+          return;
+        }
       }
     }
 
