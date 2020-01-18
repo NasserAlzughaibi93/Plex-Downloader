@@ -30,13 +30,16 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
 
     this.directories = JSON.parse(localStorage.getItem(Constants.PLEX_SELECTED_LIBRARIES));
+    this.devices = JSON.parse(localStorage.getItem(Constants.PLEX_SELECTED_SERVERS));
     this.selectedServer = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_NAME);
     let firstTimeSetupCompleted: boolean = localStorage.getItem(Constants.FIRST_TIME_SETUP_COMPLETE) === 'true';
 
 
     if ( firstTimeSetupCompleted && (this.devices == null || this.devices.length == 0)) {
       this.retrievePlexResources();
-    } else {
+    } else if (this.devices == null || this.devices.length == 0) {
+      this.retrievePlexResources();
+    }else {
       this.filteredServer = this.devices.filter(t=>t.name == this.selectedServer);
     }
 

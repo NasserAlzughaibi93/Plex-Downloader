@@ -19,6 +19,7 @@ def configFile = new File('plex-downloader-api/src/main/resources/application.pr
 //println "updating version to '${version}' in ${configFile}"
 String configContent = configFile.getText('UTF-8')
 configContent = configContent.replaceAll(/info\.build\.version=.*/, "info.build.version=${version}")
+configContent = configContent.replaceAll(/info\.build\.branch=.*/, "info.build.branch=${details.branchName}")
 configFile.write(configContent, 'UTF-8')
 
 println 'Application version: ' + version
