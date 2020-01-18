@@ -40,7 +40,7 @@ public class PlexRestTemplate {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add(X_PLEX_PRODUCT, PLEX_PRODUCT);
         headers.add(X_PLEX_CLIENT_ID, PLEX_PRODUCT);
-        headers.add(X_PLEX_VERSION, BuildVersion.getBuildVersion());
+        headers.add(X_PLEX_VERSION, BuildVersion.getProjectVersion());
         headers.setBasicAuth(username, password);
 
         HttpEntity<HttpHeaders> request = new HttpEntity<>(headers);
@@ -79,7 +79,7 @@ public class PlexRestTemplate {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add(X_PLEX_PRODUCT, PLEX_PRODUCT);
         headers.add(X_PLEX_CLIENT_ID, PLEX_PRODUCT);
-        headers.add(X_PLEX_VERSION, BuildVersion.getBuildVersion());
+        headers.add(X_PLEX_VERSION, BuildVersion.getProjectVersion());
         headers.add(X_PLEX_TOKEN, authToken);
 
         HttpEntity<HttpHeaders> request = new HttpEntity<>(headers);
@@ -117,7 +117,7 @@ public class PlexRestTemplate {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add(X_PLEX_PRODUCT, PLEX_PRODUCT);
         headers.add(X_PLEX_CLIENT_ID, PLEX_PRODUCT);
-        headers.add(X_PLEX_VERSION, BuildVersion.getBuildVersion());
+        headers.add(X_PLEX_VERSION, BuildVersion.getProjectVersion());
         headers.add(X_PLEX_TOKEN, authToken);
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 

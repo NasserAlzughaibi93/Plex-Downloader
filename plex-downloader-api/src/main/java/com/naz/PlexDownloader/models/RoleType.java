@@ -2,7 +2,7 @@ package com.naz.PlexDownloader.models;
 
 public enum RoleType {
 
-    ADMIN("all"),
+    ADMIN("admin"),
     VIEW_ONLY("View Only"),
     UNLIMITED_DOWNLOAD("Unlimited Downloads"),
     LIMITED_DOWNLOAD("Limited Downloads");
