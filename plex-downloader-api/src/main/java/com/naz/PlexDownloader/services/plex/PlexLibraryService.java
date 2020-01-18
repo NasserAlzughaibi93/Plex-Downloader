@@ -1,9 +1,7 @@
 package com.naz.PlexDownloader.services.plex;
 
 import com.naz.PlexDownloader.models.plex.Directory;
-import com.naz.PlexDownloader.models.plex.DirectoryKey;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
-import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.models.plex.Video;
 
 import java.util.List;
@@ -25,4 +23,6 @@ public interface PlexLibraryService {
     Video retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey);
 
     String retrieveMediaDownloadLink(String plexAuthToken, String serverIp, Video video);
+
+    MediaContainer retrieveSearchResults(String serverIp, String searchQuery, String authToken);
 }
