@@ -12,7 +12,7 @@ import {Observable} from "rxjs";
 })
 export class SettingsService {
 
-  baseUrl = Constants.PLEX_DOWNLOADER_BASE_URL;
+  baseUrl = Constants.PLEX_DOWNLOADER_BASE_URL + '/settings';
 
   constructor(
     private http: HttpClient,
