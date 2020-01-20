@@ -2,7 +2,6 @@ package com.naz.PlexDownloader.controllers;
 
 
 import com.naz.PlexDownloader.models.plex.Directory;
-import com.naz.PlexDownloader.models.plex.DirectoryKey;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Video;
 import com.naz.PlexDownloader.services.plex.PlexLibraryService;
@@ -20,39 +19,40 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/library")
 public class PlexLibraryController {
 
     @Autowired
     private PlexLibraryService plexLibraryService;
 
-    @GetMapping("/plexResources")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public MediaContainer findPlexResources(@RequestParam String authToken) {
         return this.plexLibraryService.findPlexResources(authToken);
     }
 
-    @GetMapping("/library/{serverIp}/onDeck")
+    @GetMapping("/{serverIp}/onDeck")
     @ResponseStatus(HttpStatus.OK)
     public List<Video> retrieveLibraryOnDeck(@PathVariable String serverIp,
                                              @RequestParam String authToken) {
         return this.plexLibraryService.retrieveLibraryOnDeck(authToken, serverIp);
     }
 
-    @GetMapping("/library/{serverIp}/recentlyAdded")
+    @GetMapping("/{serverIp}/recentlyAdded")
     @ResponseStatus(HttpStatus.OK)
     public List<Video> retrieveLibraryRecentlyAdded(@PathVariable String serverIp,
                                                     @RequestParam String authToken) {
         return this.plexLibraryService.retrieveLibraryRecentlyAdded(authToken, serverIp);
     }
 
-    @GetMapping("/library/{serverIp}/sections")
+    @GetMapping("/{serverIp}/sections")
     @ResponseStatus(HttpStatus.OK)
     public List<Directory> retrieveLibrarySections(@PathVariable String serverIp,
                                                    @RequestParam String authToken) {
         return this.plexLibraryService.retrieveLibrarySections(authToken, serverIp);
     }
 
-    @GetMapping("/library/{serverIp}/sections/{sectionKey}")
+    @GetMapping("/{serverIp}/sections/{sectionKey}")
     @ResponseStatus(HttpStatus.OK)
     public List<Directory> retrieveLibrarySectionBySectionKey(@PathVariable String serverIp,
                                                               @PathVariable String sectionKey,
@@ -60,7 +60,7 @@ public class PlexLibraryController {
         return this.plexLibraryService.retrieveLibrarySectionBySectionKey(authToken, serverIp, sectionKey);
     }
 
-    @GetMapping("/library/{serverIp}/sections/{sectionKey}/directory/{directoryKey}")
+    @GetMapping("/{serverIp}/sections/{sectionKey}/directory/{directoryKey}")
     @ResponseStatus(HttpStatus.OK)
     public List<Video> retrieveLibrarySectionBySectionKeyAndDirectoryKey(@PathVariable String serverIp,
                                                               @PathVariable String sectionKey,
@@ -73,7 +73,7 @@ public class PlexLibraryController {
     }
 
 
-    @GetMapping("/library/{serverIp}/metadata/{libraryKey}")
+    @GetMapping("/{serverIp}/metadata/{libraryKey}")
     @ResponseStatus(HttpStatus.OK)
     public Video retrieveMediaMetadata(@PathVariable String serverIp,
                                                               @PathVariable String libraryKey,
@@ -81,7 +81,7 @@ public class PlexLibraryController {
         return this.plexLibraryService.retrieveMediaMetadata(authToken, serverIp, libraryKey);
     }
 
-    @PostMapping("/library/{serverIp}/metadata")
+    @PostMapping("/{serverIp}/metadata")
     @ResponseStatus(HttpStatus.OK)
     public String retrieveMediaDownloadLink(@PathVariable String serverIp,
                                            @RequestParam String authToken,
@@ -89,7 +89,7 @@ public class PlexLibraryController {
         return this.plexLibraryService.retrieveMediaDownloadLink(authToken, serverIp, video);
     }
 
-    @GetMapping("/library/{serverIp}/search/{searchQuery}")
+    @GetMapping("/{serverIp}/search/{searchQuery}")
     @ResponseStatus(HttpStatus.OK)
     public MediaContainer retrieveSearchResults(@PathVariable String serverIp,
                                              @PathVariable String searchQuery,
