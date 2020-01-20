@@ -28,6 +28,10 @@ public class MediaContainer {
     @XmlElement(name = "Device")
     private List<Device> device;
 
+    @OneToMany
+    @XmlElement(name = "User")
+    private List<PlexUser> user;
+
     @XmlAttribute
     private String mediaTagPrefix;
 
@@ -162,5 +166,13 @@ public class MediaContainer {
 
     public void setTitle2(String title2) {
         this.title2 = title2;
+    }
+
+    public List<PlexUser> getUser() {
+        return user;
+    }
+
+    public void setUser(List<PlexUser> user) {
+        this.user = user;
     }
 }
