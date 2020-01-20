@@ -24,20 +24,40 @@ export class SearchComponent implements OnInit {
               private route: ActivatedRoute,
               private alertify: AlertifyService,
               private libraryService: LibraryService,
-              private componentMessagingService: ComponentMessagingService) { }
+              private componentMessagingService: ComponentMessagingService) {
+
+    this.router.routeReuseStrategy.shouldReuseRoute = function(){
+      return false;
+    };
+
+    const navigation = this.router.getCurrentNavigation();
+    let query = navigation.extras.state ? navigation.extras.state.searchQuery : null;
+    console.log('query is null: ' + query === null);
+    if (query != null && query.trim().length != 0) {
+      console.log('Searching for ' + query);
+
+      this.retrieveSearchResults(query);
+
+      //if (this.movies.length != 0 || this.shows.length != 0 || this.episodes.length != 0) {
+      this.searchComplete = true;
+      //}
+    }
+  }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      console.log('Searching...');
+
+    /*this.route.params.subscribe(params => {
       let query: string = params['searchQuery'];
       if (query != null && query.trim().length != 0) {
+        console.log('Searching for ' + query);
+
         this.retrieveSearchResults(query);
 
         //if (this.movies.length != 0 || this.shows.length != 0 || this.episodes.length != 0) {
           this.searchComplete = true;
         //}
       }
-    });
+    });*/
   }
 
   retrieveSearchResults(searchQuery: string) {

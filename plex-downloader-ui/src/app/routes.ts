@@ -15,9 +15,8 @@ export const appRoutes: Routes = [
       {path: 'home', component: HomeComponent},
       {path: 'settings', component: SettingsComponent},
       {path: 'about', component: AboutComponent},
-      {path: 'search/:searchQuery', component: SearchComponent},
+      {path: 'search', component: SearchComponent},
     ],
-
   },
   {path: '**', redirectTo: '/home', pathMatch: 'full'}
 ];

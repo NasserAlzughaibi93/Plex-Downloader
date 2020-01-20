@@ -34,7 +34,7 @@ import { SearchComponent } from './search/search.component';
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'}),
     BrowserAnimationsModule,
     MatTabsModule
   ],
