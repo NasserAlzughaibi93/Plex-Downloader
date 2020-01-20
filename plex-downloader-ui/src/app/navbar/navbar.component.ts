@@ -7,6 +7,7 @@ import {ComponentMessage} from "../models/component-message.model";
 import {ComponentAction, ComponentName} from "../models/component-name.model";
 import {Directory} from "../models/directory.model";
 import {Router} from "@angular/router";
+import {HttpParams} from "@angular/common/http";
 
 @Component({
   selector: 'app-navbar',
@@ -110,6 +111,7 @@ export class NavbarComponent implements OnInit {
 
   searchQ(searchQuery: string) {
     console.log('Searching for query: ' + searchQuery);
-    this.router.navigate(['/search', searchQuery])
+    // this.router.navigate(['/search', searchQuery])
+    this.router.navigateByUrl('/search', { state: { searchQuery: searchQuery } });
   }
 }

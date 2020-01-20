@@ -15,7 +15,7 @@ import {Directory} from "../models/directory.model";
 })
 export class LibraryService {
 
-  baseUrl = Constants.PLEX_DOWNLOADER_BASE_URL;
+  baseUrl = Constants.PLEX_DOWNLOADER_BASE_URL + '/library';
 
   constructor(private  http: HttpClient, private router: Router, private alertify: AlertifyService) { }
 
@@ -28,7 +28,7 @@ export class LibraryService {
 
     const params = new HttpParams().set('authToken', authToken);
 
-    return this.http.get<MediaContainer>(this.baseUrl + '/plexResources', {params})
+    return this.http.get<MediaContainer>(this.baseUrl, {params})
       .pipe(
         map((response: any) => {
 
@@ -45,7 +45,7 @@ export class LibraryService {
 
     const params = new HttpParams().set('authToken', authToken);
 
-    return this.http.get<Video[]>(this.baseUrl + '/library/' + serverIp + '/onDeck', {params})
+    return this.http.get<Video[]>(this.baseUrl + '/' + serverIp + '/onDeck', {params})
       .pipe(
         map((response: any) => {
 
@@ -63,7 +63,7 @@ export class LibraryService {
 
     const params = new HttpParams().set('authToken', authToken);
 
-    return this.http.get<Directory[]>(this.baseUrl + '/library/' + serverIp + '/sections', {params})
+    return this.http.get<Directory[]>(this.baseUrl + '/' + serverIp + '/sections', {params})
       .pipe(
         map((response: any) => {
 
@@ -81,7 +81,7 @@ export class LibraryService {
 
     const params = new HttpParams().set('authToken', authToken);
 
-    return this.http.get<Directory[]>(this.baseUrl + '/library/' + serverIp + '/sections/' + sectionKey, {params})
+    return this.http.get<Directory[]>(this.baseUrl + '/' + serverIp + '/sections/' + sectionKey, {params})
       .pipe(
         map((response: Directory[]) => {
 
@@ -120,7 +120,7 @@ export class LibraryService {
 
     console.log("test section key: " + sectionKey);
 
-    return this.http.get<Video[]>(this.baseUrl + '/library/' + serverIp + '/sections/' + sectionKey + '/directory/' + directoryKey, {params})
+    return this.http.get<Video[]>(this.baseUrl + '/' + serverIp + '/sections/' + sectionKey + '/directory/' + directoryKey, {params})
       .pipe(
         map((response: any) => {
 
@@ -142,7 +142,7 @@ export class LibraryService {
     };
 
 
-    return this.http.post(this.baseUrl + '/library/' + serverIp + '/metadata', video, httpOptions)
+    return this.http.post(this.baseUrl + '/' + serverIp + '/metadata', video, httpOptions)
       .pipe(
         map((response: any) => {
 
@@ -164,7 +164,7 @@ export class LibraryService {
 
     const params = new HttpParams().set('authToken', authToken);
 
-    return this.http.get<MediaContainer>(this.baseUrl + '/library/' + serverIp + '/search/' + searchQuery, {params})
+    return this.http.get<MediaContainer>(this.baseUrl + '/' + serverIp + '/search/' + searchQuery, {params})
       .pipe(
         map((response: any) => {
 

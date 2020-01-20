@@ -1,6 +1,6 @@
 
 export class Constants {
-  static readonly PLEX_DOWNLOADER_BASE_URL = "http://localhost:8080";
+  static readonly PLEX_DOWNLOADER_BASE_URL = "http://localhost:8080/api";
 
   static readonly PLEX_AUTH_TOKEN = 'auth_token';
 
