@@ -20,6 +20,8 @@ export class SearchComponent implements OnInit {
   shows: Directory[] = new Array<Directory>();
   episodes: Video[] = new Array<Video>();
 
+
+
   constructor(private router: Router,
               private route: ActivatedRoute,
               private alertify: AlertifyService,
@@ -90,4 +92,21 @@ export class SearchComponent implements OnInit {
   }
 
 
+  resolvePosterURL(video: Video): string {
+    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
+    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+    let thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
+    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
+    //console.log("calling: " + url);
+    return url;
+  }
+
+  resolveSeriesPosterURL(directory: Directory): string {
+    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
+    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+    let thumb = directory.thumb;
+    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
+    //console.log("calling: " + url);
+    return url;
+  }
 }

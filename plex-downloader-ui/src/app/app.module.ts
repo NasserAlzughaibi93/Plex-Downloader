@@ -18,6 +18,7 @@ import {RestInterceptor} from "./util/rest-interceptor";
 import { SettingsComponent } from './settings/settings.component';
 import { AboutComponent } from './settings/about/about.component';
 import { SearchComponent } from './search/search.component';
+import {NgbModule, NgbPopoverModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { SearchComponent } from './search/search.component';
     FormsModule,
     RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'}),
     BrowserAnimationsModule,
-    MatTabsModule
+    MatTabsModule,
+    NgbModule
   ],
   providers: [
     LoginService,
