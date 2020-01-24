@@ -44,7 +44,7 @@ export class SeriesPanelComponent implements OnInit {
       //TODO throw error
     }
 
-    this.libraryService.retrieveMediaDownloadLink(video, serverIp).subscribe(downloadLink => {
+    this.libraryService.retrieveMediaDownloadLink(video).subscribe(downloadLink => {
       this.beginDownload(downloadLink);
     });
 
