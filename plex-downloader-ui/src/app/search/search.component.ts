@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AlertifyService} from "../_service/alertify.service";
 import {LibraryService} from "../_service/library.service";
@@ -6,6 +6,7 @@ import {ComponentMessagingService} from "../_service/component-messaging.service
 import {Constants} from "../util/constants";
 import {Video} from "../models/video.model";
 import {Directory} from "../models/directory.model";
+declare let $: any;
 
 @Component({
   selector: 'app-search',
@@ -14,13 +15,15 @@ import {Directory} from "../models/directory.model";
 })
 export class SearchComponent implements OnInit {
 
+  @ViewChild('collapse', null) collapse: ElementRef;
+
   searchComplete = false;
 
   movies: Video[] = new Array<Video>();
   shows: Directory[] = new Array<Directory>();
   episodes: Video[] = new Array<Video>();
 
-
+  showIndex: number;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -108,5 +111,9 @@ export class SearchComponent implements OnInit {
     let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
     //console.log("calling: " + url);
     return url;
+  }
+
+  updateShowIndex(index: number) {
+    $(this.collapse.nativeElement).show('show-target' + index);
   }
 }
