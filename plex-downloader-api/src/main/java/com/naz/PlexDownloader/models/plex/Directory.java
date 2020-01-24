@@ -6,10 +6,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.List;
 
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -75,6 +77,29 @@ public class Directory
 
     @XmlAttribute
     private String prompt;
+
+    @XmlAttribute
+    private String summary;
+
+    @XmlAttribute
+    private String banner;
+
+    @XmlElement(name = "Genre")
+    @Transient
+    private List<Genre> genre;
+
+    @XmlElement(name = "Role")
+    @Transient
+    private List<RoleType> role;
+
+    @XmlAttribute
+    private String childCount;
+
+    @XmlAttribute
+    private String rating;
+
+    @XmlAttribute
+    private String year;
 
     @XmlAttribute
     private String search;
@@ -319,6 +344,62 @@ public class Directory
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
+    }
+
+    public List<Genre> getGenre() {
+        return genre;
+    }
+
+    public void setGenre(List<Genre> genre) {
+        this.genre = genre;
+    }
+
+    public List<RoleType> getRole() {
+        return role;
+    }
+
+    public void setRole(List<RoleType> role) {
+        this.role = role;
+    }
+
+    public String getChildCount() {
+        return childCount;
+    }
+
+    public void setChildCount(String childCount) {
+        this.childCount = childCount;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     @Override

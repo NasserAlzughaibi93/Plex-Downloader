@@ -132,8 +132,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
      * @return - The {@link MediaContainer}
      */
     @Override
-    public Video retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey) {
-
+    public List<Video> retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey) {
 
         String url = serverIp + libraryKey;
 
@@ -143,7 +142,28 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
             throw new NotYetImplementedException();
         }
 
-        return CollectionUtil.getFirstElement(mediaContainer.getVideo());
+        return mediaContainer.getVideo();
+    }
+
+    /**
+     * Retrieves the media metadata children (Show seasons).
+     *
+     * @param plexAuthToken - The plex auth token.
+     * @param serverIp      - The plex instance server IP.
+     * @param libraryKey    - The medias metadata url path.
+     * @return - The {@link MediaContainer}
+     */
+    @Override
+    public List<Directory> retrieveMediaMetadataChildren(String plexAuthToken, String serverIp, String libraryKey) {
+        String url = serverIp + libraryKey;
+
+        MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
+
+        if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory())) {
+            throw new NotYetImplementedException();
+        }
+
+        return mediaContainer.getDirectory();
     }
 
     /**
@@ -164,7 +184,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
         }
 
         if (null == video.getMedia() || null == video.getMedia().getPart()) {
-            video = this.retrieveMediaMetadata(plexAuthToken, serverIp, video.getKey());
+            video = CollectionUtil.getFirstElement(this.retrieveMediaMetadata(plexAuthToken, serverIp, video.getKey()));
         }
 
         Part part = video.getMedia().getPart();
