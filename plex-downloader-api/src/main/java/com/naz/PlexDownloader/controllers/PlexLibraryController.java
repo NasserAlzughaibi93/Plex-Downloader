@@ -63,9 +63,9 @@ public class PlexLibraryController {
     @GetMapping("/{serverIp}/sections/{sectionKey}/directory/{directoryKey}")
     @ResponseStatus(HttpStatus.OK)
     public List<Video> retrieveLibrarySectionBySectionKeyAndDirectoryKey(@PathVariable String serverIp,
-                                                              @PathVariable String sectionKey,
-                                                              @PathVariable String directoryKey,
-                                                              @RequestParam String authToken) {
+                                                                         @PathVariable String sectionKey,
+                                                                         @PathVariable String directoryKey,
+                                                                         @RequestParam String authToken) {
 
         //DirectoryKey theDirectoryKey = DirectoryKey.valueOf(directoryKey);
 
@@ -73,27 +73,35 @@ public class PlexLibraryController {
     }
 
 
-    @GetMapping("/{serverIp}/metadata/{libraryKey}")
+    @GetMapping("/{serverIp}/metadata")
     @ResponseStatus(HttpStatus.OK)
-    public Video retrieveMediaMetadata(@PathVariable String serverIp,
-                                                              @PathVariable String libraryKey,
-                                                              @RequestParam String authToken) {
+    public List<Video> retrieveMediaMetadata(@PathVariable String serverIp,
+                                       @RequestParam String authToken,
+                                       @RequestParam String libraryKey) {
         return this.plexLibraryService.retrieveMediaMetadata(authToken, serverIp, libraryKey);
+    }
+
+    @GetMapping("/{serverIp}/metadata_children")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Directory> retrieveMediaMetadataChildren(@PathVariable String serverIp,
+                                                         @RequestParam String authToken,
+                                                         @RequestParam String libraryKey) {
+        return this.plexLibraryService.retrieveMediaMetadataChildren(authToken, serverIp, libraryKey);
     }
 
     @PostMapping("/{serverIp}/metadata")
     @ResponseStatus(HttpStatus.OK)
     public String retrieveMediaDownloadLink(@PathVariable String serverIp,
-                                           @RequestParam String authToken,
-                                           @RequestBody Video video) {
+                                            @RequestParam String authToken,
+                                            @RequestBody Video video) {
         return this.plexLibraryService.retrieveMediaDownloadLink(authToken, serverIp, video);
     }
 
     @GetMapping("/{serverIp}/search/{searchQuery}")
     @ResponseStatus(HttpStatus.OK)
     public MediaContainer retrieveSearchResults(@PathVariable String serverIp,
-                                             @PathVariable String searchQuery,
-                                             @RequestParam String authToken) {
+                                                @PathVariable String searchQuery,
+                                                @RequestParam String authToken) {
 
         return this.plexLibraryService.retrieveSearchResults(serverIp, searchQuery, authToken);
     }

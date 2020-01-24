@@ -2,62 +2,6 @@
 
 <br><br>
 
-<div class="scrollmenu">
-  <br>
-
-  <div class="container" style="display: inline-block; width: 15em">
-    <div class="row flex-column-reverse flex-md-row">
-        <div class="card">
-          <div class="card-header">
-            <img class="card-img" src="https://image.tmdb.org/t/p/w500/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg" alt="Card image">
-          </div>
-          <div class="card-body">
-            <h1 class="card-title">Interstellar</h1>
-            <div class="container">
-              <div class="row">
-                <div class="col-4 metadata">
-                  <i class="fa fa-star" aria-hidden="true"></i>
-                  <p>9.5/10</p>
-                </div>
-                <div class="col-8 metadata">Adventure. Sci-Fi</div>
-              </div>
-            </div>
-            <p class="card-text">A team of explorers travel through wormhole in space in an attempt to ensure humanity's survival.</p>
-            <a class="trailer-preview" href="https://youtu.be/ePbKGoIGAXY" target="new">
-              <i class="fa fa-play" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
-    </div>
-  </div>
-
-  <div class="container" style="display: inline-block; width: 15rem">
-    <div class="row flex-column-reverse flex-md-row">
-        <div class="card">
-          <div class="card-header">
-            <img class="card-img" src="https://image.tmdb.org/t/p/w500/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg" alt="Card image">
-          </div>
-          <div class="card-body">
-            <h1 class="card-title">Interstellar</h1>
-            <div class="container">
-              <div class="row">
-                <div class="col-4 metadata">
-                  <i class="fa fa-star" aria-hidden="true"></i>
-                  <p>9.5/10</p>
-                </div>
-                <div class="col-8 metadata">Adventure. Sci-Fi</div>
-              </div>
-            </div>
-            <p class="card-text">A team of explorers travel through wormhole in space in an attempt to ensure humanity's survival.</p>
-            <a class="trailer-preview" href="https://youtu.be/ePbKGoIGAXY" target="new">
-              <i class="fa fa-play" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
-    </div>
-  </div>
-</div>
-
 <div *ngIf="searchComplete">
   <h2>Search Results: </h2>
 
@@ -67,38 +11,10 @@
       <h2>Movies</h2>
       <div class="scrollmenu">
 
-        <div class="container" style="display: inline-block; width: 15em">
-          <br>
-          <br>
+        <div class="container" *ngFor="let movie of movies"  style="display: inline-block; width: 15em">
+          <br><br>
           <div class="row flex-column-reverse flex-md-row">
-            <div >
-              <div class="card" *ngFor="let movie of movies" style="display: inline-block; width: 15em;" title="{{movie.title}}" >
-                <div class="card-header">
-                  <img src="{{resolvePosterURL(movie)}}" class="card-img" alt="{{movie.title}}" style="width: 15em;"
-                       title="{{movie.title}}">
-                </div>
-                <div class="card-body">
-                  <h2 style="overflow: hidden; text-overflow: ellipsis" class="card-title">{{movie.title}}</h2>
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-8 metadata">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <p>{{movie.rating}}/10</p>
-                      </div>
-                      <div class="col-4 metadata">
-                        <p>{{movie.year}}</p>
-                      </div>
-                      <!--                  <div class="col-8 metadata">Adventure. Sci-Fi</div>-->
-                    </div>
-                  </div>
-                  <p class="card-text">{{movie.summary}}</p>
-
-                  <!--<a class="trailer-preview" href="https://youtu.be/ePbKGoIGAXY" target="new">
-                    <i class="fa fa-play" aria-hidden="true"></i>
-                  </a>-->
-                </div>
-              </div>
-            </div>
+                <app-media-card [video]="movie"></app-media-card>
           </div>
         </div>
       </div>
@@ -113,36 +29,23 @@
 
       <div class="scrollmenu">
 
-        <div class="container" style="display: inline-block; width: 15em">
+        <div class="container" *ngFor="let show of shows; let i = index" [attr.data-index]="i"  style="display: inline-block; width: 15em">
           <br>
           <br>
           <div class="row flex-column-reverse flex-md-row">
-            <div >
-              <div class="card" *ngFor="let show of shows" style="display: inline-block; width: 15em;" title="{{show.title}}" >
-                <div class="card-header">
-                  <img src="{{resolveSeriesPosterURL(show)}}" class="card-img" alt="{{show.title}}" style="width: 15em;"
-                       title="{{show.title}}">
-                </div>
-                <div class="card-body">
-                  <h2 style="overflow: hidden; text-overflow: ellipsis" class="card-title">{{show.title}}</h2>
-                  <!--<div class="container">
-                    <div class="row">
-                      <div class="col-6 metadata">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <p>{{show.}}/10</p>
-                      </div>
-                      <div class="col-6 metadata">
-                        <p>{{movie.year}}</p>
-                      </div>
-                    </div>
-                  </div>-->
-                  <!--<a class="trailer-preview" href="https://youtu.be/ePbKGoIGAXY" target="new">
-                    <i class="fa fa-play" aria-hidden="true"></i>
-                  </a>-->
-                </div>
-              </div>
-            </div>
+            <a data-toggle="collapse" href="#show-target{{i}}">
+              <app-media-card [show]="show"></app-media-card>
+
+            </a>
+              <!--<div data-toggle="collapse" data-target="#show-target1">
+
+              </div>-->
           </div>
+
+          <div *ngIf="show" id="show-target{{i}}" class="collapse">
+            <app-series-panel [show]="show"></app-series-panel>
+          </div>
+
         </div>
       </div>
     </div>
@@ -157,38 +60,11 @@
 
       <div class="scrollmenu">
 
-        <div class="container" style="display: inline-block; width: 15em">
+        <div class="container" style="display: inline-block; width: 15em" *ngFor="let episode of episodes">
           <br>
           <br>
           <div class="row flex-column-reverse flex-md-row">
-            <div >
-              <div class="card" *ngFor="let episode of episodes" style="display: inline-block; width: 15em;" title="{{episode.title}}" >
-                <div class="card-header">
-                  <img src="{{resolvePosterURL(episode)}}" class="card-img" alt="{{episode.grandparentTitle}}" style="width: 15em;"
-                       title="{{episode.grandparentTitle}}">
-                </div>
-                <div class="card-body">
-                  <h2 style="overflow: hidden; text-overflow: ellipsis" class="card-title">{{episode.grandparentTitle}}</h2>
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-8 metadata">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <p *ngIf="episode.rating != null">{{episode.rating}}/10</p>
-                        <p *ngIf="episode.rating === null"> N/A</p>
-                      </div>
-                      <div class="col-4 metadata">
-                        <p>{{episode.year}}</p>
-                      </div>
-                      <!--                  <div class="col-8 metadata">Adventure. Sci-Fi</div>-->
-                    </div>
-                  </div>
-                  <p class="card-text">{{episode.title}}</p>
-                  <!--<a class="trailer-preview" href="https://youtu.be/ePbKGoIGAXY" target="new">
-                    <i class="fa fa-play" aria-hidden="true"></i>
-                  </a>-->
-                </div>
-              </div>
-            </div>
+                <app-media-card [video]="episode"></app-media-card>
           </div>
         </div>
       </div>

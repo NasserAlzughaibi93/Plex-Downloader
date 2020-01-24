@@ -31,17 +31,8 @@
             <div class="scrollmenu">
               <div *ngIf="sectionVideoMap.get(directory)">
                 <div *ngFor="let video of sectionVideoMap.get(directory)" style="display: inline-block">
-                  <a *ngIf="video.type === 'episode'" (click)="startDownloadingMedia(video)">
-
-                    <img class="img" height="225" width="150" src="{{resolvePosterURL(video)}}"
-                         alt="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}"
-                         title="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}">
-                  </a>
-
-                  <a *ngIf="video.type === 'movie'" (click)="startDownloadingMedia(video)">
-
-                    <img class="img" height="225" width="150" src="{{resolvePosterURL(video)}}" alt="{{video.title}}" title="{{video.title}}">
-                  </a>
+                  <br><br>
+                  <app-media-card [video]="video"></app-media-card>
                 </div>
               </div>
             </div>
