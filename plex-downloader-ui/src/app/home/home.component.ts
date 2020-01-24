@@ -39,8 +39,7 @@ export class HomeComponent implements OnInit {
     this.firstTimeSetupCompleted = localStorage.getItem(Constants.FIRST_TIME_SETUP_COMPLETE) === 'true';
     if (!this.firstTimeSetupCompleted) {
       console.log("getting server lists.");
-      let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-      this.libraryService.retrievePlexResources(authToken).subscribe((mediaContainer) => {
+      this.libraryService.retrievePlexResources().subscribe((mediaContainer) => {
         // console.log('worked');
         this.devices = mediaContainer.device;
         localStorage.setItem(Constants.PLEX_SELECTED_SERVERS, JSON.stringify(this.devices));
@@ -122,7 +121,7 @@ export class HomeComponent implements OnInit {
 
     console.log("getting library by section key. IP: " + serverIp + "; Library Key: " + libraryKey);
 
-    this.libraryService.retrieveLibrarySectionBySectionKey(serverIp, libraryKey).subscribe((directories) => {
+    this.libraryService.retrieveLibrarySectionBySectionKey(libraryKey).subscribe((directories) => {
       directories.forEach(directory => {
         console.log('By section key: ' + directory.title);
         this.sectionMap.set(directory, null);
@@ -132,8 +131,6 @@ export class HomeComponent implements OnInit {
   }
 
   retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey: string) {
-    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
-    //let sectionKey = localStorage.getItem(Constants.PLEX_SELECTED_LIBRARY_KEY);
 
     if (!this.sectionMap) {
       //TODO throw error
@@ -143,7 +140,7 @@ export class HomeComponent implements OnInit {
     for (let directory of this.sectionMap.keys()) {
       let directoryKey = directory.key;
 
-      this.libraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(serverIp, libraryKey, directoryKey).subscribe((videos) => {
+      this.libraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey, directoryKey).subscribe((videos) => {
         console.log('Amount of videos for section ' + directory.title + ": " + videos.length);
         this.sectionVideoMap.set(directory, videos);
 
@@ -157,44 +154,12 @@ export class HomeComponent implements OnInit {
 
   retrieveLibrarySections() {
 
-    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
-
-    this.libraryService.retrieveLibrarySections(serverIp).subscribe((directories) => {
+    this.libraryService.retrieveLibrarySections().subscribe((directories) => {
       this.plexLibraries = directories;
       localStorage.setItem(Constants.PLEX_SELECTED_LIBRARIES, JSON.stringify(this.plexLibraries));
 
       //console.log(JSON.stringify(this.plexLibraries));
     });
-  }
-
-  resolvePosterURL(video: Video): string {
-    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
-    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-    let thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
-    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
-    //console.log("calling: " + url);
-    return url;
-  }
-
-  startDownloadingMedia(video: Video) {
-    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
-    if (serverIp === null || serverIp.trim().length === 0) {
-      //TODO throw error
-    }
-
-    this.libraryService.retrieveMediaDownloadLink(video, serverIp).subscribe(downloadLink => {
-      this.beginDownload(downloadLink);
-    });
-
-  }
-
-  beginDownload(url: string) {
-    var link = document.createElement("a");
-    link.download = "a";
-    link.href = url;
-    document.body.appendChild(link);
-    link.click();
-    //window.open(url);
   }
 
   //First time setup:
