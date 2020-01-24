@@ -69,7 +69,7 @@ export class SearchComponent implements OnInit {
 
     let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
 
-    this.libraryService.retrieveSearchResults(serverIp, searchQuery).subscribe(mediaContainer => {
+    this.libraryService.retrieveSearchResults(searchQuery).subscribe(mediaContainer => {
 
       let videos = mediaContainer.video;
       let directories = mediaContainer.directory;
