@@ -1,4 +1,7 @@
 import {Location} from "./location.model";
+import {Genre} from "./genre.model";
+import {Role} from "./role.model";
+import {Video} from "./video.model";
 
 
 export interface Directory {
@@ -26,4 +29,12 @@ export interface Directory {
   type?:             string;
   updatedAt?:        string;
   uuid?:             string;
+  summary?:          string;
+  banner?:           string;
+  genres?:           Genre[];
+  roles?:            Role[];
+  videos?:           Video[];
+  childCount?:       string;
+  year?:             string;
+  rating?:           string;
 }

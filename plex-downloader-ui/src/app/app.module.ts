@@ -19,6 +19,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { AboutComponent } from './settings/about/about.component';
 import { SearchComponent } from './search/search.component';
 import {NgbModule, NgbPopoverModule} from "@ng-bootstrap/ng-bootstrap";
+import { SeriesPanelComponent } from './search/series-panel/series-panel.component';
+import { MediaCardComponent } from './home/media-card/media-card.component';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import {NgbModule, NgbPopoverModule} from "@ng-bootstrap/ng-bootstrap";
     NavbarComponent,
     SettingsComponent,
     AboutComponent,
-    SearchComponent
+    SearchComponent,
+    SeriesPanelComponent,
+    MediaCardComponent
   ],
   imports: [
     BrowserModule,

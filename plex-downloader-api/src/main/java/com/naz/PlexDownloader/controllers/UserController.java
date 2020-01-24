@@ -46,49 +46,6 @@ public class UserController {
     @Autowired
     private PlexLibraryService plexLibraryService;
 
-    @PostMapping("/plexTest")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void plexTest(@RequestBody UserDTO userDTO) {
-        PlexUser plexUser = plexAuthService.loginBasicAuth(userDTO.getUsername(), userDTO.getPassword());
-
-        MediaContainer mediaContainer = plexLibraryService.findPlexResources(plexUser.getAuthToken());
-
-        for (Device device : mediaContainer.getDevice()) {
-            if (!device.getPresence().equals("0") && device.getProduct().equals("Plex Media Server")) {
-
-                for (Connection connection : device.getConnection() ) {
-                    if (connection.getLocal().equals("0")) {
-                        String serverIp = connection.getUri();
-                        List<Video> videos =
-                                plexLibraryService.retrieveLibraryRecentlyAdded(plexUser.getAuthToken(), serverIp);
-
-                        for (Video video : videos) {
-                            if (null != video.getKey()) {
-                                Video video2 =
-                                        plexLibraryService.retrieveMediaMetadata(plexUser.getAuthToken(), serverIp, video.getKey());
-
-                                String downloadUrl =
-                                        plexLibraryService.retrieveMediaDownloadLink(plexUser.getAuthToken(), serverIp, video2);
-
-                                System.out.println("The download URL: " + downloadUrl);
-                                break;
-                            }
-                        }
-
-                        int i = 1;
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-
-
-        //plexUser = plexAuthService.savePlexUser(plexUser);
-
-        //int i = 1;
-    }
-
     @RequestMapping("/registration")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void registration(@RequestBody UserDTO userDTO) {

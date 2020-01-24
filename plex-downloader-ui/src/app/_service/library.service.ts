@@ -175,4 +175,48 @@ export class LibraryService {
         })
       );
   }
+
+  retrieveMediaMetaData(libraryKey: string) : Observable<Video[]>{
+
+    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
+
+    const params = new HttpParams().set('authToken', authToken).append('libraryKey', libraryKey);
+
+    return this.http.get<Video[]>(this.baseUrl + '/' + serverIp + '/metadata', {params})
+      .pipe(
+        map((videos: any) => {
+
+          if (videos) {
+            console.log("Retrieved video metadata!");
+          } else {
+            console.log("Video metadata is null");
+          }
+
+          return videos;
+        })
+      );
+  }
+
+  retrieveMediaMetaDataChildren(libraryKey: string) : Observable<Directory[]>{
+
+    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
+
+    const params = new HttpParams().set('authToken', authToken).append('libraryKey', libraryKey);
+
+    return this.http.get<Directory[]>(this.baseUrl + '/' + serverIp + '/metadata_children', {params})
+      .pipe(
+        map((directories: any) => {
+
+          if (directories) {
+            console.log("Retrieved video metadata!");
+          } else {
+            console.log("Video metadata is null");
+          }
+
+          return directories;
+        })
+      );
+  }
 }
