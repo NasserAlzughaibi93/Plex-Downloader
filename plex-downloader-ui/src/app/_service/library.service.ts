@@ -19,16 +19,9 @@ export class LibraryService {
 
   constructor(private  http: HttpClient, private router: Router, private alertify: AlertifyService) { }
 
-  retrievePlexResources(authToken: any) : Observable<MediaContainer> {
+  retrievePlexResources() : Observable<MediaContainer> {
 
-    if (authToken == null) {
-      console.log("Getting token from local storage");
-      authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-    }
-
-    const params = new HttpParams().set('authToken', authToken);
-
-    return this.http.get<MediaContainer>(this.baseUrl, {params})
+    return this.http.get<MediaContainer>(this.baseUrl)
       .pipe(
         map((response: any) => {
 
@@ -39,13 +32,9 @@ export class LibraryService {
       );
   }
 
-  retrieveLibraryOnDeck(serverIp: string) : Observable<Video[]> {
+  retrieveLibraryOnDeck() : Observable<Video[]> {
 
-    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-
-    const params = new HttpParams().set('authToken', authToken);
-
-    return this.http.get<Video[]>(this.baseUrl + '/' + serverIp + '/onDeck', {params})
+    return this.http.get<Video[]>(this.baseUrl + '/{{serverIp}}/onDeck')
       .pipe(
         map((response: any) => {
 
@@ -57,13 +46,9 @@ export class LibraryService {
       );
   }
 
-  retrieveLibrarySections(serverIp: string) : Observable<Directory[]> {
+  retrieveLibrarySections() : Observable<Directory[]> {
 
-    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-
-    const params = new HttpParams().set('authToken', authToken);
-
-    return this.http.get<Directory[]>(this.baseUrl + '/' + serverIp + '/sections', {params})
+    return this.http.get<Directory[]>(this.baseUrl + '/{{serverIp}}/sections')
       .pipe(
         map((response: any) => {
 
@@ -75,13 +60,9 @@ export class LibraryService {
       );
   }
 
-  retrieveLibrarySectionBySectionKey(serverIp: string, sectionKey: string) : Observable<Directory[]> {
+  retrieveLibrarySectionBySectionKey(sectionKey: string) : Observable<Directory[]> {
 
-    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-
-    const params = new HttpParams().set('authToken', authToken);
-
-    return this.http.get<Directory[]>(this.baseUrl + '/' + serverIp + '/sections/' + sectionKey, {params})
+    return this.http.get<Directory[]>(this.baseUrl + '/{{serverIp}}/sections/' + sectionKey)
       .pipe(
         map((response: Directory[]) => {
 
@@ -112,15 +93,15 @@ export class LibraryService {
       );
   }
 
-  retrieveLibrarySectionBySectionKeyAndDirectoryKey(serverIp: string, sectionKey: string, directoryKey: string) : Observable<Video[]> {
+  retrieveLibrarySectionBySectionKeyAndDirectoryKey(sectionKey: string, directoryKey: string) : Observable<Video[]> {
 
-    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
 
-    const params = new HttpParams().set('authToken', authToken);
+
+
 
     console.log("test section key: " + sectionKey);
 
-    return this.http.get<Video[]>(this.baseUrl + '/' + serverIp + '/sections/' + sectionKey + '/directory/' + directoryKey, {params})
+    return this.http.get<Video[]>(this.baseUrl + '/{{serverIp}}/sections/' + sectionKey + '/directory/' + directoryKey)
       .pipe(
         map((response: any) => {
 
@@ -132,17 +113,16 @@ export class LibraryService {
       );
   }
 
-  retrieveMediaDownloadLink(video: Video, serverIp: string): Observable<string> {
+  retrieveMediaDownloadLink(video: Video): Observable<string> {
 
-    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+
 
     let httpOptions = {
-      params: new HttpParams().set('authToken', authToken),
       responseType: 'text' as 'json'
     };
 
 
-    return this.http.post(this.baseUrl + '/' + serverIp + '/metadata', video, httpOptions)
+    return this.http.post(this.baseUrl + '/{{serverIp}}/metadata', video, httpOptions)
       .pipe(
         map((response: any) => {
 
@@ -158,13 +138,9 @@ export class LibraryService {
       );
   }
 
-  retrieveSearchResults(serverIp: string, searchQuery: string) : Observable<MediaContainer> {
+  retrieveSearchResults(searchQuery: string) : Observable<MediaContainer> {
 
-    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-
-    const params = new HttpParams().set('authToken', authToken);
-
-    return this.http.get<MediaContainer>(this.baseUrl + '/' + serverIp + '/search/' + searchQuery, {params})
+    return this.http.get<MediaContainer>(this.baseUrl + '/{{serverIp}}/search/' + searchQuery)
       .pipe(
         map((response: any) => {
 
@@ -178,12 +154,9 @@ export class LibraryService {
 
   retrieveMediaMetaData(libraryKey: string) : Observable<Video[]>{
 
-    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
+    const params = new HttpParams().set('libraryKey', libraryKey);
 
-    const params = new HttpParams().set('authToken', authToken).append('libraryKey', libraryKey);
-
-    return this.http.get<Video[]>(this.baseUrl + '/' + serverIp + '/metadata', {params})
+    return this.http.get<Video[]>(this.baseUrl + '/{{serverIp}}/metadata', {params})
       .pipe(
         map((videos: any) => {
 
@@ -200,12 +173,9 @@ export class LibraryService {
 
   retrieveMediaMetaDataChildren(libraryKey: string) : Observable<Directory[]>{
 
-    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
+    const params = new HttpParams().set('libraryKey', libraryKey);
 
-    const params = new HttpParams().set('authToken', authToken).append('libraryKey', libraryKey);
-
-    return this.http.get<Directory[]>(this.baseUrl + '/' + serverIp + '/metadata_children', {params})
+    return this.http.get<Directory[]>(this.baseUrl + '/{{serverIp}}/metadata_children', {params})
       .pipe(
         map((directories: any) => {
 

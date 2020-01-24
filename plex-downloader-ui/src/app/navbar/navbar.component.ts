@@ -61,8 +61,7 @@ export class NavbarComponent implements OnInit {
 
   retrievePlexResources() {
 
-    const authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-    this.libraryService.retrievePlexResources(authToken).subscribe((mediaContainer) => {
+    this.libraryService.retrievePlexResources().subscribe((mediaContainer) => {
       // console.log('worked');
       this.devices = mediaContainer.device;
       localStorage.setItem(Constants.PLEX_SELECTED_SERVERS, JSON.stringify(this.devices));
@@ -74,9 +73,7 @@ export class NavbarComponent implements OnInit {
 
   retrieveLibrarySections() {
 
-    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
-
-    this.libraryService.retrieveLibrarySections(serverIp).subscribe((directories) => {
+    this.libraryService.retrieveLibrarySections().subscribe((directories) => {
       this.directories = directories;
       localStorage.setItem(Constants.PLEX_SELECTED_LIBRARIES, JSON.stringify(this.directories));
 
