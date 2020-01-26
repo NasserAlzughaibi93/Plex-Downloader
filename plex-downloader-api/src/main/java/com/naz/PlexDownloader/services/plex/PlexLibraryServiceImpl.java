@@ -7,6 +7,7 @@ import com.naz.PlexDownloader.models.plex.Part;
 import com.naz.PlexDownloader.models.plex.Video;
 import com.naz.PlexDownloader.util.CollectionUtil;
 import com.naz.PlexDownloader.util.PlexRestTemplate;
+import com.naz.PlexDownloader.util.ValidationUtil;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.stereotype.Service;
 
@@ -41,9 +42,8 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, PLEX_RESOURCES_URL, false);
 
-        if (null == mediaContainer) {
-            throw new NotYetImplementedException();
-        }
+
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer);
 
         if (!CollectionUtil.isNullOrEmpty(mediaContainer.getDevice())) {
             List<Device> serverDevices = new ArrayList<>();
@@ -74,9 +74,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-        if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
-            throw new NotYetImplementedException();
-        }
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer, mediaContainer.getVideo());
 
         return mediaContainer.getVideo();
     }
@@ -95,9 +93,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-        if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
-            throw new NotYetImplementedException();
-        }
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer, mediaContainer.getVideo());
 
         return mediaContainer.getVideo();
     }
@@ -138,9 +134,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-        if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
-            throw new NotYetImplementedException();
-        }
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer, mediaContainer.getVideo());
 
         return mediaContainer.getVideo();
     }
@@ -159,9 +153,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-        if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory())) {
-            throw new NotYetImplementedException();
-        }
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer, mediaContainer.getDirectory());
 
         return mediaContainer.getDirectory();
     }
@@ -179,9 +171,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         String downloadUrl;
 
-        if (null == video) {
-            throw new NotYetImplementedException();
-        }
+        ValidationUtil.NotNullOrEmpty("missing.required.parameter", new Object[]{"Video"}, video);
 
         if (null == video.getMedia() || null == video.getMedia().getPart()) {
             video = CollectionUtil.getFirstElement(this.retrieveMediaMetadata(plexAuthToken, serverIp, video.getKey()));
@@ -189,9 +179,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         Part part = video.getMedia().getPart();
 
-        if (null == video.getMedia() || null == video.getMedia().getPart()) {
-            throw new NotYetImplementedException();
-        }
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", video.getMedia(), video.getMedia().getPart());
 
         downloadUrl = serverIp + part.getKey() + "?download=1&X-Plex-Token=" + plexAuthToken;
 
@@ -205,12 +193,8 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         MediaContainer mediaContainer = this.buildPlexRestCall(authToken, url, false);
 
-        if (null == mediaContainer ||
-                (CollectionUtil.isNullOrEmpty(mediaContainer.getVideo()) &&
-                        CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory()))) {
-            throw new NotYetImplementedException();
-        }
-
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer,
+                mediaContainer.getVideo(), mediaContainer.getDirectory());
 
         return mediaContainer;
     }
@@ -228,9 +212,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-        if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory())) {
-            throw new NotYetImplementedException();
-        }
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer, mediaContainer.getDirectory());
 
         return mediaContainer.getDirectory();
     }
@@ -242,9 +224,9 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-        if (null == mediaContainer || CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
-            //throw new NotYetImplementedException();
-        }
+
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer,
+                mediaContainer.getVideo(), mediaContainer.getVideo());
 
         return mediaContainer.getVideo();
     }
