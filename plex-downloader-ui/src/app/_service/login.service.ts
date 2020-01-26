@@ -52,11 +52,11 @@ export class LoginService {
       );
   }
 
-  retrieveOAuthPinResults(pinId: number): Observable<PlexPin> {
-    return this.http.get<PlexPin>(this.baseUrl + '/oAuth/' + pinId)
+  retrieveOAuthPinResults(pinId: number): Observable<User> {
+    return this.http.get<User>(this.baseUrl + '/oAuth/' + pinId)
       .pipe(
-        map((response: any) => {
-          return response;
+        map((user: any) => {
+          return user;
         })
       );
   }
