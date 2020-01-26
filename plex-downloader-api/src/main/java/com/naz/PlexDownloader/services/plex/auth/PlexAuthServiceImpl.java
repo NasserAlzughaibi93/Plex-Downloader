@@ -4,7 +4,9 @@ import com.naz.PlexDownloader.models.plex.Pin;
 import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.models.plex.UserEntity;
 import com.naz.PlexDownloader.repositories.PlexRepository;
+import com.naz.PlexDownloader.util.CollectionUtil;
 import com.naz.PlexDownloader.util.PlexRestTemplate;
+import com.naz.PlexDownloader.util.ValidationUtil;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,26 +38,32 @@ public class PlexAuthServiceImpl implements PlexAuthService {
         UserEntity user = (UserEntity)
                 PlexRestTemplate.buildPlexRestTemplate(PLEX_AUTH_URL, username, password, UserEntity.class, true);
 
-//        UserEntity user = restTemplate.postForObject(PLEX_AUTH_URL, request,  UserEntity.class);
+        ValidationUtil.NotNullOrEmpty("user.cannot.be.found", user, user.getUser());
 
-        /*ResponseEntity<PlexUser[]> response = restTemplate.postForEntity(PLEX_AUTH_URL, request, PlexUser[].class);
+        PlexUser plexUser = CollectionUtil.getFirstElement(user.getUser());
 
-        PlexUser user = response.getBody()[0];*/
-        /*ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-        try {
-            UserEntity plexUser = mapper.readValue(user, UserEntity.class);
+        this.savePlexUser(plexUser);
 
-            int i = 1;
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }*/
+        return plexUser;
+    }
 
-        if (null == user) {
-            throw new NotYetImplementedException();
-        }
+    /**
+     * Login to plex by auth token (used when logging in through oauth)
+     * @param authToken - Plex Authentication Token
+     * @return {@link PlexUser}
+     */
+    @Override
+    public PlexUser loginByAuthToken(String authToken) {
 
-        return user.getUser().get(0);
+        UserEntity user = (UserEntity)
+                PlexRestTemplate.buildPlexRestTemplate(PLEX_AUTH_URL, authToken, UserEntity.class, true);
+
+        ValidationUtil.NotNullOrEmpty("user.cannot.be.found", user, user.getUser());
+
+        PlexUser plexUser = CollectionUtil.getFirstElement(user.getUser());
+        this.savePlexUser(plexUser);
+
+        return plexUser;
     }
 
     /**
@@ -69,9 +77,7 @@ public class PlexAuthServiceImpl implements PlexAuthService {
 
         Pin pin = (Pin) PlexRestTemplate.buildPlexRestTemplate(url, null, Pin.class, true);
 
-        if (null == pin) {
-            throw new NotYetImplementedException();
-        }
+        ValidationUtil.NotNullOrEmpty("error", pin);
 
         String resolvedUrl = "https://app.plex.tv/auth#?forwardUrl=http://google.com&clientID={CLIENT_ID}&code={CODE}&X-Plex-Product=NAZ&X-Plex-Client-Identifier=NAZMB&X-Plex-Version=1.0.0";
 
@@ -93,9 +99,7 @@ public class PlexAuthServiceImpl implements PlexAuthService {
 
         Pin pin = (Pin) PlexRestTemplate.buildPlexRestTemplate(url, null, Pin.class, false);
 
-        if (null == pin) {
-            throw new NotYetImplementedException();
-        }
+        ValidationUtil.NotNullOrEmpty("error", pin);
 
         return pin;
     }
