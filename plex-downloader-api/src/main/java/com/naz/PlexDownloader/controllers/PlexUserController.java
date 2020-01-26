@@ -5,6 +5,8 @@ import com.naz.PlexDownloader.services.plex.PlexUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -24,6 +26,12 @@ public class PlexUserController {
     public List<PlexUser> retrieveUsers(@RequestParam String authToken) {
 
         return this.plexUserService.retrieveUsers(authToken);
+    }
+
+    @GetMapping("/{authToken}")
+    @ResponseStatus(HttpStatus.OK)
+    PlexUser retrieveUserByAuthToken(@PathVariable String authToken) {
+        return plexUserService.retrieveUserByAuthToken(authToken);
     }
 
     public PlexUserService getPlexUserService() {

@@ -54,9 +54,9 @@ export class LoginComponent implements OnInit {
       this.oAuthPinTimer = setInterval(() => {
         //this.notify.info("Authenticating", "Loading... Please Wait");
         //this.getPinResult(x.pinId);
-        this.loginService.retrieveOAuthPinResults(plexPin.id).subscribe(pin => {
-          if (pin.authToken) {
-            localStorage.setItem(Constants.PLEX_AUTH_TOKEN, pin.authToken);
+        this.loginService.retrieveOAuthPinResults(plexPin.id).subscribe(user => {
+          if (user.authToken) {
+            localStorage.setItem(Constants.PLEX_AUTH_TOKEN, user.authToken);
             this.ngOnDestroy();
             this.router.navigate(['/home']);
           }

@@ -10,7 +10,8 @@ public class BaseRuntimeException extends RuntimeException {
 
     public BaseRuntimeException() {super();}
 
-    public BaseRuntimeException(String message) {super(message);}
+    public BaseRuntimeException(String message) {
+        super(I18nUtil.getLocalizedMessage(DEFAULT_EXCEPTION_RESOURCE_NAME, message, null, Locale.getDefault()));}
 
     public BaseRuntimeException(String message, Throwable cause) {
         super(message, cause);

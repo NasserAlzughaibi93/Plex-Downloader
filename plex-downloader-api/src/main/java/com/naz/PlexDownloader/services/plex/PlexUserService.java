@@ -8,4 +8,6 @@ import java.util.List;
 public interface PlexUserService {
 
     List<PlexUser> retrieveUsers(final String authToken);
+
+    PlexUser retrieveUserByAuthToken(final String authToken);
 }

@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PlexRepository extends JpaRepository<PlexUser, Long> {
 
+    PlexUser findPlexUserByAuthToken(String authToken);
+
 }
