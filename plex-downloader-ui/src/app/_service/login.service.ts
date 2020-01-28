@@ -31,7 +31,7 @@ export class LoginService {
         map((response: any) => {
           const user = new User().deserialize(response);
 
-          this.alertify.message('Welcome, ' + user.username);
+          // this.alertify.message('Welcome, ' + user.username);
           console.log('Icon: ' + user.thumb);
 
           if (user) {

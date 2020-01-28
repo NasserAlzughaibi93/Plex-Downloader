@@ -6,6 +6,8 @@ import {ComponentMessagingService} from "../_service/component-messaging.service
 import {Constants} from "../util/constants";
 import {Video} from "../models/video.model";
 import {Directory} from "../models/directory.model";
+import {SeriesPanelComponent} from "./series-panel/series-panel.component";
+import {MatDialog} from "@angular/material/dialog";
 declare let $: any;
 
 @Component({
@@ -29,7 +31,8 @@ export class SearchComponent implements OnInit {
               private route: ActivatedRoute,
               private alertify: AlertifyService,
               private libraryService: LibraryService,
-              private componentMessagingService: ComponentMessagingService) {
+              private componentMessagingService: ComponentMessagingService,
+              public dialog: MatDialog) {
 
     this.router.routeReuseStrategy.shouldReuseRoute = function(){
       return false;
@@ -67,8 +70,6 @@ export class SearchComponent implements OnInit {
 
   retrieveSearchResults(searchQuery: string) {
 
-    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
-
     this.libraryService.retrieveSearchResults(searchQuery).subscribe(mediaContainer => {
 
       let videos = mediaContainer.video;
@@ -94,26 +95,17 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  openDialog(show: Directory): void {
+    console.log("show example: " + show.title);
+    const dialogRef = this.dialog.open(SeriesPanelComponent, {
+      width: '60%',
+      data: show
+    });
 
-  resolvePosterURL(video: Video): string {
-    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token={{APIKEY}}
-    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-    let thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
-    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
-    //console.log("calling: " + url);
-    return url;
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
-  resolveSeriesPosterURL(directory: Directory): string {
-    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token={{APIKEY}}
-    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-    let thumb = directory.thumb;
-    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
-    //console.log("calling: " + url);
-    return url;
-  }
 
-  updateShowIndex(index: number) {
-    $(this.collapse.nativeElement).show('show-target' + index);
-  }
 }

@@ -116,11 +116,6 @@ export class HomeComponent implements OnInit {
     //Clear map for new section
     this.clearSectionMaps();
 
-    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
-    //let sectionKey = localStorage.getItem(Constants.PLEX_SELECTED_LIBRARY_KEY);
-
-    console.log("getting library by section key. IP: " + serverIp + "; Library Key: " + libraryKey);
-
     this.libraryService.retrieveLibrarySectionBySectionKey(libraryKey).subscribe((directories) => {
       directories.forEach(directory => {
         console.log('By section key: ' + directory.title);
