@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LoginService} from '../_service/login.service';
 import {Constants} from "../util/constants";
 import {Router} from "@angular/router";
@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   model: any = {};
 
@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  public ngOnDestroy() {
+  ngOnDestroy() {
     clearInterval(this.oAuthPinTimer);
   }
 }

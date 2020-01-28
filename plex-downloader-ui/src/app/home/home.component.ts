@@ -10,6 +10,7 @@ import {ComponentAction, ComponentName} from "../models/component-name.model";
 import {Directory} from "../models/directory.model";
 import {ComponentMessage} from "../models/component-message.model";
 import {FormControl} from "@angular/forms";
+import {LoadingScreenService} from "../_service/loading.service";
 
 @Component({
   selector: 'app-home',
@@ -35,7 +36,9 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router,
               private alertify: AlertifyService,
               private libraryService: LibraryService,
-              private componentMessagingService: ComponentMessagingService) {
+              private componentMessagingService: ComponentMessagingService,
+              private loadingScreenService: LoadingScreenService) {
+    this.loadingScreenService.startLoading();
     this.firstTimeSetupCompleted = localStorage.getItem(Constants.FIRST_TIME_SETUP_COMPLETE) === 'true';
     if (!this.firstTimeSetupCompleted) {
       console.log("getting server lists.");
@@ -53,6 +56,7 @@ export class HomeComponent implements OnInit {
       //localStorage.clear();
       this.retrieveLibrarySections();
     }
+
     this.subscription = this.componentMessagingService.getMessage()
       .subscribe(message => {
         /*console.log('Printing message from message service: ');
@@ -78,38 +82,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  /*retrieveOnDeckLibrary() {
-    this.devices = JSON.parse(localStorage.getItem(Constants.PLEX_SELECTED_SERVERS));
-    let selected = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_NAME);
-    let serverIp: string;
-
-
-    this.devices.forEach(device => {
-
-      if (selected === device.name) {
-        if (device.connection.length > 0) {
-          device.connection.forEach(connection => {
-            if (connection.local === '0') {
-              serverIp = connection.address + ':' + connection.port
-            }
-          });
-
-          this.libraryService.retrieveLibraryOnDeck(serverIp).subscribe((videos) => {
-            console.log('got on deck videos');
-            this.onDeckVideos = videos;
-          }, () => {
-            console.log('Error');
-          });
-        } else {
-          console.log('Error: no connections found')
-          //TODO add error call
-        }
-        return;
-      }
-    });
-
-  }*/
 
   retrieveLibrarySectionBySectionKey(libraryKey: string) {
 
@@ -138,7 +110,6 @@ export class HomeComponent implements OnInit {
       this.libraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey, directoryKey).subscribe((videos) => {
         console.log('Amount of videos for section ' + directory.title + ": " + videos.length);
         this.sectionVideoMap.set(directory, videos);
-
 
         this.sectionVideoMapKeys = Array.from(this.sectionVideoMap.keys());
         // console.log("sectionVideoMapKeys: " + this.sectionVideoMapKeys.length);

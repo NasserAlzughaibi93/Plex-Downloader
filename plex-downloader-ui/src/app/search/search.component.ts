@@ -8,6 +8,7 @@ import {Video} from "../models/video.model";
 import {Directory} from "../models/directory.model";
 import {SeriesPanelComponent} from "./series-panel/series-panel.component";
 import {MatDialog} from "@angular/material/dialog";
+import {LoadingScreenService} from "../_service/loading.service";
 declare let $: any;
 
 @Component({
@@ -32,7 +33,7 @@ export class SearchComponent implements OnInit {
               private alertify: AlertifyService,
               private libraryService: LibraryService,
               private componentMessagingService: ComponentMessagingService,
-              public dialog: MatDialog) {
+              private loadingScreenService: LoadingScreenService) {
 
     this.router.routeReuseStrategy.shouldReuseRoute = function(){
       return false;
@@ -91,6 +92,7 @@ export class SearchComponent implements OnInit {
           this.shows.push(directory);
         }
       })
+
 
     });
   }
