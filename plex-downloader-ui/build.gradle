@@ -8,7 +8,15 @@ sourceCompatibility = '1.8'
 repositories {
   mavenCentral()
 }
-
+// Workaround the problem with Node downloading
+// From https://github.com/JetBrains/kotlin-native/issues/1612#issuecomment-393998825
+repositories.whenObjectAdded {
+  if (it instanceof IvyArtifactRepository) {
+    metadataSources {
+      artifact()
+    }
+  }
+}
 node {
   version = '12.14.0'
   npmVersion = '6.13.4'

@@ -134,12 +134,14 @@ class PlexLibraryControllerUTest extends BaseUnitTest {
     @Test
     void retrieveMediaMetadata() {
 
-        when(plexLibraryService.retrieveMediaMetadata(anyString(), anyString(), anyString())).thenReturn(this.video);
+        List<Video> videos = CollectionUtil.createList(this.video);
 
-        Video result =
-                plexLibraryController.retrieveMediaMetadata("serverIp", "libraryKey", "authToken");
+        when(plexLibraryService.retrieveMediaMetadata(anyString(), anyString(), anyString())).thenReturn(videos);
 
-        assertEquals(this.video, result);
+        List<Video> result =
+                plexLibraryController.retrieveMediaMetadata("serverIp", "authToken", "libraryKey");
+
+        assertEquals(videos.size(), result.size());
     }
 
     @Test
