@@ -1,8 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
 import {Directory} from "../../models/directory.model";
 import {LibraryService} from "../../_service/library.service";
 import {Video} from "../../models/video.model";
 import {Constants} from "../../util/constants";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 @Component({
   selector: 'app-series-panel',
@@ -15,20 +16,27 @@ export class SeriesPanelComponent implements OnInit {
 
   seasons = new Array<Directory>();
 
-  constructor(private libraryService: LibraryService) {}
+  constructor(private libraryService: LibraryService,
+              public dialogRef: MatDialogRef<SeriesPanelComponent>,
+              @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit() {
+    this.show = this.data;
     if (this.show) {
       console.log("calling for more");
       this.libraryService.retrieveMediaMetaDataChildren(this.show.key).subscribe((directories) => {
 
         this.seasons = directories;
 
-        let indexToRemove  = this.seasons.findIndex(season => season.title === 'All episodes');
+        console.log('testing, season sizes: ' + this.seasons.length);
 
-        this.seasons.splice(indexToRemove, 1);
+        // let indexToRemove  = this.seasons.findIndex(season => season.title === 'All episodes');
+        //
+        // if (indexToRemove)
+        //   this.seasons.splice(indexToRemove, 1);
 
         this.seasons.forEach(season => {
+          console.log('getting season no.' + season.title);
           this.libraryService.retrieveMediaMetaData(season.key).subscribe((videos) => {
             season.videos = videos;
           });
@@ -38,11 +46,11 @@ export class SeriesPanelComponent implements OnInit {
     }
   }
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
   startDownloadingMedia(video: Video) {
-    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
-    if (serverIp === null || serverIp.trim().length === 0) {
-      //TODO throw error
-    }
 
     this.libraryService.retrieveMediaDownloadLink(video).subscribe(downloadLink => {
       this.beginDownload(downloadLink);

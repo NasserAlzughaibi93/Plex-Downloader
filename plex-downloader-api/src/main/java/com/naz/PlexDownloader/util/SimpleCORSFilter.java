@@ -28,7 +28,7 @@ public class SimpleCORSFilter implements Filter {
         allowedOrigins = new ArrayList<>();
 //        allowedOrigins.add("https://localhost:8081");
         allowedOrigins.add("http://localhost:4200");//TODO update GUI port.
-        allowedOrigins.add("https://localhost:4200");
+        allowedOrigins.add("https://localhost:8080");
     }
 
     @Override
@@ -46,7 +46,7 @@ public class SimpleCORSFilter implements Filter {
 
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, PLEX-TOKEN");
 
         if (!request.getMethod().equalsIgnoreCase("OPTIONS")) {
             chain.doFilter(req, res);

@@ -25,10 +25,6 @@ export class MediaCardComponent implements OnInit {
   ngOnInit() {}
 
   startDownloadingMedia(video: Video) {
-    let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
-    if (serverIp === null || serverIp.trim().length === 0) {
-      //TODO throw error
-    }
 
     this.libraryService.retrieveMediaDownloadLink(video).subscribe(downloadLink => {
       this.beginDownload(downloadLink);

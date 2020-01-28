@@ -15,22 +15,22 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class PlexUserController {
 
     @Autowired
     private PlexUserService plexUserService;
 
-    @GetMapping()
+    @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
-    public List<PlexUser> retrieveUsers(@RequestParam String authToken) {
+    public List<PlexUser> retrieveUsers(@RequestHeader("PLEX-TOKEN") String authToken) {
 
         return this.plexUserService.retrieveUsers(authToken);
     }
 
-    @GetMapping("/{authToken}")
+    @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    PlexUser retrieveUserByAuthToken(@PathVariable String authToken) {
+    PlexUser retrieveUserByAuthToken(@RequestHeader("PLEX-TOKEN") String authToken) {
         return plexUserService.retrieveUserByAuthToken(authToken);
     }
 

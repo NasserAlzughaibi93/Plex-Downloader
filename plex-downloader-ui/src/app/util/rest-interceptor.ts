@@ -38,9 +38,8 @@ export class RestInterceptor implements HttpInterceptor {
         return;
       } else {
         req = req.clone({
-          params: req.params.append('authToken', authToken)
+          headers: req.headers.append('PLEX-TOKEN', authToken)
         });
-        // req.params.append('authToken', authToken);
       }
     }
 
