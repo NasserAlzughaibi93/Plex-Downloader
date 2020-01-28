@@ -22,6 +22,13 @@ configContent = configContent.replaceAll(/info\.build\.version=.*/, "info.build.
 configContent = configContent.replaceAll(/info\.build\.branch=.*/, "info.build.branch=${details.branchName}")
 configFile.write(configContent, 'UTF-8')
 
+def dockerFile = new File('dockerfile')
+
+String dockerContent = dockerFile.getText('UTF-8')
+dockerContent = dockerContent.replaceAll(/PROJECT_VERSION=.*/, "PROJECT_VERSION=${version}")
+dockerFile.write(dockerContent, 'UTF-8')
+
+
 println 'Application version: ' + version
 
 dependencies {
