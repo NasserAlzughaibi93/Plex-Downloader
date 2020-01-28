@@ -4,6 +4,7 @@ import com.naz.PlexDownloader.dtos.UserDTO;
 import com.naz.PlexDownloader.models.plex.Pin;
 import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.services.plex.auth.PlexAuthService;
+import com.naz.PlexDownloader.util.ValidationUtil;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,9 +42,7 @@ public class PlexAuthController {
 
         Pin pin = plexAuthService.retrieveOAuthToken(oAuthPin);
 
-        if (pin == null) {
-            throw new NotYetImplementedException();
-        }
+        ValidationUtil.NotNullOrEmpty("error", pin);
 
 
         return plexAuthService.loginByAuthToken(pin.getAuthToken());
