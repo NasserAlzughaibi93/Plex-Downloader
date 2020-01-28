@@ -27,7 +27,7 @@ public class SimpleCORSFilter implements Filter {
         log.info("SimpleCORSFilter init");
         allowedOrigins = new ArrayList<>();
 //        allowedOrigins.add("https://localhost:8081");
-        allowedOrigins.add("http://localhost:4200");//TODO update GUI port.
+        allowedOrigins.add("http://localhost:4200");
         allowedOrigins.add("https://localhost:8080");
     }
 
