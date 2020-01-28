@@ -74,9 +74,13 @@ class PlexAuthControllerUTest extends BaseUnitTest {
         Pin pin = new Pin();
         pin.setAuthToken(authToken);
 
-        when(plexAuthService.retrieveOAuthToken(anyString())).thenReturn(pin);
+        PlexUser plexUser = new PlexUser();
+        plexUser.setAuthToken(authToken);
 
-        Pin result = plexAuthController.retrieveOAuthToken("authPin");
+        when(plexAuthService.retrieveOAuthToken(anyString())).thenReturn(pin);
+        when(plexAuthService.loginByAuthToken(anyString())).thenReturn(plexUser);
+
+        PlexUser result = plexAuthController.loginByOAuth("authPin");
 
         assertEquals(authToken, result.getAuthToken());
 
