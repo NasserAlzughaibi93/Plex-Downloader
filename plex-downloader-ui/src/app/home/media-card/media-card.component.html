@@ -37,17 +37,18 @@
          title="{{show.title}}"/>
   </div>
   <div class="card-body">
-    <h2 style="overflow: hidden; text-overflow: ellipsis" class="card-title">{{show.title}}</h2>
+    <h2  class="card-title">{{show.title}}</h2>
     <div class="container">
       <div class="row">
         <div class="col-8 metadata">
           <p>{{show.childCount}} Seasons</p>
         </div>
         <div class="col-4 metadata">
-          <p>{{show.year}}</p>
+          <p *ngIf="show.year">{{show.year}}</p>
+          <p *ngIf="!show.year">N/A</p>
         </div>
       </div>
     </div>
-    <p class="card-text"></p>
+    <p class="card-text">{{show.summary}}</p>
   </div>
 </div>

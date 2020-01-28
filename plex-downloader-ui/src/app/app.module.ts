@@ -21,6 +21,7 @@ import { SearchComponent } from './search/search.component';
 import {NgbModule, NgbPopoverModule} from "@ng-bootstrap/ng-bootstrap";
 import { SeriesPanelComponent } from './search/series-panel/series-panel.component';
 import { MediaCardComponent } from './home/media-card/media-card.component';
+import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -42,14 +43,22 @@ import { MediaCardComponent } from './home/media-card/media-card.component';
     RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'}),
     BrowserAnimationsModule,
     MatTabsModule,
-    NgbModule
+    NgbModule,
+    MatDialogModule
   ],
   providers: [
     LoginService,
     AlertifyService,
     LibraryService,
-    {provide: HTTP_INTERCEPTORS, useClass: RestInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: RestInterceptor, multi: true},
+    {
+      provide: MatDialogRef,
+      useValue: {}
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    SeriesPanelComponent,
+  ]
 })
 export class AppModule { }
