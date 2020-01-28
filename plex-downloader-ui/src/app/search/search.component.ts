@@ -95,17 +95,5 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  openDialog(show: Directory): void {
-    console.log("show example: " + show.title);
-    const dialogRef = this.dialog.open(SeriesPanelComponent, {
-      width: '60%',
-      data: show
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
-
 
 }

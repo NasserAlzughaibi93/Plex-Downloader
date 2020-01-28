@@ -20,16 +20,16 @@
 
     <br><br>
 
-
     <div class="main-videos-view" *ngIf="firstTimeSetupCompleted">
 
       <mat-tab-group [selectedIndex]="tabSelected.value"
                      (selectedIndexChange)="tabSelected.setValue($event)">
+
         <mat-tab *ngFor="let library of plexLibraries" label="{{library.title}}">
           <!-- TODO: Add ngIf that shows a loading animation while results are returned.   -->
-          <div class="videos-view">
-            <ul *ngIf="sectionVideoMap">
-              <li *ngFor="let directory of sectionVideoMapKeys">
+          <div class="videos-view" *ngIf="sectionVideoMap">
+            <br>
+              <div *ngFor="let directory of sectionVideoMapKeys">
                 <h2>{{directory.title}}</h2>
                 <div class="scrollmenu">
                   <div *ngIf="sectionVideoMap.get(directory)">
@@ -39,8 +39,7 @@
                     </div>
                   </div>
                 </div>
-              </li>
-            </ul>
+              </div>
           </div>
         </mat-tab>
         <!--<mat-tab label="Second"> Content 2 </mat-tab>

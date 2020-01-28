@@ -5,6 +5,11 @@ import {Video} from "../../models/video.model";
 import {Constants} from "../../util/constants";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
+export class ModalData {
+  video: Video;
+  show: Directory;
+}
+
 @Component({
   selector: 'app-series-panel',
   templateUrl: './series-panel.component.html',
@@ -13,15 +18,20 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 export class SeriesPanelComponent implements OnInit {
 
   @Input() show: Directory;
+  video: Video;
 
   seasons = new Array<Directory>();
 
   constructor(private libraryService: LibraryService,
               public dialogRef: MatDialogRef<SeriesPanelComponent>,
-              @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {}
+              @Optional() @Inject(MAT_DIALOG_DATA) public data: ModalData) {}
 
   ngOnInit() {
-    this.show = this.data;
+    if (this.data.video != null) {
+      this.video = this.data.video
+    } else {
+      this.show = this.data.show;
+    }
     if (this.show) {
       console.log("calling for more");
       this.libraryService.retrieveMediaMetaDataChildren(this.show.key).subscribe((directories) => {
@@ -50,6 +60,10 @@ export class SeriesPanelComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  /**
+   *
+   * @param video
+   */
   startDownloadingMedia(video: Video) {
 
     this.libraryService.retrieveMediaDownloadLink(video).subscribe(downloadLink => {
@@ -64,7 +78,35 @@ export class SeriesPanelComponent implements OnInit {
     link.href = url;
     document.body.appendChild(link);
     link.click();
+    this.onNoClick();
     //window.open(url);
+  }
+
+  resolvePosterURL(video: Video): string {
+    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
+    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+    let thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
+    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
+    //console.log("calling: " + url);
+    return url;
+  }
+
+  resolveBannerURL(video: Video): string {
+    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
+    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+    let thumb = video.type === 'movie' ? video.art : video.grandparentArt;
+    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
+    //console.log("calling: " + url);
+    return url;
+  }
+
+  resolveSeriesPosterURL(directory: Directory): string {
+    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
+    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+    let thumb = directory.thumb;
+    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
+    //console.log("calling: " + url);
+    return url;
   }
 
 }
