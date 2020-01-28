@@ -16,7 +16,6 @@ export class LoginService {
 
   // baseUrl = 'https://plex.tv/';
   baseUrl = Constants.PLEX_DOWNLOADER_BASE_URL;
-  //TODO update port
 
   constructor(
     private http: HttpClient,
