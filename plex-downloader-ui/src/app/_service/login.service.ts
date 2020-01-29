@@ -59,4 +59,14 @@ export class LoginService {
         })
       );
   }
+
+  isLoggedIn() : boolean {
+    let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+
+    if (authToken === null || authToken.trim().length === 0) {
+      return false;
+    }
+
+    return true;
+  }
 }

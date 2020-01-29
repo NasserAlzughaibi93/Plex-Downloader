@@ -79,7 +79,7 @@ public class PlexAuthServiceImpl implements PlexAuthService {
 
         ValidationUtil.NotNullOrEmpty("error", pin);
 
-        String resolvedUrl = "https://app.plex.tv/auth#?forwardUrl=http://google.com&clientID={CLIENT_ID}&code={CODE}&X-Plex-Product=NAZ&X-Plex-Client-Identifier=NAZMB&X-Plex-Version=1.0.0";
+        String resolvedUrl = "https://app.plex.tv/auth#?clientID={CLIENT_ID}&code={CODE}&X-Plex-Product=NAZ&X-Plex-Client-Identifier=NAZMB&X-Plex-Version=1.0.0";
 
         resolvedUrl = resolvedUrl.replace("{CODE}", pin.getCode()).replace("{CLIENT_ID}", PLEX_PRODUCT);
         pin.setResolvedUri(resolvedUrl);
