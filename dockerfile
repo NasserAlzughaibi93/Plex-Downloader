@@ -3,13 +3,12 @@ ENV APP_HOME=/usr/app/
 WORKDIR $APP_HOME
 COPY build.gradle settings.gradle gradlew $APP_HOME
 COPY gradle $APP_HOME/gradle
-RUN gradle wrapper \
-&& ./gradlew build || return 0
+RUN ./gradlew build || return 0
 COPY . .
 RUN ./gradlew build
 
 FROM openjdk:8
-ENV PROJECT_VERSION=0.0.1-5d63ff8
+ENV PROJECT_VERSION=0.0.1-c9aa8b4
 ENV ARTIFACT_NAME=plex-downloader-api-$PROJECT_VERSION.jar
 ENV APP_HOME=/usr/app/
 WORKDIR $APP_HOME
