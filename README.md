@@ -5,7 +5,7 @@
 - Sign in using your plex account.
 - Select which server you want to view.
 - Browse or search for media you wish to download (currently limited to single movie and/or episode per download).
-
+- To view swagger doc: `localhost:8080/swagger-ui.html`
 # Developing
 - Install latest version of Node.js and at least Java 8.
 - Import gradle modules with your favorite IDE.
