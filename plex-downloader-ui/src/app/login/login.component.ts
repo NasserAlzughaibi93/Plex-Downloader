@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LoginService} from '../_service/login.service';
 import {Constants} from "../util/constants";
 import {Router} from "@angular/router";
+import {AlertifyService} from "../_service/alertify.service";
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   oAuthPinTimer: any;
 
   constructor(private loginService: LoginService,
-              private router: Router,) {
+              private router: Router,
+              private alertify: AlertifyService) {
     let authToken = localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
     if (authToken != null && authToken.trim().length != 0) {
       authToken = null;
@@ -52,7 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       oAuthWindow!.location.replace(plexPin.resolvedUri);
 
       this.oAuthPinTimer = setInterval(() => {
-        //this.notify.info("Authenticating", "Loading... Please Wait");
+        this.alertify.notification("Authenticating", "Loading... Please Wait");
         //this.getPinResult(x.pinId);
         this.loginService.retrieveOAuthPinResults(plexPin.id).subscribe(user => {
           if (user.authToken) {

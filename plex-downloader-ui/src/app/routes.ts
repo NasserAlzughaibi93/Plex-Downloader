@@ -4,13 +4,14 @@ import {LoginComponent} from './login/login.component';
 import {SettingsComponent} from "./settings/settings.component";
 import {AboutComponent} from "./settings/about/about.component";
 import {SearchComponent} from "./search/search.component";
+import {AuthGuard} from "./_guards/auth.guard";
 
 export const appRoutes: Routes = [
   {path: '', component: LoginComponent},
   {
     path: '',
     runGuardsAndResolvers: 'always',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {path: 'home', component: HomeComponent},
       {path: 'settings', component: SettingsComponent},

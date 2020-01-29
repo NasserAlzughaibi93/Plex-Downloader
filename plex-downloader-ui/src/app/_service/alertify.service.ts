@@ -34,7 +34,8 @@ export class AlertifyService {
     alertify.message(message);
   }
 
-
-
+  notification(header: string, message: string) {
+    alertify.message('<h5>' + header + '</h5> <br> <p>' + message + '</p>')
+  }
 
 }
