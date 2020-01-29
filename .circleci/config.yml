@@ -50,14 +50,16 @@ jobs:
     executor: docker-publisher
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 17.05.0-ce
       - run:
           name: Build Docker image
           command: docker build -t $IMAGE_NAME:latest .
   docker-publish:
     executor: docker-publisher
     steps:
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 17.05.0-ce
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
