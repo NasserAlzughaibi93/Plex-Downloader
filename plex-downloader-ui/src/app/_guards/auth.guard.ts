@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
 import {LoginService} from '../_service/login.service';
 import {AlertifyService} from '../_service/alertify.service';
+import {Constants} from "../util/constants";
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +14,15 @@ export class AuthGuard implements CanActivate {
               private alertify: AlertifyService) {}
 
   canActivate(): boolean {
-    /*if (this.authService.loggedIn()) {
+
+    if (this.loginService.isLoggedIn()) {
       return true;
-    }*/
+    }
 
-    this.alertify.error('GTFO please');
+    console.log('Error, not signed in. Returning back to login page.');
+    this.alertify.error("Please sign in first");
+    this.router.navigate(['/']);
 
-    this.router.navigate(['/login']);
-
-    return false;
+    return true;
   }
 }
