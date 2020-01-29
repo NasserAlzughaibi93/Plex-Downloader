@@ -2,7 +2,13 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
-version: 2
+version: 2.1
+executors:
+  docker-publisher:
+    environment:
+      IMAGE_NAME: jonathancardoso/building-on-ci
+    docker:
+      - image: circleci/buildpack-deps:stretch
 jobs:
   build:
     docker:
@@ -16,10 +22,10 @@ jobs:
 
     working_directory: ~/repo
 
-    environment:
+#    environment:
       # Customize the JVM maximum heap limit
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
+#      JVM_OPTS: -Xmx3200m
+#      TERM: dumb
 
     steps:
       - checkout
@@ -40,3 +46,21 @@ jobs:
 
       # run tests!
       - run: gradle test
+  docker-build:
+    executor: docker-publisher
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: docker build -t $IMAGE_NAME:latest .
+
+  docker-publish:
+    executor: docker-publisher
+    steps:
+      - setup_remote_docker
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $IMAGE_NAME:latest
