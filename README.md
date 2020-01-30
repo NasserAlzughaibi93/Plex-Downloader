@@ -1,6 +1,9 @@
 # Plex-Downloader
 (WIP) Web interface to to browse and download media from a Plex server you have access to.
 
+---
+[![CircleCI](https://circleci.com/gh/Halahala1993/Plex-Downloader/tree/master.svg?style=svg)](https://circleci.com/gh/Halahala1993/Plex-Downloader/tree/master)
+
 # Usage
 - Sign in using your plex account.
 - Select which server you want to view.
