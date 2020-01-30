@@ -87,13 +87,17 @@ workflows:
       - build:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - develop
       - docker-build:
           requires:
             - build
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - develop
       - docker-publish:
           requires:
             - docker-build
