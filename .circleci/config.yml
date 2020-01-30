@@ -64,7 +64,10 @@ jobs:
           name: Publish Docker Image to Docker Hub
           command: |
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            docker push $IMAGE_NAME:latest
+                            IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
+                            docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG
+                            docker push $IMAGE_NAME:latest
+                            docker push $IMAGE_NAME:$IMAGE_TAG
 
 workflows:
   version: 2
@@ -86,3 +89,20 @@ workflows:
           filters:
             branches:
               only: master
+#  use git tags for future
+#  build-tags:
+#    jobs:
+#      - build:
+#          filters:
+#            tags:
+#              only: /^v.*/
+#            branches:
+#              ignore: /.*/
+#      - publish-tag:
+#          requires:
+#            - build
+#          filters:
+#            tags:
+#              only: /^v.*/
+#            branches:
+#              ignore: /.*/
