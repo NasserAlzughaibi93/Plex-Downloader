@@ -26,5 +26,7 @@ public interface PlexLibraryService {
 
     String retrieveMediaDownloadLink(String plexAuthToken, String serverIp, Video video);
 
+    String retrievePhotoFromPlexServer(String plexAuthToken, String serverIp, String metadataKey);
+
     MediaContainer retrieveSearchResults(String serverIp, String searchQuery, String authToken);
 }

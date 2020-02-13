@@ -5,10 +5,12 @@ import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.models.plex.UserEntity;
 import com.naz.PlexDownloader.repositories.PlexRepository;
 import com.naz.PlexDownloader.util.CollectionUtil;
+import com.naz.PlexDownloader.util.JwtTokenUtil;
 import com.naz.PlexDownloader.util.PlexRestTemplate;
 import com.naz.PlexDownloader.util.ValidationUtil;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.PropertyPlaceholderHelper;
 
@@ -26,6 +28,13 @@ public class PlexAuthServiceImpl implements PlexAuthService {
     @Autowired
     private PlexRepository plexRepository;
 
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     /**
      * Basic plex authentication (as opposed to OAuth login)
      * @param username - Plex username
@@ -41,6 +50,12 @@ public class PlexAuthServiceImpl implements PlexAuthService {
         ValidationUtil.NotNullOrEmpty("user.cannot.be.found", user, user.getUser());
 
         PlexUser plexUser = CollectionUtil.getFirstElement(user.getUser());
+
+        String token = jwtTokenUtil.generateToken(plexUser);
+
+        plexUser.setJwtToken(token);
+        /*plexUser.setAuthenticationToken(bCryptPasswordEncoder.encode(plexUser.getAuthenticationToken()));
+        plexUser.setAuthToken(bCryptPasswordEncoder.encode(plexUser.getAuthToken()));*/
 
         this.savePlexUser(plexUser);
 
@@ -61,6 +76,13 @@ public class PlexAuthServiceImpl implements PlexAuthService {
         ValidationUtil.NotNullOrEmpty("user.cannot.be.found", user, user.getUser());
 
         PlexUser plexUser = CollectionUtil.getFirstElement(user.getUser());
+
+        String token = jwtTokenUtil.generateToken(plexUser);
+
+        plexUser.setJwtToken(token);
+        /*plexUser.setAuthenticationToken(bCryptPasswordEncoder.encode(plexUser.getAuthenticationToken()));
+        plexUser.setAuthToken(bCryptPasswordEncoder.encode(plexUser.getAuthToken()));*/
+
         this.savePlexUser(plexUser);
 
         return plexUser;
@@ -115,5 +137,13 @@ public class PlexAuthServiceImpl implements PlexAuthService {
 
     public void setPlexRepository(PlexRepository plexRepository) {
         this.plexRepository = plexRepository;
+    }
+
+    public JwtTokenUtil getJwtTokenUtil() {
+        return jwtTokenUtil;
+    }
+
+    public void setJwtTokenUtil(JwtTokenUtil jwtTokenUtil) {
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 }
