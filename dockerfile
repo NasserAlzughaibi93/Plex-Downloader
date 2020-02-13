@@ -3,7 +3,7 @@ ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
 COPY . .
 RUN ./gradlew build
-LABEL PROJECT_VERSION=0.0.1-2b4c7af
+LABEL PROJECT_VERSION=0.0.1-9bd9535
 ENV ARTIFACT_DIR=./plex-downloader-api/build/libs
 # RUN chmod 777 run.sh
 EXPOSE 8080

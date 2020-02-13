@@ -189,4 +189,26 @@ export class LibraryService {
         })
       );
   }
+
+  retrievePhotoFromPlexServer(metadataKey: string) : Observable<string> {
+
+    let httpOptions = {
+      responseType: 'text' as 'json',
+      params: new HttpParams().set('metadataKey', metadataKey)
+    };
+
+    return this.http.get<string>(this.baseUrl + '/{{serverIp}}/metadata/photo', httpOptions)
+      .pipe(
+        map((photoUrl: any) => {
+
+          if (photoUrl) {
+            console.log("Retrieved transcoded photo!");
+          } else {
+            console.log("Photo is null!");
+          }
+
+          return photoUrl;
+        })
+      );
+  }
 }
