@@ -2,13 +2,13 @@
   <div class="card-header">
 
     <img *ngIf="video.type === 'episode'" (click)="openDialog(video)"
-         class="card-img" src="{{resolvePosterURL(video)}}"
+         class="card-img" src="{{mediaPhotoUrl}}"
          alt="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}"
          title="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}">
 
 
     <img *ngIf="video.type === 'movie'" (click)="openDialog(video)"
-         class="card-img" src="{{resolvePosterURL(video)}}" alt="{{video.title}}" title="{{video.title}}">
+         class="card-img" src="{{mediaPhotoUrl}}" alt="{{video.title}}" title="{{video.title}}">
 
   </div>
   <div class="card-body" *ngIf="video.type === 'episode'">
@@ -30,7 +30,7 @@
 <div class="card" *ngIf="show" style="display: inline-block; width: 15em;" title="{{show.title}}">
   <div class="card-header">
 
-    <img src="{{resolveSeriesPosterURL(show)}}" (click)="openShowDialog(show)" class="card-img" alt="{{show.title}}"
+    <img src="{{seriesPhotoUrl}}" (click)="openShowDialog(show)" class="card-img" alt="{{show.title}}"
          title="{{show.title}}"/>
   </div>
   <div class="card-body">

@@ -19,6 +19,7 @@ export class User implements Deserializable {
   confirmedAt?: null;
   forumId?: null;
   rememberMe?: boolean;
+  jwtToken?: string;
 
   deserialize(input: any): this {
     return Object.assign(this, input);

@@ -10,7 +10,7 @@ import { debounceTime } from "rxjs/operators";
 })
 export class LoadingComponent implements AfterViewInit, OnDestroy {
 
-  debounceTime: number = 0;
+  debounceTime: number = 100;
   loading: unknown = false;
   loadingSubscription: Subscription;
 

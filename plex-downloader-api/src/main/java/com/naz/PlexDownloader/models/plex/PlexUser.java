@@ -107,6 +107,8 @@ public class PlexUser {
     @OneToOne(cascade = CascadeType.ALL)
     private Roles roles;
 
+    private transient String jwtToken;
+
     public long getId() {
         return id;
     }
@@ -353,5 +355,13 @@ public class PlexUser {
 
     public void setRoles(Roles roles) {
         this.roles = roles;
+    }
+
+    public String getJwtToken() {
+        return jwtToken;
+    }
+
+    public void setJwtToken(String jwtToken) {
+        this.jwtToken = jwtToken;
     }
 }

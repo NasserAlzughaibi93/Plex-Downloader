@@ -34,7 +34,7 @@ export class LoginService {
           console.log('Icon: ' + user.thumb);
 
           if (user) {
-            localStorage.setItem(Constants.PLEX_AUTH_TOKEN, user.authToken);
+            localStorage.setItem(Constants.PLEX_AUTH_TOKEN, user.jwtToken);
           }
         })
       );

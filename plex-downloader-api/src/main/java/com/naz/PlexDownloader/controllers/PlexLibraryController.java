@@ -98,6 +98,14 @@ public class PlexLibraryController {
         return this.plexLibraryService.retrieveMediaDownloadLink(authToken, serverIp, video);
     }
 
+    @GetMapping("/{serverIp}/metadata/photo")
+    @ResponseStatus(HttpStatus.OK)
+    public String retrievePhotoFromPlexServer(@PathVariable String serverIp,
+                                            @RequestHeader("PLEX-TOKEN") String authToken,
+                                            @RequestParam String metadataKey) {
+        return this.plexLibraryService.retrievePhotoFromPlexServer(authToken, serverIp, metadataKey);
+    }
+
     @GetMapping("/{serverIp}/search/{searchQuery}")
     @ResponseStatus(HttpStatus.OK)
     public MediaContainer retrieveSearchResults(@PathVariable String serverIp,
