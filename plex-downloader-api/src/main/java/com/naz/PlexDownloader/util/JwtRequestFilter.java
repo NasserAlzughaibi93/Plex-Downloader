@@ -1,5 +1,7 @@
 package com.naz.PlexDownloader.util;
 
+import com.naz.PlexDownloader.exceptions.rest.JwtInvalidException;
+import com.naz.PlexDownloader.exceptions.rest.RecordNotFoundException;
 import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.repositories.PlexRepository;
 import com.naz.PlexDownloader.services.plex.auth.PlexAuthService;
@@ -15,17 +17,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Component
-
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -52,10 +47,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String jwtToken = null;
 
+        if (request.getRequestURL().indexOf("/basiclogin") != -1 || request.getRequestURL().indexOf("/oAuth") != -1) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
-
         // only the Token
-
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 
             jwtToken = requestTokenHeader.substring(7);
@@ -75,9 +73,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
 
         } else {
-
             logger.warn("JWT Token does not begin with Bearer String");
 
+            throw new JwtInvalidException("jwt.token.missing.bearer.token.header");
         }
 
         // Once we get the token validate it.
@@ -85,6 +83,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (username != null) {
 
             PlexUser plexUser = this.plexRepository.findPlexUserByUsername(username);
+
+            if (plexUser == null) {
+                throw new RecordNotFoundException("user.not.found.in.database", new Object[]{username});
+            }
 
             // if token is valid configure Spring Security to manually set
             // authentication
@@ -111,6 +113,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 chain.doFilter(requestWrapper, response);
 
                 return;
+            } else {
+
+                if (jwtTokenUtil.isTokenExpired(jwtToken)) {
+                    throw new JwtInvalidException("jwt.token.expired", new Object[]{
+                            jwtTokenUtil.getExpirationDateFromToken(jwtToken)});
+                } else {
+                    throw new JwtInvalidException("jwt.token.invalid");
+                }
+
             }
 
         }
