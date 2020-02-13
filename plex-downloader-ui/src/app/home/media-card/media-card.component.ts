@@ -19,30 +19,45 @@ export class MediaCardComponent implements OnInit {
   @Input() video: Video;
   @Input() show: Directory;
 
+  private mediaPhotoUrl: string;
+  private seriesPhotoUrl: string;
+
   constructor(private router: Router,
               private alertify: AlertifyService,
               private libraryService: LibraryService,
               private componentMessagingService: ComponentMessagingService,
               public dialog: MatDialog) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.video) {
+      this.resolvePosterURL(this.video);
+    }
 
-  resolvePosterURL(video: Video): string {
-    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
-    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-    let thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
-    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
-    //console.log("calling: " + url);
-    return url;
+    if (this.show) {
+      this.resolveSeriesPosterURL(this.show);
+    }
   }
 
-  resolveSeriesPosterURL(directory: Directory): string {
-    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
-    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+  resolvePosterURL(video: Video) {
+
+    let thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
+
+    this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
+      this.mediaPhotoUrl = photoUrl;
+    }, () => {
+      console.log('Error loading photo url');
+    });
+
+  }
+
+  resolveSeriesPosterURL(directory: Directory) {
     let thumb = directory.thumb;
-    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
-    //console.log("calling: " + url);
-    return url;
+    this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
+      // return photoUrl;
+      this.seriesPhotoUrl = photoUrl
+    }, () => {
+      console.log('Error loading photo url');
+    });
   }
 
   openDialog(video: Video): void {

@@ -10,6 +10,7 @@ import com.naz.PlexDownloader.util.PlexRestTemplate;
 import com.naz.PlexDownloader.util.ValidationUtil;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,9 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     private static final String PLEX_RECENTLY_ADDED = PLEX_LIBRARY + "/recentlyAdded";
 
     private static final String PLEX_SEARCH = "/search?query=";
+
+    private static final String PHOTO_HEIGHT = "height=500&";
+    private static final String PHOTO_WIDTH = "width=500&";
 
     /**
      * Find available resources of a given server instance.
@@ -229,6 +233,22 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
                 mediaContainer.getVideo(), mediaContainer.getVideo());
 
         return mediaContainer.getVideo();
+    }
+
+    @Override
+    public String retrievePhotoFromPlexServer(String plexAuthToken, String serverIp, String metadataKey) {
+
+        //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
+
+        String url = serverIp + "/photo/:/transcode?url=" + metadataKey + "&" + PHOTO_HEIGHT + PHOTO_WIDTH + "X-Plex-Token=" + plexAuthToken;
+
+        if (!url.contains("http://") && !url.contains("https://")) {
+            url = "http://" + url;
+        }
+
+//        String photoUrl = (String) PlexRestTemplate.buildPlexRestTemplate(url, plexAuthToken, String.class, false);
+
+        return url;
     }
 
     /**

@@ -20,6 +20,9 @@ export class SeriesPanelComponent implements OnInit {
   @Input() show: Directory;
   video: Video;
 
+  private mediaPhotoUrl: string;
+  private seriesPhotoUrl: string;
+
   seasons = new Array<Directory>();
 
   constructor(private libraryService: LibraryService,
@@ -28,7 +31,8 @@ export class SeriesPanelComponent implements OnInit {
 
   ngOnInit() {
     if (this.data.video != null) {
-      this.video = this.data.video
+      this.video = this.data.video;
+      this.resolvePosterURL(this.video);
     } else {
       this.show = this.data.show;
     }
@@ -52,6 +56,7 @@ export class SeriesPanelComponent implements OnInit {
           });
         });
 
+        this.resolveSeriesPosterURL(this.show);
       });
     }
   }
@@ -82,15 +87,6 @@ export class SeriesPanelComponent implements OnInit {
     //window.open(url);
   }
 
-  resolvePosterURL(video: Video): string {
-    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
-    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-    let thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
-    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
-    //console.log("calling: " + url);
-    return url;
-  }
-
   resolveBannerURL(video: Video): string {
     //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
     let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
@@ -100,13 +96,26 @@ export class SeriesPanelComponent implements OnInit {
     return url;
   }
 
-  resolveSeriesPosterURL(directory: Directory): string {
-    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token=qraeKhWxgqinH2ysa44W
-    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+  resolvePosterURL(video: Video) {
+
+    let thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
+
+    this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
+      this.mediaPhotoUrl = photoUrl;
+    }, () => {
+      console.log('Error loading photo url');
+    });
+
+  }
+
+  resolveSeriesPosterURL(directory: Directory) {
     let thumb = directory.thumb;
-    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
-    //console.log("calling: " + url);
-    return url;
+    this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
+      // return photoUrl;
+      this.seriesPhotoUrl = photoUrl
+    }, () => {
+      console.log('Error loading photo url');
+    });
   }
 
 }
