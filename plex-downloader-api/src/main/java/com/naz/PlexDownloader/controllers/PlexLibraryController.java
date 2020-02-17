@@ -63,7 +63,7 @@ public class PlexLibraryController {
 
     @GetMapping("/{serverIp}/sections/{sectionKey}/directory/{directoryKey}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Video> retrieveLibrarySectionBySectionKeyAndDirectoryKey(@PathVariable String serverIp,
+    public MediaContainer retrieveLibrarySectionBySectionKeyAndDirectoryKey(@PathVariable String serverIp,
                                                                          @PathVariable String sectionKey,
                                                                          @PathVariable String directoryKey,
                                                                          @RequestHeader("PLEX-TOKEN") String authToken) {

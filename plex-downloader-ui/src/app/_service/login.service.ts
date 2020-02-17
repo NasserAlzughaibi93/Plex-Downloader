@@ -32,6 +32,7 @@ export class LoginService {
           if (user) {
             console.log('JWT Token: ' + user.jwtToken);
             localStorage.setItem(Constants.PLEX_AUTH_TOKEN, user.jwtToken);
+            localStorage.setItem(Constants.PLEX_USER_ICON, user.thumb);
             return user;
           }
         })
@@ -53,6 +54,7 @@ export class LoginService {
     return this.http.get<User>(this.baseUrl + '/oAuth/' + pinId)
       .pipe(
         map((user: any) => {
+
           return user;
         })
       );

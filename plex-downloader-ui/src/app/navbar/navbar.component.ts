@@ -18,11 +18,12 @@ export class NavbarComponent implements OnInit {
 
   user: any = {};
   devices: Device[];
-  directories: Directory[];
+  directories: Directory[]; //Plex Libraries
   selectedServer: any;
   filteredServer:any;
-  selectedLibrary: any;
-  filteredLibrary:any;
+  selectedLibrary: Directory;
+  //filteredLibrary: Directory;
+  userIcon: string;
 
   subscription: any;
 
@@ -35,7 +36,9 @@ export class NavbarComponent implements OnInit {
     this.directories = JSON.parse(localStorage.getItem(Constants.PLEX_SELECTED_LIBRARIES));
     this.devices = JSON.parse(localStorage.getItem(Constants.PLEX_SELECTED_SERVERS));
     this.selectedServer = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_NAME);
+    let libraryName = localStorage.getItem(Constants.PLEX_SELECTED_LIBRARY_NAME);
     let firstTimeSetupCompleted: boolean = localStorage.getItem(Constants.FIRST_TIME_SETUP_COMPLETE) === 'true';
+    this.userIcon = localStorage.getItem(Constants.PLEX_USER_ICON);
 
 
     if ( firstTimeSetupCompleted && (this.devices == null || this.devices.length == 0)) {
@@ -44,6 +47,7 @@ export class NavbarComponent implements OnInit {
       this.retrievePlexResources();
     }else {
       this.filteredServer = this.devices.filter(t=>t.name == this.selectedServer);
+      this.selectedLibrary = this.directories.find(library => library.title === libraryName);
     }
 
     this.subscription = this.componentMessagingService.getMessage()
@@ -80,6 +84,14 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+  onLibrarySelect(library: Directory) {
+    this.selectedLibrary = library;
+
+    localStorage.setItem(Constants.PLEX_SELECTED_LIBRARY_NAME, library.title);
+
+    console.log('About to get library: ' + library.title);
+    this.router.navigateByUrl('/library', { state: { libraryKey: library.key } });
+  }
 
   onServerSelect() {
     console.log('server selected: ' + this.selectedServer);
@@ -110,5 +122,10 @@ export class NavbarComponent implements OnInit {
     console.log('Searching for query: ' + searchQuery);
     // this.router.navigate(['/search', searchQuery])
     this.router.navigateByUrl('/search', { state: { searchQuery: searchQuery } });
+  }
+
+  signOut() {
+    localStorage.clear();
+    this.router.navigate(['/']);
   }
 }

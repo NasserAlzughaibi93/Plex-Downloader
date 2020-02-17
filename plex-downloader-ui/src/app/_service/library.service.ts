@@ -92,15 +92,11 @@ export class LibraryService {
       );
   }
 
-  retrieveLibrarySectionBySectionKeyAndDirectoryKey(sectionKey: string, directoryKey: string) : Observable<Video[]> {
-
-
-
-
+  retrieveLibrarySectionBySectionKeyAndDirectoryKey(sectionKey: string, directoryKey: string) : Observable<MediaContainer> {
 
     console.log("test section key: " + sectionKey);
 
-    return this.http.get<Video[]>(this.baseUrl + '/{{serverIp}}/sections/' + sectionKey + '/directory/' + directoryKey)
+    return this.http.get<MediaContainer>(this.baseUrl + '/{{serverIp}}/sections/' + sectionKey + '/directory/' + directoryKey)
       .pipe(
         map((response: any) => {
 
