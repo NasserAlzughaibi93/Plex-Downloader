@@ -37,14 +37,11 @@ export class RestInterceptor implements HttpInterceptor {
         return;
       } else {
 
-        let headers = req.headers;
+        let headers = new HttpHeaders().set('Authorization', 'Bearer ' + authToken);
 
-        if (headers === null) {
-          headers = new HttpHeaders();
-        }
 
         req = req.clone({
-          headers: headers.append('Authorization', 'Bearer ' + authToken)
+          headers: headers
         });
       }
     }
