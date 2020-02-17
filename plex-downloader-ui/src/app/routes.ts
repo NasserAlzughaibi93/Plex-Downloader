@@ -5,6 +5,7 @@ import {SettingsComponent} from "./settings/settings.component";
 import {AboutComponent} from "./settings/about/about.component";
 import {SearchComponent} from "./search/search.component";
 import {AuthGuard} from "./_guards/auth.guard";
+import {LibraryComponent} from "./library/library.component";
 
 export const appRoutes: Routes = [
   {path: '', component: LoginComponent},
@@ -17,6 +18,7 @@ export const appRoutes: Routes = [
       {path: 'settings', component: SettingsComponent},
       {path: 'about', component: AboutComponent},
       {path: 'search', component: SearchComponent},
+      {path: 'library', component: LibraryComponent},
     ],
   },
   {path: '**', redirectTo: '/home', pathMatch: 'full'}

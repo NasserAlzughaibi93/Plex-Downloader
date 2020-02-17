@@ -18,7 +18,7 @@ public interface PlexLibraryService {
 
     List<Directory> retrieveLibrarySectionBySectionKey(String plexAuthToken, String serverIp, String librarySectionKey);
 
-    List<Video> retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, String directoryKey);
+    MediaContainer retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, String directoryKey);
 
     List<Video> retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey);
 
