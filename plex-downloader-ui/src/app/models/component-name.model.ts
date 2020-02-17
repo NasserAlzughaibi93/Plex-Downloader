@@ -10,4 +10,5 @@ export enum ComponentAction {
   LOGOUT,
   RELOAD_LIBRARIES,
   FIRST_TIME_SETUP,
+  LOAD_VIDEO
 }

@@ -187,6 +187,8 @@ export class LibraryService {
 
   retrievePhotoFromPlexServer(metadataKey: string) : Observable<string> {
 
+    console.log('Getting photo with metaDataKey: ' + metadataKey);
+
     let httpOptions = {
       responseType: 'text' as 'json',
       params: new HttpParams().set('metadataKey', metadataKey)

@@ -20,6 +20,7 @@ import {LoadingScreenService} from "../_service/loading.service";
 export class HomeComponent implements OnInit {
 
   firstTimeSetupCompleted = false;
+  selectedLibrary: Directory;
   selectedServer: any;
 
   devices: Device[];
@@ -29,9 +30,9 @@ export class HomeComponent implements OnInit {
   sectionVideoMap = new Map<Directory, Video[]>();
   sectionVideoMapKeys: Directory[];
 
-  subscription: any;
+  //subscription: any;
 
-  tabSelected = new FormControl(0);
+  //tabSelected = new FormControl(0);
 
   constructor(private router: Router,
               private alertify: AlertifyService,
@@ -54,30 +55,11 @@ export class HomeComponent implements OnInit {
     } else {
       //Maybe?
       //localStorage.clear();
-      this.retrieveLibrarySections();
+      // this.retrieveLibrarySections();
+      console.log('Moving to library view');
+      this.router.navigate(['/library'])
     }
 
-    this.subscription = this.componentMessagingService.getMessage()
-      .subscribe(message => {
-        /*console.log('Printing message from message service: ');
-        console.log(message);
-        console.log(message.componentAction);
-
-        //if (message.componentAction === ComponentAction.LOAD_LIBRARIES) {
-        //this.retrieveOnDeckLibrary();
-        this.retrieveLibrarySectionBySectionKey();
-        //clear main page lists when changing library section.
-        this.sectionVideoMapKeys = new Array<Directory>();
-        this.sectionVideoMap.clear();
-        this.sectionMap.clear();
-        this.onDeckVideos = new Array<Video>();*/
-        // }
-      });
-
-    this.tabSelected.valueChanges.subscribe(index => {
-      let libraryKey = this.plexLibraries[index].key;
-      this.retrieveLibrarySectionBySectionKey(libraryKey);
-    });
   }
 
   ngOnInit() {
@@ -92,9 +74,12 @@ export class HomeComponent implements OnInit {
       directories.forEach(directory => {
         console.log('By section key: ' + directory.title);
         this.sectionMap.set(directory, null);
-        this.retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey);
-      })
+      });
+
+      this.retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey);
+
     });
+
   }
 
   retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey: string) {
@@ -104,8 +89,13 @@ export class HomeComponent implements OnInit {
       console.log("ERROR: section issue");
     }
 
+    console.log('Library key test: ' + libraryKey);
+
     for (let directory of this.sectionMap.keys()) {
       let directoryKey = directory.key;
+
+      console.log('Directory key test: ' + directoryKey);
+
 
       this.libraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey, directoryKey).subscribe((mediaContainer) => {
 
@@ -135,6 +125,21 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  onLibrarySelect(library: Directory) {
+    if (!library) {
+      console.log('Error: selected library cannot be null');
+    }
+
+    localStorage.setItem(Constants.PLEX_SELECTED_LIBRARY_NAME, library.title);
+
+    console.log('About to get library: ' + library.title);
+    this.selectedLibrary = library;
+    this.firstTimeSetupCompleted = true;
+    localStorage.setItem(Constants.FIRST_TIME_SETUP_COMPLETE, String(this.firstTimeSetupCompleted));
+    this.router.navigateByUrl('/library', { state: { libraryKey: library.key } });
+    //this.router.navigateByUrl('/library', { state: { libraryKey: library.key } });
+  }
+
   //First time setup:
   onServerSelect() {
     console.log('server selected: ' + this.selectedServer);
@@ -154,8 +159,6 @@ export class HomeComponent implements OnInit {
           let message = new ComponentMessage(ComponentName.HOME, ComponentName.NAVBAR, ComponentAction.FIRST_TIME_SETUP, '');
 
           this.componentMessagingService.updateMessage(message);
-          this.firstTimeSetupCompleted = true;
-          localStorage.setItem(Constants.FIRST_TIME_SETUP_COMPLETE, String(this.firstTimeSetupCompleted));
           this.retrieveLibrarySections();
 
         } else {
@@ -167,12 +170,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
-
   clearSectionMaps() {
     this.sectionMap.clear();
     this.sectionVideoMap.clear();
     this.sectionVideoMapKeys = new Array<Directory>();
 
   }
-
 }

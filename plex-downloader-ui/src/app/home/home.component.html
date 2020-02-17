@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<app-loading></app-loading>
+<!--<app-loading></app-loading>-->
 
 <br><br>
 <hr>
@@ -16,25 +16,37 @@
             <option *ngFor="let device of devices" [ngValue]="device.name">{{device.name}}</option>
           </select>
         </label>
+
+        <label *ngIf="plexLibraries">
+          <select name="library-select">
+            <!--          <option>&#45;&#45;Server&#45;&#45;</option>-->
+            <option *ngFor="let library of plexLibraries" [ngValue]="library.title" (click)="onLibrarySelect(library)">{{library.title}}</option>
+          </select>
+        </label>
       </div>
+    </div>
+
+    <div *ngIf="firstTimeSetupCompleted" class="library-view">
+<!--      <app-library [libraryKey]="selectedLibrary.key" ></app-library>-->
     </div>
 
     <br><br>
 
-    <div class="main-videos-view" *ngIf="firstTimeSetupCompleted">
+    <!--<div class="main-videos-view" *ngIf="firstTimeSetupCompleted">
 
       <mat-tab-group [selectedIndex]="tabSelected.value"
                      (selectedIndexChange)="tabSelected.setValue($event)">
 
         <mat-tab *ngFor="let library of plexLibraries" label="{{library.title}}">
-          <!-- TODO: Add ngIf that shows a loading animation while results are returned.   -->
           <div class="videos-view" *ngIf="sectionVideoMap">
             <br>
               <div *ngFor="let directory of sectionVideoMapKeys">
                 <h2>{{directory.title}}</h2>
                 <div class="scrollmenu">
                   <div *ngIf="sectionVideoMap.get(directory)">
-                    <div *ngFor="let video of sectionVideoMap.get(directory)" style="display: inline-block">
+&lt;!&ndash;                    <p>Video size: {{sectionVideoMap.get(directory).length}}</p>&ndash;&gt;
+                    <div *ngFor="let video of sectionVideoMap.get(directory); let i = index" [attr.data-index]="i" style="display: inline-block">
+&lt;!&ndash;                      <p>index: {{i}}</p>&ndash;&gt;
                       <br><br>
                       <app-media-card [video]="video"></app-media-card>
                     </div>
@@ -43,14 +55,13 @@
               </div>
           </div>
         </mat-tab>
-        <!--<mat-tab label="Second"> Content 2 </mat-tab>
-        <mat-tab label="Third"> Content 3 </mat-tab>-->
+        &lt;!&ndash;<mat-tab label="Second"> Content 2 </mat-tab>
+        <mat-tab label="Third"> Content 3 </mat-tab>&ndash;&gt;
       </mat-tab-group>
     </div>
 
     <br><br>
-    <hr>
-
+    <hr>-->
   </div>
   <div class="col-md-1"></div>
 </div>
