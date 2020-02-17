@@ -25,6 +25,9 @@ import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {LoadingComponent} from './util/loading/loading.component';
 import {LoadingScreenInterceptor} from "./util/loading-interceptor";
 import { LibraryComponent } from './library/library.component';
+import { LibraryFilterPipe } from './library/library-filter.pipe';
+import { LibrarySeriesFilterPipe } from './library/library-series-filter.pipe';
+import { LibraryGenreFilterPipe } from './library/library-genre-filter.pipe';
 
 
 @NgModule({
@@ -39,7 +42,10 @@ import { LibraryComponent } from './library/library.component';
     SeriesPanelComponent,
     MediaCardComponent,
     LoadingComponent,
-    LibraryComponent
+    LibraryComponent,
+    LibraryFilterPipe,
+    LibrarySeriesFilterPipe,
+    LibraryGenreFilterPipe
   ],
   imports: [
     BrowserModule,

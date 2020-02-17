@@ -88,7 +88,6 @@ export class SeriesPanelComponent implements OnInit {
   }
 
   resolveBannerURL(video: Video): string {
-    //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token={{APIKEY}}
     let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
     let thumb = video.type === 'movie' ? video.art : video.grandparentArt;
     let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
