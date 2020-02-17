@@ -107,12 +107,19 @@ export class HomeComponent implements OnInit {
     for (let directory of this.sectionMap.keys()) {
       let directoryKey = directory.key;
 
-      this.libraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey, directoryKey).subscribe((videos) => {
-        console.log('Amount of videos for section ' + directory.title + ": " + videos.length);
-        this.sectionVideoMap.set(directory, videos);
+      this.libraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey, directoryKey).subscribe((mediaContainer) => {
 
-        this.sectionVideoMapKeys = Array.from(this.sectionVideoMap.keys());
-        // console.log("sectionVideoMapKeys: " + this.sectionVideoMapKeys.length);
+        if (mediaContainer.video != null && mediaContainer.video.length != 0) {
+          let videos = mediaContainer.video;
+          console.log('Amount of videos for section ' + directory.title + ": " + videos.length);
+          this.sectionVideoMap.set(directory, videos);
+
+          this.sectionVideoMapKeys = Array.from(this.sectionVideoMap.keys());
+          // console.log("sectionVideoMapKeys: " + this.sectionVideoMapKeys.length);
+        } else if (mediaContainer.directory != null && mediaContainer.directory.length != 0) {
+          //TODO figure out displaying directory alongside videos in home page.
+          //this.sectionVideoMap.set(mediaContainer.directory, null);
+        }
 
       });
     }

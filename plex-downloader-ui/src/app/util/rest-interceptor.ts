@@ -19,10 +19,10 @@ export class RestInterceptor implements HttpInterceptor {
 
     //kick out whoever doesn't belong.
     if (!req.url.endsWith('/basiclogin') && !req.url.includes('/oAuth')) {
-      console.log('injecting auth token');
+      // console.log('injecting auth token');
       if (req.url.includes('{{serverIp}}')) {
         let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
-        console.log('injecting server: ' + serverIp);
+        // console.log('injecting server: ' + serverIp);
 
         req = req.clone({
           url: req.url.replace('{{serverIp}}', serverIp)

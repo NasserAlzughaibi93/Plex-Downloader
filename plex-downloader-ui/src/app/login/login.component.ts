@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.loginService.retrieveOAuthPinResults(plexPin.id).subscribe(user => {
           if (user.jwtToken != null && user.jwtToken.trim().length != 0) {
             localStorage.setItem(Constants.PLEX_AUTH_TOKEN, user.jwtToken);
+            localStorage.setItem(Constants.PLEX_USER_ICON, user.thumb);
             this.ngOnDestroy();
             this.router.navigate(['/home']);
           }

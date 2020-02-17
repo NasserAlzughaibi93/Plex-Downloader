@@ -221,18 +221,16 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
         return mediaContainer.getDirectory();
     }
 
-    //TODO check if this is even logical once front end is setup.
     @Override
-    public List<Video> retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, String directoryKey) {
+    public MediaContainer retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, String directoryKey) {
         String url = serverIp + PLEX_SECTIONS + "/" + librarySectionKey + "/" + directoryKey;
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
 
-        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer,
-                mediaContainer.getVideo(), mediaContainer.getVideo());
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer);
 
-        return mediaContainer.getVideo();
+        return mediaContainer;
     }
 
     @Override
