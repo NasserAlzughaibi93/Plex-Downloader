@@ -119,16 +119,20 @@ class PlexLibraryControllerUTest extends BaseUnitTest {
     void retrieveLibrarySectionBySectionKeyAndDirectoryKey() {
 
 
-        List<Video> videos = CollectionUtil.createList(this.video);
+//        List<Video> videos = CollectionUtil.createList(this.video);
+
+        MediaContainer mediaContainer = new MediaContainer();
+        mediaContainer.setVideo(CollectionUtil.createList(this.video));
 
         when(plexLibraryService
                 .retrieveLibrarySectionBySectionKeyAndDirectoryKey(anyString(), anyString(), anyString(), anyString())
-        ).thenReturn(videos);
+        ).thenReturn(mediaContainer);
 
         List<Video> results =
-                plexLibraryController.retrieveLibrarySectionBySectionKeyAndDirectoryKey("serverIP", "authToken", "sectionKey", "directoryKey");
+                plexLibraryController.retrieveLibrarySectionBySectionKeyAndDirectoryKey("serverIP",
+                        "authToken", "sectionKey", "directoryKey").getVideo();
 
-        assertEquals(videos, results);
+        assertEquals(mediaContainer.getVideo(), results);
     }
 
     @Test
