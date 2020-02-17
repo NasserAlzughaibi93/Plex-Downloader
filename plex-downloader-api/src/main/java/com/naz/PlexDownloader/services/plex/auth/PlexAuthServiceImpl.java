@@ -1,5 +1,6 @@
 package com.naz.PlexDownloader.services.plex.auth;
 
+import com.naz.PlexDownloader.exceptions.rest.RecordNotFoundException;
 import com.naz.PlexDownloader.models.plex.Pin;
 import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.models.plex.UserEntity;
@@ -50,6 +51,10 @@ public class PlexAuthServiceImpl implements PlexAuthService {
         ValidationUtil.NotNullOrEmpty("user.cannot.be.found", user, user.getUser());
 
         PlexUser plexUser = CollectionUtil.getFirstElement(user.getUser());
+
+        if (plexUser == null) {
+            throw new RecordNotFoundException("could.not.login.user.to.plex");
+        }
 
         String token = jwtTokenUtil.generateToken(plexUser);
 
