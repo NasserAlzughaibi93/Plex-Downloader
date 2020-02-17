@@ -33,8 +33,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loginService.login(this.model).subscribe(() => {
       console.log('worked');
       this.router.navigate(['/home']);
-    }, () => {
-      console.log('Error');
+    }, error => {
+      console.log('Error during a basic login: ' + error);
     });
   }
 
@@ -57,14 +57,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.alertify.notification("Authenticating", "Loading... Please Wait");
         //this.getPinResult(x.pinId);
         this.loginService.retrieveOAuthPinResults(plexPin.id).subscribe(user => {
-          if (user.authToken) {
+          if (user.jwtToken != null && user.jwtToken.trim().length != 0) {
             localStorage.setItem(Constants.PLEX_AUTH_TOKEN, user.jwtToken);
             this.ngOnDestroy();
             this.router.navigate(['/home']);
           }
         }, error => {
-          console.log("Error: " + error);
-          //TODO route back to login
+          console.log("Error while logging in (OAuth): " + error);
+          this.router.navigate(['/']);
         })
       }, 10000);
 

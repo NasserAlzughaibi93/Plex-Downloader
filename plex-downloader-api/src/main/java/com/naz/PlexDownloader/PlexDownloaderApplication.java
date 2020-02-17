@@ -9,7 +9,6 @@ public class PlexDownloaderApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PlexDownloaderApplication.class, args);
-		//BuildVersion.getOSInfo();
 	}
 
 }
