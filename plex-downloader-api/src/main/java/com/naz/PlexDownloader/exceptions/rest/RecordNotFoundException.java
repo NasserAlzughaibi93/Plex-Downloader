@@ -7,4 +7,8 @@ public class RecordNotFoundException extends BaseRuntimeException {
     public RecordNotFoundException(String messageKey, Object[] args) {
         super(messageKey, args);
     }
+
+    public RecordNotFoundException(String messageKey) {
+        super(messageKey);
+    }
 }
