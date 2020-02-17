@@ -102,6 +102,9 @@ public class Video {
     private Integer addedAt;
     @XmlAttribute(name = "updatedAt")
     private Integer updatedAt;
+    @XmlElement(name = "Genre")
+    @OneToMany
+    private List<Genre> genres;
 
     public Long getId() {
         return id;
@@ -413,5 +416,13 @@ public class Video {
 
     public void setUpdatedAt(Integer updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 }

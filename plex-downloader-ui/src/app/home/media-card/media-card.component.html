@@ -37,12 +37,8 @@
     <h2  class="card-title"></h2>
     <div class="container">
       <div class="row">
-        <div class="col-8 card-text">
-          <p>{{show.childCount}} Seasons</p>
-        </div>
-        <div class="col-4 card-text">
-          <p *ngIf="show.year">{{show.year}}</p>
-          <p *ngIf="!show.year">N/A</p>
+        <div class="card-text">
+          <p>{{show.childCount}} Seasons - {{!show ? 'N/A' : show.year}}</p>
         </div>
       </div>
     </div>

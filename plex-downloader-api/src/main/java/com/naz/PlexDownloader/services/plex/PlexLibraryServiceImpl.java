@@ -236,8 +236,6 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     @Override
     public String retrievePhotoFromPlexServer(String plexAuthToken, String serverIp, String metadataKey) {
 
-        //TODO have server side process URL example: http://{SERVER_IP}:{PORT}/photo/:/transcode?url=/library/metadata/13686/thumb/1576691662&width=500&height=500&X-Plex-Token={{APIKEY}}
-
         String url = serverIp + "/photo/:/transcode?url=" + metadataKey + "&" + PHOTO_HEIGHT + PHOTO_WIDTH + "X-Plex-Token=" + plexAuthToken;
 
         if (!url.contains("http://") && !url.contains("https://")) {
