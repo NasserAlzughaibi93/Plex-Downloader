@@ -4,10 +4,12 @@
   <ul class="navbar-nav">
     <li class="nav-item active">
 <!--      <a class="nav-link" href="#">Library ▼</a>-->
-      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-         aria-expanded="false">{{!selectedLibrary ? 'Select Library' : selectedLibrary.title}}</a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" *ngFor="let library of directories" (click)="onLibrarySelect(library)">{{library.title}}</a>
+      <div class="dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+           aria-expanded="false">{{!selectedLibrary ? 'Select Library' : selectedLibrary.title}}</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" *ngFor="let library of directories" (click)="onLibrarySelect(library)">{{library.title}}</a>
+        </div>
       </div>
     </li>
     <li class="nav-item">
@@ -31,8 +33,10 @@
         <img height="35" style="border-radius: 50%" src="{{userIcon}}">
       </a>
 
-      <div class="dropdown-menu">
-        <a class="dropdown-item" (click)="signOut()">Sign Out</a>
+      <div class="dropdown">
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" (click)="signOut()">Sign Out</a>
+        </div>
       </div>
     </li>
 
