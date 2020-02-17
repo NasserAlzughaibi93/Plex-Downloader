@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpInterceptor, HttpHandler, HttpRequest, HttpEvent, HttpResponse, HttpParams}
-  from '@angular/common/http';
+import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
 import {Router} from "@angular/router";
@@ -37,8 +36,15 @@ export class RestInterceptor implements HttpInterceptor {
         this.router.navigate(['/']);
         return;
       } else {
+
+        let headers = req.headers;
+
+        if (headers === null) {
+          headers = new HttpHeaders();
+        }
+
         req = req.clone({
-          headers: req.headers.append('Authorization', 'Bearer ' + authToken)
+          headers: headers.append('Authorization', 'Bearer ' + authToken)
         });
       }
     }

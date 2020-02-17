@@ -23,18 +23,16 @@ export class LoginService {
     private alertify: AlertifyService,
     private libraryService: LibraryService) { }
 
-  login(model: any) {
+  login(model: any) : Observable<User> {
 
     return this.http.post(this.baseUrl + '/basiclogin', model)
       .pipe(
-        map((response: any) => {
-          const user = new User().deserialize(response);
-
-          // this.alertify.message('Welcome, ' + user.username);
-          console.log('Icon: ' + user.thumb);
+        map((user: User) => {
 
           if (user) {
+            console.log('JWT Token: ' + user.jwtToken);
             localStorage.setItem(Constants.PLEX_AUTH_TOKEN, user.jwtToken);
+            return user;
           }
         })
       );

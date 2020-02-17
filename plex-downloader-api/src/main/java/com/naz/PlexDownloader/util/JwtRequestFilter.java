@@ -36,7 +36,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 
             throws ServletException, IOException {
@@ -47,7 +46,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String jwtToken = null;
 
-        if (request.getRequestURL().indexOf("/basiclogin") != -1 || request.getRequestURL().indexOf("/oAuth") != -1) {
+        StringBuffer requestUrl = request.getRequestURL();
+
+        if (requestUrl.indexOf("/basiclogin") != -1 || requestUrl.indexOf("/oAuth") != -1) {
             chain.doFilter(request, response);
             return;
         }
@@ -75,7 +76,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         } else {
             logger.warn("JWT Token does not begin with Bearer String");
 
-            throw new JwtInvalidException("jwt.token.missing.bearer.token.header");
+            //throw new JwtInvalidException("jwt.token.missing.bearer.token.header");
         }
 
         // Once we get the token validate it.

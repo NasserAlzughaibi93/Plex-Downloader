@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
-import { parseString } from 'xml2js';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {AlertifyService} from './alertify.service';
 import {map} from 'rxjs/operators';
 import {Constants} from "../util/constants";
-import {Convert, MediaContainer} from "../models/mediacontainer.model";
+import {MediaContainer} from "../models/mediacontainer.model";
 import {Observable} from "rxjs";
 import {Video} from "../models/video.model";
 import {Directory} from "../models/directory.model";
