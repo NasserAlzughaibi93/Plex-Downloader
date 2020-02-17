@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpInterceptor, HttpHandler, HttpRequest, HttpEvent, HttpResponse, HttpParams}
-  from '@angular/common/http';
+import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
 import {Router} from "@angular/router";
@@ -20,10 +19,10 @@ export class RestInterceptor implements HttpInterceptor {
 
     //kick out whoever doesn't belong.
     if (!req.url.endsWith('/basiclogin') && !req.url.includes('/oAuth')) {
-      console.log('injecting auth token');
+      // console.log('injecting auth token');
       if (req.url.includes('{{serverIp}}')) {
         let serverIp = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_URI);
-        console.log('injecting server: ' + serverIp);
+        // console.log('injecting server: ' + serverIp);
 
         req = req.clone({
           url: req.url.replace('{{serverIp}}', serverIp)
@@ -37,8 +36,12 @@ export class RestInterceptor implements HttpInterceptor {
         this.router.navigate(['/']);
         return;
       } else {
+
+        let headers = new HttpHeaders().set('Authorization', 'Bearer ' + authToken);
+
+
         req = req.clone({
-          headers: req.headers.append('PLEX-TOKEN', authToken)
+          headers: headers
         });
       }
     }

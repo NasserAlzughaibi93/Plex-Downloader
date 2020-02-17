@@ -45,6 +45,9 @@ public class Pin implements Serializable {
     @XmlAttribute
     private String expiresAt;
 
+    @XmlAttribute
+    private String newRegistration;
+
     private transient String resolvedUri;
 
     public String getResolvedUri() {
@@ -153,6 +156,14 @@ public class Pin implements Serializable {
     public void setExpiresAt (String expiresAt)
     {
         this.expiresAt = expiresAt;
+    }
+
+    public String getNewRegistration() {
+        return newRegistration;
+    }
+
+    public void setNewRegistration(String newRegistration) {
+        this.newRegistration = newRegistration;
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.naz.PlexDownloader.util.PlexRestTemplate;
 import com.naz.PlexDownloader.util.ValidationUtil;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,9 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     private static final String PLEX_RECENTLY_ADDED = PLEX_LIBRARY + "/recentlyAdded";
 
     private static final String PLEX_SEARCH = "/search?query=";
+
+    private static final String PHOTO_HEIGHT = "height=500&";
+    private static final String PHOTO_WIDTH = "width=500&";
 
     /**
      * Find available resources of a given server instance.
@@ -217,18 +221,30 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
         return mediaContainer.getDirectory();
     }
 
-    //TODO check if this is even logical once front end is setup.
     @Override
-    public List<Video> retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, String directoryKey) {
+    public MediaContainer retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, String directoryKey) {
         String url = serverIp + PLEX_SECTIONS + "/" + librarySectionKey + "/" + directoryKey;
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
 
-        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer,
-                mediaContainer.getVideo(), mediaContainer.getVideo());
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer);
 
-        return mediaContainer.getVideo();
+        return mediaContainer;
+    }
+
+    @Override
+    public String retrievePhotoFromPlexServer(String plexAuthToken, String serverIp, String metadataKey) {
+
+        String url = serverIp + "/photo/:/transcode?url=" + metadataKey + "&" + PHOTO_HEIGHT + PHOTO_WIDTH + "X-Plex-Token=" + plexAuthToken;
+
+        if (!url.contains("http://") && !url.contains("https://")) {
+            url = "http://" + url;
+        }
+
+//        String photoUrl = (String) PlexRestTemplate.buildPlexRestTemplate(url, plexAuthToken, String.class, false);
+
+        return url;
     }
 
     /**

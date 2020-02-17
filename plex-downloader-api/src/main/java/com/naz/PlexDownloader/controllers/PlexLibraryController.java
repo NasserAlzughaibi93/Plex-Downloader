@@ -63,7 +63,7 @@ public class PlexLibraryController {
 
     @GetMapping("/{serverIp}/sections/{sectionKey}/directory/{directoryKey}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Video> retrieveLibrarySectionBySectionKeyAndDirectoryKey(@PathVariable String serverIp,
+    public MediaContainer retrieveLibrarySectionBySectionKeyAndDirectoryKey(@PathVariable String serverIp,
                                                                          @PathVariable String sectionKey,
                                                                          @PathVariable String directoryKey,
                                                                          @RequestHeader("PLEX-TOKEN") String authToken) {
@@ -96,6 +96,14 @@ public class PlexLibraryController {
                                             @RequestHeader("PLEX-TOKEN") String authToken,
                                             @RequestBody Video video) {
         return this.plexLibraryService.retrieveMediaDownloadLink(authToken, serverIp, video);
+    }
+
+    @GetMapping("/{serverIp}/metadata/photo")
+    @ResponseStatus(HttpStatus.OK)
+    public String retrievePhotoFromPlexServer(@PathVariable String serverIp,
+                                            @RequestHeader("PLEX-TOKEN") String authToken,
+                                            @RequestParam String metadataKey) {
+        return this.plexLibraryService.retrievePhotoFromPlexServer(authToken, serverIp, metadataKey);
     }
 
     @GetMapping("/{serverIp}/search/{searchQuery}")

@@ -9,4 +9,5 @@ public interface PlexRepository extends JpaRepository<PlexUser, Long> {
 
     PlexUser findPlexUserByAuthToken(String authToken);
 
+    PlexUser findPlexUserByUsername(String username);
 }

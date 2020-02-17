@@ -18,13 +18,15 @@ public interface PlexLibraryService {
 
     List<Directory> retrieveLibrarySectionBySectionKey(String plexAuthToken, String serverIp, String librarySectionKey);
 
-    List<Video> retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, String directoryKey);
+    MediaContainer retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, String directoryKey);
 
     List<Video> retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey);
 
     List<Directory> retrieveMediaMetadataChildren(String plexAuthToken, String serverIp, String libraryKey);
 
     String retrieveMediaDownloadLink(String plexAuthToken, String serverIp, Video video);
+
+    String retrievePhotoFromPlexServer(String plexAuthToken, String serverIp, String metadataKey);
 
     MediaContainer retrieveSearchResults(String serverIp, String searchQuery, String authToken);
 }

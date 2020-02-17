@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
-import { parseString } from 'xml2js';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {AlertifyService} from './alertify.service';
 import {map} from 'rxjs/operators';
 import {Constants} from "../util/constants";
-import {Convert, MediaContainer} from "../models/mediacontainer.model";
+import {MediaContainer} from "../models/mediacontainer.model";
 import {Observable} from "rxjs";
 import {Video} from "../models/video.model";
 import {Directory} from "../models/directory.model";
@@ -93,15 +92,11 @@ export class LibraryService {
       );
   }
 
-  retrieveLibrarySectionBySectionKeyAndDirectoryKey(sectionKey: string, directoryKey: string) : Observable<Video[]> {
-
-
-
-
+  retrieveLibrarySectionBySectionKeyAndDirectoryKey(sectionKey: string, directoryKey: string) : Observable<MediaContainer> {
 
     console.log("test section key: " + sectionKey);
 
-    return this.http.get<Video[]>(this.baseUrl + '/{{serverIp}}/sections/' + sectionKey + '/directory/' + directoryKey)
+    return this.http.get<MediaContainer>(this.baseUrl + '/{{serverIp}}/sections/' + sectionKey + '/directory/' + directoryKey)
       .pipe(
         map((response: any) => {
 
@@ -186,6 +181,28 @@ export class LibraryService {
           }
 
           return directories;
+        })
+      );
+  }
+
+  retrievePhotoFromPlexServer(metadataKey: string) : Observable<string> {
+
+    let httpOptions = {
+      responseType: 'text' as 'json',
+      params: new HttpParams().set('metadataKey', metadataKey)
+    };
+
+    return this.http.get<string>(this.baseUrl + '/{{serverIp}}/metadata/photo', httpOptions)
+      .pipe(
+        map((photoUrl: any) => {
+
+          if (photoUrl) {
+            console.log("Retrieved transcoded photo!");
+          } else {
+            console.log("Photo is null!");
+          }
+
+          return photoUrl;
         })
       );
   }

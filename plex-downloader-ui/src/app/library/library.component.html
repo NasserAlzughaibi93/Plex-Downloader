@@ -1,0 +1,67 @@
+<app-navbar></app-navbar>
+<app-loading></app-loading>
+
+<br><br><br>
+
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10 col-sm-12">
+      <!-- Grey with black text -->
+      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul class="navbar-nav">
+          <li>
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+               aria-expanded="false">Filter By</a>
+
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+
+              <div class="dropdown-submenu">
+                <li>
+                  <a class="dropdown-toggle" data-toggle="dropdown-toggle">Genre</a>
+                </li>
+                <ul class="dropdown-menu" *ngIf="genres">
+                  <li *ngFor="let genre of genres">
+                    <a class="dropdown"  (click)="genreFilter(genre)">{{genre}}</a>
+                  </li>
+                  <li class="divider"></li>
+                  <li>
+                    <a class="dropdown" (click)="clearFilters()">Show All</a>
+                  </li>
+                </ul>
+              </div>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <label>
+              <input type="text" class="form-control" placeholder="Filter Media..."
+                     style="width: 300px" [(ngModel)]="searchQuery"/>
+            </label>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</div>
+<br>
+<div class="container">
+
+  <div *ngIf="videosList">
+    <div class="row mg-bottom" *ngFor="let row of videosList">
+      <ng-container *ngFor="let video of row?.videos | libraryFilter:searchQuery | libraryGenreFilter:genreSelection">
+        <app-media-card class="col-xs-6 col-md-3" [video]="video"></app-media-card>
+      </ng-container>
+    </div>
+  </div>
+
+  <div *ngIf="showsList">
+    <div class="row mg-bottom" *ngFor="let row of showsList">
+      <ng-container *ngFor="let show of row?.shows | librarySeriesFilter:searchQuery">
+        <app-media-card class="col-xs-6 col-md-3" [show]="show"></app-media-card>
+      </ng-container>
+    </div>
+  </div>
+</div>

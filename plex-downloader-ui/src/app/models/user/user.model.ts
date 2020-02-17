@@ -1,8 +1,7 @@
 import {Subscription} from './subscription.model';
 import {Roles} from './roles.model';
-import {Deserializable} from '../deserializable.model';
 
-export class User implements Deserializable {
+export interface User {
   id?: number;
   uuid?: string;
   email?: string;
@@ -19,8 +18,5 @@ export class User implements Deserializable {
   confirmedAt?: null;
   forumId?: null;
   rememberMe?: boolean;
-
-  deserialize(input: any): this {
-    return Object.assign(this, input);
-  }
+  jwtToken?: string;
 }
