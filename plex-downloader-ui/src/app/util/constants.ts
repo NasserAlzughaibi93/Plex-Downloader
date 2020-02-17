@@ -17,4 +17,6 @@ export class Constants {
   static readonly PLEX_SELECTED_LIBRARIES = 'libraries';
 
   static readonly FIRST_TIME_SETUP_COMPLETE = 'first_time_setup_complete';
+
+  static readonly PLEX_USER_ICON = 'user_icon';
 }

@@ -1,0 +1,52 @@
+<app-navbar></app-navbar>
+<app-loading></app-loading>
+
+<br><br><br>
+<div class="container">
+
+  <div *ngIf="videosList">
+    <div class="row mg-bottom" *ngFor="let row of videosList">
+      <ng-container *ngFor="let video of row?.videos">
+        <app-media-card class="col-xs-6 col-md-3" [video]="video"></app-media-card>
+      </ng-container>
+    </div>
+  </div>
+
+  <div *ngIf="showsList">
+    <div class="row mg-bottom" *ngFor="let row of showsList">
+      <ng-container *ngFor="let show of row?.shows">
+        <app-media-card class="col-xs-6 col-md-3" [show]="show"></app-media-card>
+      </ng-container>
+    </div>
+  </div>
+  <!--<div *ngFor="let item of videos; let i = index">
+    <div *ngIf="i % 5 == 0" class="row">
+      &lt;!&ndash;    {{ item }}&ndash;&gt;
+      <div class="col-md-1"></div>
+      <div *ngIf="i + 1 < videos.length" >
+        <app-media-card [video]="videos[i + 1]"></app-media-card>
+      </div>
+      <div *ngIf="i + 1 < videos.length" >
+        <app-media-card [video]="videos[i + 2]"></app-media-card>
+      </div>
+      <div *ngIf="i + 1 < videos.length" >
+        <app-media-card [video]="videos[i + 3]"></app-media-card>
+      </div>
+      <div *ngIf="i + 1 < videos.length" >
+        <app-media-card [video]="videos[i + 4]"></app-media-card>
+      </div>
+      &lt;!&ndash;    <div *ngIf="i + 2 < videos.length" class="col-md-2">{{ videos[i + 2].title }}</div>&ndash;&gt;
+      &lt;!&ndash;    <div *ngIf="i + 3 < videos.length" class="col-md-2">{{ videos[i + 3].title }}</div>&ndash;&gt;
+      &lt;!&ndash;    <div *ngIf="i + 4 < videos.length" class="col-md-2">{{ videos[i + 4].title }}</div>&ndash;&gt;
+      <div ></div>
+    </div>
+  </div>-->
+
+
+  <!--<div *ngIf="videos">
+    <ul>
+      <li *ngFor="let video of videos">{{video.title}}</li>
+    </ul>
+  </div>-->
+
+</div>

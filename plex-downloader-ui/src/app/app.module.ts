@@ -24,6 +24,7 @@ import {MediaCardComponent} from './home/media-card/media-card.component';
 import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {LoadingComponent} from './util/loading/loading.component';
 import {LoadingScreenInterceptor} from "./util/loading-interceptor";
+import { LibraryComponent } from './library/library.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {LoadingScreenInterceptor} from "./util/loading-interceptor";
     SearchComponent,
     SeriesPanelComponent,
     MediaCardComponent,
-    LoadingComponent
+    LoadingComponent,
+    LibraryComponent
   ],
   imports: [
     BrowserModule,
