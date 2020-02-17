@@ -3,6 +3,7 @@ import {Media} from "./media.model";
 import {Role} from "./role.model";
 import {Director} from "./director.model";
 import {Country} from "./country.model";
+import {Genre} from "./genre.model";
 
 export interface Video {
   addedAt?:               number;
@@ -44,5 +45,6 @@ export interface Video {
   updatedAt?:             number;
   writer?:                Writer[];
   year?:                  number;
+  genres?:                Genre[];
 }
 
