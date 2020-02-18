@@ -114,6 +114,8 @@ public class Directory
     @OneToOne
     private Location Location;
 
+    private String transcodedPhoto;
+
     public String getArt ()
     {
         return art;
@@ -400,6 +402,14 @@ public class Directory
 
     public void setYear(String year) {
         this.year = year;
+    }
+
+    public String getTranscodedPhoto() {
+        return transcodedPhoto;
+    }
+
+    public void setTranscodedPhoto(String transcodedPhoto) {
+        this.transcodedPhoto = transcodedPhoto;
     }
 
     @Override

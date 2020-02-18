@@ -37,4 +37,5 @@ export interface Directory {
   childCount?:       string;
   year?:             string;
   rating?:           string;
+  transcodedPhoto?:  string;
 }

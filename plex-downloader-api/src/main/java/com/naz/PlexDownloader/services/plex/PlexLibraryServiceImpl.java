@@ -1,6 +1,7 @@
 package com.naz.PlexDownloader.services.plex;
 
 import com.naz.PlexDownloader.models.plex.Device;
+import com.naz.PlexDownloader.models.plex.Director;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Part;
@@ -227,8 +228,37 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-
         ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer);
+
+        if (!CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
+            final List<Video> videos = mediaContainer.getVideo();
+
+            for (Video video: videos) {
+
+                String photoMetaDataKey = "";
+
+                if (video.getType().equals("movie")) {
+                    photoMetaDataKey = video.getThumb();
+                } else {
+                    photoMetaDataKey = video.getGrandparentThumb();
+                }
+
+                String transcodedPhoto = retrievePhotoFromPlexServer(plexAuthToken, serverIp, photoMetaDataKey);
+
+                video.setTranscodedPhoto(transcodedPhoto);
+            }
+        }
+
+        if (!CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory())) {
+            final List<Directory> shows = mediaContainer.getDirectory();
+            for (Directory show: shows) {
+                String photoMetaDataKey = show.getThumb();
+
+                String transcodedPhoto = retrievePhotoFromPlexServer(plexAuthToken, serverIp, photoMetaDataKey);
+
+                show.setTranscodedPhoto(transcodedPhoto);
+            }
+        }
 
         return mediaContainer;
     }

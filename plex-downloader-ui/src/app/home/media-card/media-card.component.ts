@@ -33,11 +33,11 @@ export class MediaCardComponent implements OnInit {
 
   ngOnInit() {
     if (this.video && !this.mediaPhotoUrl) {
-      this.resolvePosterURL(this.video);
+      //this.resolvePosterURL(this.video);
     }
 
     if (this.show && !this.seriesPhotoUrl) {
-      this.resolveSeriesPosterURL(this.show);
+      //this.resolveSeriesPosterURL(this.show);
     }
   }
 
@@ -46,8 +46,8 @@ export class MediaCardComponent implements OnInit {
     let thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
 
     this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
-      MediaCardComponent.count++;
-      console.log('The count: '+ MediaCardComponent.count);
+      /*MediaCardComponent.count++;
+      console.log('The count: '+ MediaCardComponent.count);*/
       this.mediaPhotoUrl = photoUrl;
     }, () => {
       console.log('Error loading photo url');

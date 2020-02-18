@@ -46,5 +46,6 @@ export interface Video {
   writer?:                Writer[];
   year?:                  number;
   genres?:                Genre[];
+  transcodedPhoto?:       string;
 }
 

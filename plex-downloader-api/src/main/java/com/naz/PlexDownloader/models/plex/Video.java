@@ -106,6 +106,8 @@ public class Video {
     @OneToMany
     private List<Genre> genres;
 
+    private String transcodedPhoto;
+
     public Long getId() {
         return id;
     }
@@ -424,5 +426,13 @@ public class Video {
 
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
+    }
+
+    public String getTranscodedPhoto() {
+        return transcodedPhoto;
+    }
+
+    public void setTranscodedPhoto(String transcodedPhoto) {
+        this.transcodedPhoto = transcodedPhoto;
     }
 }

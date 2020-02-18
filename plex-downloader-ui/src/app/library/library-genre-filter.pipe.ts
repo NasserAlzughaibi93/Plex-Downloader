@@ -7,12 +7,15 @@ import {Video} from "../models/video.model";
 export class LibraryGenreFilterPipe implements PipeTransform {
 
   transform(videosList: Video[], genre: string): Video[] {
-    if (!videosList || !genre) {
+    if (!videosList || !genre ) {
       return videosList;
     }
 
     return videosList.filter(video => {
       console.log('video name: ' + video.title);
+      if (!video.genres) {
+        return;
+      }
       for (let aGenre of video.genres) {
         console.log('the genre' + aGenre);
         if (aGenre.tag === genre) {
