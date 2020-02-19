@@ -29,6 +29,7 @@ public class SimpleCORSFilter implements Filter {
 //        allowedOrigins.add("https://localhost:8081");
         allowedOrigins.add("http://localhost:4200");
         allowedOrigins.add("https://localhost:8080");
+        allowedOrigins.add("*/api/**");
     }
 
     @Override

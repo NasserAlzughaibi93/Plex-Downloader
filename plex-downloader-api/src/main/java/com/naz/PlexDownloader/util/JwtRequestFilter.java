@@ -48,7 +48,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         StringBuffer requestUrl = request.getRequestURL();
 
-        if (requestUrl.indexOf("/basiclogin") != -1 || requestUrl.indexOf("/oAuth") != -1) {
+        if (requestUrl.indexOf("/basiclogin") != -1
+                || requestUrl.indexOf("/oAuth") != -1) {
             chain.doFilter(request, response);
             return;
         }

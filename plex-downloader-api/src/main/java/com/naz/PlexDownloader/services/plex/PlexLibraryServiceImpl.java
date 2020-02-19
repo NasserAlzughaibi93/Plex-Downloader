@@ -192,14 +192,16 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     }
 
     @Override
-    public MediaContainer retrieveSearchResults(String serverIp, String searchQuery, String authToken) {
+    public MediaContainer retrieveSearchResults(String serverIp, String searchQuery, String plexAuthToken) {
 
         String url = serverIp + PLEX_SEARCH + searchQuery;
 
-        MediaContainer mediaContainer = this.buildPlexRestCall(authToken, url, false);
+        MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
         ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer,
                 mediaContainer.getVideo(), mediaContainer.getDirectory());
+
+        retrieveTranscodedPhotosForMedia(mediaContainer, serverIp, plexAuthToken);
 
         return mediaContainer;
     }
@@ -230,35 +232,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
         ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer);
 
-        if (!CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
-            final List<Video> videos = mediaContainer.getVideo();
-
-            for (Video video: videos) {
-
-                String photoMetaDataKey = "";
-
-                if (video.getType().equals("movie")) {
-                    photoMetaDataKey = video.getThumb();
-                } else {
-                    photoMetaDataKey = video.getGrandparentThumb();
-                }
-
-                String transcodedPhoto = retrievePhotoFromPlexServer(plexAuthToken, serverIp, photoMetaDataKey);
-
-                video.setTranscodedPhoto(transcodedPhoto);
-            }
-        }
-
-        if (!CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory())) {
-            final List<Directory> shows = mediaContainer.getDirectory();
-            for (Directory show: shows) {
-                String photoMetaDataKey = show.getThumb();
-
-                String transcodedPhoto = retrievePhotoFromPlexServer(plexAuthToken, serverIp, photoMetaDataKey);
-
-                show.setTranscodedPhoto(transcodedPhoto);
-            }
-        }
+        retrieveTranscodedPhotosForMedia(mediaContainer, serverIp, plexAuthToken);
 
         return mediaContainer;
     }
@@ -292,6 +266,39 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
         }
 
         return (MediaContainer) PlexRestTemplate.buildPlexRestTemplateForXMLResponse(url, plexAuthToken, MediaContainer.class, isPostCall);
+    }
+
+    private void retrieveTranscodedPhotosForMedia(MediaContainer mediaContainer, String serverIp, String plexAuthToken) {
+
+        if (!CollectionUtil.isNullOrEmpty(mediaContainer.getVideo())) {
+            final List<Video> videos = mediaContainer.getVideo();
+
+            for (Video video: videos) {
+
+                String photoMetaDataKey = "";
+
+                if (video.getType().equals("movie")) {
+                    photoMetaDataKey = video.getThumb();
+                } else {
+                    photoMetaDataKey = video.getGrandparentThumb();
+                }
+
+                String transcodedPhoto = retrievePhotoFromPlexServer(plexAuthToken, serverIp, photoMetaDataKey);
+
+                video.setTranscodedPhoto(transcodedPhoto);
+            }
+        }
+
+        if (!CollectionUtil.isNullOrEmpty(mediaContainer.getDirectory())) {
+            final List<Directory> shows = mediaContainer.getDirectory();
+            for (Directory show: shows) {
+                String photoMetaDataKey = show.getThumb();
+
+                String transcodedPhoto = retrievePhotoFromPlexServer(plexAuthToken, serverIp, photoMetaDataKey);
+
+                show.setTranscodedPhoto(transcodedPhoto);
+            }
+        }
     }
 }
 
