@@ -105,6 +105,8 @@ public class Video {
     @XmlElement(name = "Genre")
     @OneToMany
     private List<Genre> genres;
+    @XmlAttribute(name = "viewCount")
+    private String viewCount;
 
     private String transcodedPhoto;
 
@@ -434,5 +436,13 @@ public class Video {
 
     public void setTranscodedPhoto(String transcodedPhoto) {
         this.transcodedPhoto = transcodedPhoto;
+    }
+
+    public String getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(String viewCount) {
+        this.viewCount = viewCount;
     }
 }

@@ -14,7 +14,7 @@
           <input type="checkbox" value="remember-me"> Remember me
         </label>
       </div>
-      <button [disabled]="!loginForm.valid" class="btn btn-success my-2 my-sm-0" type="submit">Sign in through Plex Basic Authentication</button>
+      <button [disabled]="!loginForm.valid && isLoggingIn" class="btn btn-success my-2 my-sm-0" type="submit">Sign in through Plex Basic Authentication</button>
     </form>
 
     <br><br>
@@ -23,7 +23,7 @@
     </div>
     <br>
     <div>
-      <button class="btn btn-primary" type="button" (click)="oAuthLogin()"> Sign In With Plex OAuth</button>
+      <button class="btn btn-primary" [disabled]="isLoggingIn" type="button" (click)="oAuthLogin()"> Sign In With Plex OAuth</button>
     </div>
   </div>
 

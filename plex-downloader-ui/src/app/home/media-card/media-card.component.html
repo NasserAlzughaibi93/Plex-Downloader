@@ -1,5 +1,5 @@
 <div class="card" *ngIf="video" style="display: inline-block; width: 15em;" title="{{video.title}}">
-  <div class="card-header">
+  <div class="card-header poster-container">
 
     <img *ngIf="video.type === 'episode'" (click)="openDialog(video)"
          class="card-img" src="{{video.transcodedPhoto}}"
@@ -7,8 +7,13 @@
          title="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}">
 
 
+
     <img *ngIf="video.type === 'movie'" (click)="openDialog(video)"
          class="card-img" src="{{video.transcodedPhoto}}" alt="{{video.title}}" title="{{video.title}}">
+
+
+    <div *ngIf="!video.viewCount" class="unwatched-overlay"></div>
+
 
   </div>
   <div class="card-body" *ngIf="video.type === 'episode'">
