@@ -169,18 +169,21 @@ a:hover
 .unwatched-series-overlay{
   opacity:0;
   position:absolute;
-  text-align: center;
   top: 0px;
-  border-right: 45px solid orange;
-  border-top: 18px solid orange;
+  /*border-right: 45px solid orange;*/
+  /*border-top: 18px solid orange;*/
+  padding-right: 50px;
+  background-color: orange;
   width: 20px;
+  height: 45px;
   right: 0px;
   font-size: 18px;
-  display: inline-block;
   white-space: nowrap;
+  border-radius: 5px;
 
 }
 
 .poster-container .unwatched-series-overlay {
+  text-align: center;
   opacity: 1;
 }

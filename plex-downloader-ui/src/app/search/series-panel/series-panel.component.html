@@ -13,46 +13,53 @@
         <div class="col-md-8">
           <div class="card-body">
             <h5 class="card-title">{{show.title}}</h5>
-            <p class="card-text">{{show.summary}}</p>
-            <div class="card-text" *ngFor="let season of seasons; let i = index" [attr.data-index]="i">
-              <div class="accordion" id="seasonAccordion">
-                <div class="card">
-                  <div class="card-header" id="headingOne">
-                    <h2 class="mb-0">
-                      <button class="btn btn-link collapsed" type="button" [attr.data-target]="'#season-target'+i"
-                              data-toggle="collapse" aria-expanded="false">
-                        <h5>{{season.title}}</h5>
-                      </button>
-                    </h2>
-                  </div>
 
-                  <div id="season-target{{i}}" class="collapse" aria-labelledby="headingOne"
-                       data-parent="#seasonAccordion">
-                    <div class="card-body">
-                      <table class="table">
-                        <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Title</th>
-                          <!--        <th scope="col">Summary</th>-->
-                          <!--        <th scope="col">Handle</th>-->
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let episode of season.videos">
-                          <!--        <th scope="row">1</th>-->
-                          <td *ngIf="season.title === 'All episodes'">S{{episode.parentIndex}}E{{episode.index}}</td>
-                          <td>{{episode.index}}</td>
-                          <td>{{episode.title}}</td>
-                          <td>
-                            <button type="button" class="btn btn-primary" (click)="startDownloadingMedia(episode)">
-                              Download
-                            </button>
-                          </td>
-                          <!--        <td>@mdo</td>-->
-                        </tr>
-                        </tbody>
-                      </table>
+            <div class="card-text">
+
+              <p>{{show.summary}}</p>
+
+              <div *ngFor="let season of seasons; let i = index" [attr.data-index]="i">
+                <div class="accordion" id="seasonAccordion">
+                  <div class="card">
+                    <div class="card-header" id="headingOne">
+                      <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" [attr.data-target]="'#season-target'+i"
+                                data-toggle="collapse" aria-expanded="false">
+                          <h5>{{season.title}}</h5>
+                        </button>
+                      </h2>
+                    </div>
+
+                    <div id="season-target{{i}}" class="collapse" aria-labelledby="headingOne"
+                         data-parent="#seasonAccordion">
+                      <div class="card-body">
+                        <table class="table">
+                          <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Watched</th>
+                            <!--        <th scope="col">Summary</th>-->
+                            <!--        <th scope="col">Handle</th>-->
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let episode of season.videos">
+                            <!--        <th scope="row">1</th>-->
+                            <td *ngIf="season.title === 'All episodes'">S{{episode.parentIndex}}E{{episode.index}}</td>
+                            <td>{{episode.index}}</td>
+                            <td>{{episode.title}}</td>
+                            <td>{{episode.viewCount ? 'Yes' : 'No'}}</td>
+                            <td>
+                              <button type="button" class="btn btn-primary" (click)="startDownloadingMedia(episode)">
+                                Download
+                              </button>
+                            </td>
+                            <!--        <td>@mdo</td>-->
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -84,6 +84,10 @@ body {
   margin-left: 5px;
 }
 
+h2{
+  color: whitesmoke;
+}
+
 /*.card-img {
   object-fit: cover;
 }*/
