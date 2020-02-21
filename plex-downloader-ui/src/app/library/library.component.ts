@@ -100,8 +100,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.showsList = mediaContainer.directory;
 
         for (let show of shows) {
-          years.push(parseInt(show.year));
-          ratings.push(parseFloat(show.rating));
+          years.push(show.year);
+          ratings.push(show.rating);
           if (show.genres != null) {
             for (let genre of show.genres) {
               console.log('Genre: ' + genre);

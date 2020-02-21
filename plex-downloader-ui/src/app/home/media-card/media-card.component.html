@@ -33,10 +33,16 @@
 </div>
 
 <div class="card" *ngIf="show" style="display: inline-block; width: 15em;" title="{{show.title}}">
-  <div class="card-header">
+  <div class="card-header poster-container">
 
     <img src="{{show.transcodedPhoto}}" (click)="openShowDialog(show)" class="card-img" alt="{{show.title}}"
          title="{{show.title}}"/>
+
+    <div *ngIf="!show.viewedLeafCount || show.viewedLeafCount && (show.leafCount - show.viewedLeafCount != 0)" class="unwatched-series-overlay">
+      <div class="container">
+        {{show.viewedLeafCount == null ? show.leafCount : show.leafCount - show.viewedLeafCount}}
+      </div>
+    </div>
   </div>
   <div class="card-body">
     <h2  class="card-title"></h2>

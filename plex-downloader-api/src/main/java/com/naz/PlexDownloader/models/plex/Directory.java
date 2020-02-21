@@ -96,10 +96,10 @@ public class Directory
     private String childCount;
 
     @XmlAttribute
-    private String rating;
+    private Float rating;
 
     @XmlAttribute
-    private String year;
+    private Integer year;
 
     @XmlAttribute
     private String search;
@@ -116,205 +116,11 @@ public class Directory
 
     private String transcodedPhoto;
 
-    public String getArt ()
-    {
-        return art;
-    }
+    @XmlAttribute
+    private Integer leafCount;
 
-    public void setArt (String art)
-    {
-        this.art = art;
-    }
-
-    public String getAgent ()
-    {
-        return agent;
-    }
-
-    public void setAgent (String agent)
-    {
-        this.agent = agent;
-    }
-
-    public String getScannedAt ()
-    {
-        return scannedAt;
-    }
-
-    public void setScannedAt (String scannedAt)
-    {
-        this.scannedAt = scannedAt;
-    }
-
-    public String getThumb ()
-    {
-        return thumb;
-    }
-
-    public void setThumb (String thumb)
-    {
-        this.thumb = thumb;
-    }
-
-    public String getContentChangedAt ()
-    {
-        return contentChangedAt;
-    }
-
-    public void setContentChangedAt (String contentChangedAt)
-    {
-        this.contentChangedAt = contentChangedAt;
-    }
-
-    public String getAllowSync ()
-    {
-        return allowSync;
-    }
-
-    public void setAllowSync (String allowSync)
-    {
-        this.allowSync = allowSync;
-    }
-
-    public String getLanguage ()
-    {
-        return language;
-    }
-
-    public void setLanguage (String language)
-    {
-        this.language = language;
-    }
-
-    public String getFilters ()
-    {
-        return filters;
-    }
-
-    public void setFilters (String filters)
-    {
-        this.filters = filters;
-    }
-
-    public String getType ()
-    {
-        return type;
-    }
-
-    public void setType (String type)
-    {
-        this.type = type;
-    }
-
-    public String getTitle ()
-    {
-        return title;
-    }
-
-    public void setTitle (String title)
-    {
-        this.title = title;
-    }
-
-    public String getUuid ()
-    {
-        return uuid;
-    }
-
-    public void setUuid (String uuid)
-    {
-        this.uuid = uuid;
-    }
-
-    public String getDirectory ()
-    {
-        return directory;
-    }
-
-    public void setDirectory (String directory)
-    {
-        this.directory = directory;
-    }
-
-    public String getContent ()
-    {
-        return content;
-    }
-
-    public void setContent (String content)
-    {
-        this.content = content;
-    }
-
-    public String getCreatedAt ()
-    {
-        return createdAt;
-    }
-
-    public void setCreatedAt (String createdAt)
-    {
-        this.createdAt = createdAt;
-    }
-
-    public String getComposite ()
-    {
-        return composite;
-    }
-
-    public void setComposite (String composite)
-    {
-        this.composite = composite;
-    }
-
-    public String getRefreshing ()
-    {
-        return refreshing;
-    }
-
-    public void setRefreshing (String refreshing)
-    {
-        this.refreshing = refreshing;
-    }
-
-    public String getScanner ()
-    {
-        return scanner;
-    }
-
-    public void setScanner (String scanner)
-    {
-        this.scanner = scanner;
-    }
-
-    public String getKey ()
-    {
-        return key;
-    }
-
-    public void setKey (String key)
-    {
-        this.key = key;
-    }
-
-    public String getUpdatedAt ()
-    {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt (String updatedAt)
-    {
-        this.updatedAt = updatedAt;
-    }
-
-    public Location getLocation ()
-    {
-        return Location;
-    }
-
-    public void setLocation (Location Location)
-    {
-        this.Location = Location;
-    }
+    @XmlAttribute
+    private Integer viewedLeafCount;
 
     public Long getDirectoryId() {
         return directoryId;
@@ -322,6 +128,142 @@ public class Directory
 
     public void setDirectoryId(Long directoryId) {
         this.directoryId = directoryId;
+    }
+
+    public String getArt() {
+        return art;
+    }
+
+    public void setArt(String art) {
+        this.art = art;
+    }
+
+    public String getAgent() {
+        return agent;
+    }
+
+    public void setAgent(String agent) {
+        this.agent = agent;
+    }
+
+    public String getScannedAt() {
+        return scannedAt;
+    }
+
+    public void setScannedAt(String scannedAt) {
+        this.scannedAt = scannedAt;
+    }
+
+    public String getThumb() {
+        return thumb;
+    }
+
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
+    }
+
+    public String getContentChangedAt() {
+        return contentChangedAt;
+    }
+
+    public void setContentChangedAt(String contentChangedAt) {
+        this.contentChangedAt = contentChangedAt;
+    }
+
+    public String getAllowSync() {
+        return allowSync;
+    }
+
+    public void setAllowSync(String allowSync) {
+        this.allowSync = allowSync;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getFilters() {
+        return filters;
+    }
+
+    public void setFilters(String filters) {
+        this.filters = filters;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getDirectory() {
+        return directory;
+    }
+
+    public void setDirectory(String directory) {
+        this.directory = directory;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getComposite() {
+        return composite;
+    }
+
+    public void setComposite(String composite) {
+        this.composite = composite;
+    }
+
+    public String getRefreshing() {
+        return refreshing;
+    }
+
+    public void setRefreshing(String refreshing) {
+        this.refreshing = refreshing;
+    }
+
+    public String getScanner() {
+        return scanner;
+    }
+
+    public void setScanner(String scanner) {
+        this.scanner = scanner;
     }
 
     public String getSecondary() {
@@ -338,14 +280,6 @@ public class Directory
 
     public void setPrompt(String prompt) {
         this.prompt = prompt;
-    }
-
-    public String getSearch() {
-        return search;
-    }
-
-    public void setSearch(String search) {
-        this.search = search;
     }
 
     public String getSummary() {
@@ -388,20 +322,52 @@ public class Directory
         this.childCount = childCount;
     }
 
-    public String getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(Integer year) {
         this.year = year;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public com.naz.PlexDownloader.models.plex.Location getLocation() {
+        return Location;
+    }
+
+    public void setLocation(com.naz.PlexDownloader.models.plex.Location location) {
+        Location = location;
     }
 
     public String getTranscodedPhoto() {
@@ -410,6 +376,22 @@ public class Directory
 
     public void setTranscodedPhoto(String transcodedPhoto) {
         this.transcodedPhoto = transcodedPhoto;
+    }
+
+    public Integer getLeafCount() {
+        return leafCount;
+    }
+
+    public void setLeafCount(Integer leafCount) {
+        this.leafCount = leafCount;
+    }
+
+    public Integer getViewedLeafCount() {
+        return viewedLeafCount;
+    }
+
+    public void setViewedLeafCount(Integer viewedLeafCount) {
+        this.viewedLeafCount = viewedLeafCount;
     }
 
     @Override

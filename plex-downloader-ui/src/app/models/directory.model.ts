@@ -35,7 +35,9 @@ export interface Directory {
   roles?:            Role[];
   videos?:           Video[];
   childCount?:       string;
-  year?:             string;
-  rating?:           string;
+  year?:             number;
+  rating?:           number;
   transcodedPhoto?:  string;
+  leafCount?:        number;
+  viewedLeafCount?:  number;
 }

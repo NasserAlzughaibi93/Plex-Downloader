@@ -165,3 +165,22 @@ a:hover
   right: 0px;
   z-index: 1;
 }
+
+.unwatched-series-overlay{
+  opacity:0;
+  position:absolute;
+  text-align: center;
+  top: 0px;
+  border-right: 45px solid orange;
+  border-top: 18px solid orange;
+  width: 20px;
+  right: 0px;
+  font-size: 18px;
+  display: inline-block;
+  white-space: nowrap;
+
+}
+
+.poster-container .unwatched-series-overlay {
+  opacity: 1;
+}
