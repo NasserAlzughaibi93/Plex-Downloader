@@ -102,8 +102,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
         for (let show of shows) {
           years.push(show.year);
           ratings.push(show.rating);
-          if (show.genres != null) {
-            for (let genre of show.genres) {
+          if (show.genre != null) {
+            for (let genre of show.genre) {
               console.log('Genre: ' + genre);
               genreTags.push(genre.tag);
             }

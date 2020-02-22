@@ -30,16 +30,4 @@ public class BuildVersion {
         return projectBranch;
     }
 
-    public static void getOSInfo() {
-
-        String osName = System.getProperty("os.name");
-        System.out.println(osName);
-
-        String osArch = System.getProperty("os.arch");
-        System.out.println(osArch);
-
-        String osVersion = System.getProperty("os.version");
-        System.out.println(osVersion);
-
-    }
 }

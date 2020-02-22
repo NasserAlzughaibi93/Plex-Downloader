@@ -3,9 +3,9 @@ import {Video} from "../models/video.model";
 import {SearchCriteriaModel} from "../models/search-criteria.model";
 
 @Pipe({
-  name: 'libraryGenreFilter'
+  name: 'librarySearchCriteriaFilterPipe'
 })
-export class LibraryGenreFilterPipe implements PipeTransform {
+export class LibrarySearchCriteriaFilterPipe implements PipeTransform {
 
   transform(videosList: Video[], searchCriteria: SearchCriteriaModel): Video[] {
 

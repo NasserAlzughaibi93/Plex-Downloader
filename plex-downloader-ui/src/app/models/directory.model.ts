@@ -31,7 +31,7 @@ export interface Directory {
   uuid?:             string;
   summary?:          string;
   banner?:           string;
-  genres?:           Genre[];
+  genre?:            Genre[];
   roles?:            Role[];
   videos?:           Video[];
   childCount?:       string;

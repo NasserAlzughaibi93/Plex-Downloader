@@ -47,7 +47,7 @@
                           <tr *ngFor="let episode of season.videos">
                             <!--        <th scope="row">1</th>-->
                             <td *ngIf="season.title === 'All episodes'">S{{episode.parentIndex}}E{{episode.index}}</td>
-                            <td>{{episode.index}}</td>
+                            <td *ngIf="season.title != 'All episodes'">>{{episode.index}}</td>
                             <td>{{episode.title}}</td>
                             <td>{{episode.viewCount ? 'Yes' : 'No'}}</td>
                             <td>

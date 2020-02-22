@@ -27,7 +27,8 @@ import {LoadingScreenInterceptor} from "./util/loading-interceptor";
 import { LibraryComponent } from './library/library.component';
 import { LibraryFilterPipe } from './library/library-filter.pipe';
 import { LibrarySeriesFilterPipe } from './library/library-series-filter.pipe';
-import { LibraryGenreFilterPipe } from './library/library-genre-filter.pipe';
+import { LibrarySearchCriteriaFilterPipe } from './library/library-search-criteria-filter.pipe';
+import {LibrarySeriesSearchCriteriaFilterPipe} from "./library/library-series-search-criteria-filter.pipe";
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { LibraryGenreFilterPipe } from './library/library-genre-filter.pipe';
     LibraryComponent,
     LibraryFilterPipe,
     LibrarySeriesFilterPipe,
-    LibraryGenreFilterPipe
+    LibrarySearchCriteriaFilterPipe,
+    LibrarySeriesSearchCriteriaFilterPipe
   ],
   imports: [
     BrowserModule,
