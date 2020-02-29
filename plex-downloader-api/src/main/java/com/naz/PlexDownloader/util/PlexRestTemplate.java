@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -19,6 +20,7 @@ import static com.naz.PlexDownloader.util.Constants.X_PLEX_PRODUCT;
 import static com.naz.PlexDownloader.util.Constants.X_PLEX_TOKEN;
 import static com.naz.PlexDownloader.util.Constants.X_PLEX_VERSION;
 
+@Component
 public class PlexRestTemplate {
 
     /**
@@ -29,7 +31,7 @@ public class PlexRestTemplate {
      * @param tClass - The model class.
      * @return - Ready to go RestTempltate
      */
-    public static Object buildPlexRestTemplate(String url,
+    public Object buildPlexRestTemplate(String url,
                                                String username,
                                                String password,
                                                Class tClass, boolean isPostCall) {
@@ -69,7 +71,7 @@ public class PlexRestTemplate {
      * @param tClass - The model class.
      * @return - Ready to go RestTempltate
      */
-    public static Object buildPlexRestTemplate(String url,
+    public Object buildPlexRestTemplate(String url,
                                                String authToken,
                                                Class tClass, boolean isPostCall) {
 
@@ -108,7 +110,7 @@ public class PlexRestTemplate {
      * @param tClass - The model class.
      * @return - Ready to go RestTempltate
      */
-    public static Object buildPlexRestTemplateForXMLResponse(String url,
+    public Object buildPlexRestTemplateForXMLResponse(String url,
                                         String authToken,
                                         Class tClass, boolean isPostCall) {
         RestTemplate restTemplate = new RestTemplate();

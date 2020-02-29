@@ -10,6 +10,7 @@ import com.naz.PlexDownloader.util.CollectionUtil;
 import com.naz.PlexDownloader.util.PlexRestTemplate;
 import com.naz.PlexDownloader.util.ValidationUtil;
 import org.hibernate.cfg.NotYetImplementedException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,6 +36,9 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
 
     private static final String PHOTO_HEIGHT = "height=500&";
     private static final String PHOTO_WIDTH = "width=500&";
+
+    @Autowired
+    private PlexRestTemplate plexRestTemplate;
 
     /**
      * Find available resources of a given server instance.
@@ -265,7 +269,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
             url = "http://" + url;
         }
 
-        return (MediaContainer) PlexRestTemplate.buildPlexRestTemplateForXMLResponse(url, plexAuthToken, MediaContainer.class, isPostCall);
+        return (MediaContainer) plexRestTemplate.buildPlexRestTemplateForXMLResponse(url, plexAuthToken, MediaContainer.class, isPostCall);
     }
 
     private void retrieveTranscodedPhotosForMedia(MediaContainer mediaContainer, String serverIp, String plexAuthToken) {

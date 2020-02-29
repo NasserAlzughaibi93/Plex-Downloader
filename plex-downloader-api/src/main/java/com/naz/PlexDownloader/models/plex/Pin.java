@@ -9,9 +9,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 
-//TODO Pin Request for OAuth: https://plex.tv/api/v2/pins?strong=true&X-Plex-Product=NAZ&X-Plex-Client-Identifier=NAZMB&X-Plex-Version=1.0.0
-//TODO OAuth example:  https://app.plex.tv/auth#?forwardUrl=http://google.com&clientID={PIN_ID}&code={CODE}&X-Plex-Product=NAZ&X-Plex-Client-Identifier=NAZMB&X-Plex-Version=1.0.0
-//TODO Auth Token GET: https://plex.tv/api/v2/pins/{PIN_ID}
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Pin implements Serializable {
 

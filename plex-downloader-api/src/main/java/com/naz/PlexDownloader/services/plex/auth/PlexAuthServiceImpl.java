@@ -29,6 +29,8 @@ public class PlexAuthServiceImpl implements PlexAuthService {
     @Autowired
     private PlexRepository plexRepository;
 
+    @Autowired
+    private PlexRestTemplate plexRestTemplate;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -46,15 +48,11 @@ public class PlexAuthServiceImpl implements PlexAuthService {
     public PlexUser loginBasicAuth(String username, String password) {
 
         UserEntity user = (UserEntity)
-                PlexRestTemplate.buildPlexRestTemplate(PLEX_AUTH_URL, username, password, UserEntity.class, true);
+                plexRestTemplate.buildPlexRestTemplate(PLEX_AUTH_URL, username, password, UserEntity.class, true);
 
         ValidationUtil.NotNullOrEmpty("user.cannot.be.found", user, user.getUser());
 
         PlexUser plexUser = CollectionUtil.getFirstElement(user.getUser());
-
-        if (plexUser == null) {
-            throw new RecordNotFoundException("could.not.login.user.to.plex");
-        }
 
         String token = jwtTokenUtil.generateToken(plexUser);
 
@@ -76,7 +74,7 @@ public class PlexAuthServiceImpl implements PlexAuthService {
     public PlexUser loginByAuthToken(String authToken) {
 
         UserEntity user = (UserEntity)
-                PlexRestTemplate.buildPlexRestTemplate(PLEX_AUTH_URL, authToken, UserEntity.class, true);
+                plexRestTemplate.buildPlexRestTemplate(PLEX_AUTH_URL, authToken, UserEntity.class, true);
 
         ValidationUtil.NotNullOrEmpty("user.cannot.be.found", user, user.getUser());
 
@@ -102,7 +100,7 @@ public class PlexAuthServiceImpl implements PlexAuthService {
 
         String url = PLEX_PIN_URL + "?strong=true";
 
-        Pin pin = (Pin) PlexRestTemplate.buildPlexRestTemplate(url, null, Pin.class, true);
+        Pin pin = (Pin) plexRestTemplate.buildPlexRestTemplate(url, null, Pin.class, true);
 
         ValidationUtil.NotNullOrEmpty("error", pin);
 
@@ -124,7 +122,7 @@ public class PlexAuthServiceImpl implements PlexAuthService {
 
         String url = PLEX_PIN_URL + "/" + oAuthPin;
 
-        Pin pin = (Pin) PlexRestTemplate.buildPlexRestTemplate(url, null, Pin.class, false);
+        Pin pin = (Pin) plexRestTemplate.buildPlexRestTemplate(url, null, Pin.class, false);
 
         ValidationUtil.NotNullOrEmpty("error", pin);
 
