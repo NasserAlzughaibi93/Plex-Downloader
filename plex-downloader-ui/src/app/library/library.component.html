@@ -3,7 +3,7 @@
 
 <br><br><br>
 
-<div class="form-group">
+<div class="container form-group">
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10 col-sm-12">
@@ -63,10 +63,10 @@
 <br>
 <div class="container">
 
-    <div class="row" *ngIf="videosList">
+    <div class="row flex-nowrap" *ngIf="videosList">
       <div class="col-md-3 col-sm-6" *ngFor="let video of videosList | libraryFilter:searchQuery | librarySearchCriteriaFilterPipe:searchCriteria">
         <div class="h-100">
-            <app-media-card class="col-xs-6 col-md-3" [video]="video"></app-media-card>
+            <app-media-card class="col-sm-6 col-md-3" [video]="video"></app-media-card>
         </div>
       </div>
     </div>
@@ -74,7 +74,7 @@
     <div class="row" *ngIf="showsList">
       <div class="col-md-3 col-sm-6" *ngFor="let show of showsList | librarySeriesFilter:searchQuery | librarySeriesSearchCriteriaFilterPipe: searchCriteria">
         <div class="h-100">
-            <app-media-card class="col-xs-6 col-md-3" [show]="show"></app-media-card>
+            <app-media-card class="col-sm-6 col-md-3" [show]="show"></app-media-card>
         </div>
       </div>
     </div>

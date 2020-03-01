@@ -29,6 +29,7 @@ import { LibraryFilterPipe } from './library/library-filter.pipe';
 import { LibrarySeriesFilterPipe } from './library/library-series-filter.pipe';
 import { LibrarySearchCriteriaFilterPipe } from './library/library-search-criteria-filter.pipe';
 import {LibrarySeriesSearchCriteriaFilterPipe} from "./library/library-series-search-criteria-filter.pipe";
+import { MobileCardComponent } from './home/mobile-card/mobile-card.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import {LibrarySeriesSearchCriteriaFilterPipe} from "./library/library-series-se
     LibraryFilterPipe,
     LibrarySeriesFilterPipe,
     LibrarySearchCriteriaFilterPipe,
-    LibrarySeriesSearchCriteriaFilterPipe
+    LibrarySeriesSearchCriteriaFilterPipe,
+    MobileCardComponent
   ],
   imports: [
     BrowserModule,

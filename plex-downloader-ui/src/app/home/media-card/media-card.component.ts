@@ -19,10 +19,8 @@ export class MediaCardComponent implements OnInit {
   @Input() video: Video;
   @Input() show: Directory;
 
-  private mediaPhotoUrl: string;
-  private seriesPhotoUrl: string;
-
-  static count = 0;
+  private mobile = false;
+  // static count = 0;
 
   constructor(private router: Router,
               private alertify: AlertifyService,
@@ -32,37 +30,9 @@ export class MediaCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.video && !this.mediaPhotoUrl) {
-      //this.resolvePosterURL(this.video);
+    if (window.screen.width < 768) {
+      this.mobile = true;
     }
-
-    if (this.show && !this.seriesPhotoUrl) {
-      //this.resolveSeriesPosterURL(this.show);
-    }
-  }
-
-  resolvePosterURL(video: Video) {
-
-    let thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
-
-    this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
-      /*MediaCardComponent.count++;
-      console.log('The count: '+ MediaCardComponent.count);*/
-      this.mediaPhotoUrl = photoUrl;
-    }, () => {
-      console.log('Error loading photo url');
-    });
-
-  }
-
-  resolveSeriesPosterURL(directory: Directory) {
-    let thumb = directory.thumb;
-    this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
-      // return photoUrl;
-      this.seriesPhotoUrl = photoUrl
-    }, () => {
-      console.log('Error loading photo url');
-    });
   }
 
   openDialog(video: Video): void {
@@ -89,5 +59,23 @@ export class MediaCardComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
+
+  startDownloadingMedia(video: Video) {
+
+    this.libraryService.retrieveMediaDownloadLink(video).subscribe(downloadLink => {
+      this.beginDownload(downloadLink);
+    });
+
+  }
+
+  beginDownload(url: string) {
+    var link = document.createElement("a");
+    link.download = "a";
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    //window.open(url);
+  }
+
 
 }

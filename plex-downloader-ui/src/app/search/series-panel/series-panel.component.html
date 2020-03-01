@@ -1,16 +1,16 @@
-<div class="container" *ngIf="show">
+<div class="container-fluid" *ngIf="show">
   <!--  <h1 mat-dialog-title style="align-content: center; text-align: center;">{{show.title}}</h1>-->
   <div mat-dialog-content>
-    <div class="card mb-3" style="max-width: 90%">
+    <div>
       <!--<img src="{{resolveBannerURL(video)}}" class="card-img-top" alt="{{video.title}}"
            title="{{video.title}}"/>-->
 
       <div class="row no-gutters">
-        <div class="col-md-4">
+        <div class="col-md-4 col-xs-4">
           <img src="{{seriesPhotoUrl}}" class="card-img" alt="{{show.title}}"
                title="{{show.title}}"/>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 col-xs-8">
           <div class="card-body">
             <h5 class="card-title">{{show.title}}</h5>
 
@@ -47,7 +47,7 @@
                           <tr *ngFor="let episode of season.videos">
                             <!--        <th scope="row">1</th>-->
                             <td *ngIf="season.title === 'All episodes'">S{{episode.parentIndex}}E{{episode.index}}</td>
-                            <td *ngIf="season.title != 'All episodes'">>{{episode.index}}</td>
+                            <td *ngIf="season.title != 'All episodes'">{{episode.index}}</td>
                             <td>{{episode.title}}</td>
                             <td>{{episode.viewCount ? 'Yes' : 'No'}}</td>
                             <td>
