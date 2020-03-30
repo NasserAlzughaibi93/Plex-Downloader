@@ -5,6 +5,7 @@ import com.naz.PlexDownloader.models.plex.Pin;
 import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.models.plex.UserEntity;
 import com.naz.PlexDownloader.repositories.PlexRepository;
+import com.naz.PlexDownloader.services.plex.PlexUserService;
 import com.naz.PlexDownloader.util.CollectionUtil;
 import com.naz.PlexDownloader.util.JwtTokenUtil;
 import com.naz.PlexDownloader.util.PlexRestTemplate;
@@ -27,7 +28,7 @@ public class PlexAuthServiceImpl implements PlexAuthService {
     private static final String PLEX_PIN_URL = "https://plex.tv/api/v2/pins";
 
     @Autowired
-    private PlexRepository plexRepository;
+    private PlexUserService plexUserService;
 
     @Autowired
     private PlexRestTemplate plexRestTemplate;
@@ -83,6 +84,7 @@ public class PlexAuthServiceImpl implements PlexAuthService {
         String token = jwtTokenUtil.generateToken(plexUser);
 
         plexUser.setJwtToken(token);
+        plexUser.setLibraryAuthToken(plexUser.getAuthToken());
         /*plexUser.setAuthenticationToken(bCryptPasswordEncoder.encode(plexUser.getAuthenticationToken()));
         plexUser.setAuthToken(bCryptPasswordEncoder.encode(plexUser.getAuthToken()));*/
 
@@ -129,24 +131,8 @@ public class PlexAuthServiceImpl implements PlexAuthService {
         return pin;
     }
 
-    @Override
     public PlexUser savePlexUser(PlexUser plexUser) {
-        return this.plexRepository.save(plexUser);
+        return this.plexUserService.savePlexUser(plexUser);
     }
 
-    public PlexRepository getPlexRepository() {
-        return plexRepository;
-    }
-
-    public void setPlexRepository(PlexRepository plexRepository) {
-        this.plexRepository = plexRepository;
-    }
-
-    public JwtTokenUtil getJwtTokenUtil() {
-        return jwtTokenUtil;
-    }
-
-    public void setJwtTokenUtil(JwtTokenUtil jwtTokenUtil) {
-        this.jwtTokenUtil = jwtTokenUtil;
-    }
 }

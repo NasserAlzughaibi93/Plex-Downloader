@@ -6,6 +6,7 @@ import com.naz.PlexDownloader.models.plex.Pin;
 import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.models.plex.UserEntity;
 import com.naz.PlexDownloader.repositories.PlexRepository;
+import com.naz.PlexDownloader.services.plex.PlexUserService;
 import com.naz.PlexDownloader.util.CollectionUtil;
 import com.naz.PlexDownloader.util.JwtTokenUtil;
 import com.naz.PlexDownloader.util.PlexRestTemplate;
@@ -35,7 +36,7 @@ class PlexAuthServiceImplUTest extends BaseUnitTest {
     private JwtTokenUtil jwtTokenUtil;
 
     @Mock
-    private PlexRepository plexRepository;
+    private PlexUserService plexUserService;
 
     private UserEntity userEntity;
     private String authToken = "Auth_Token";

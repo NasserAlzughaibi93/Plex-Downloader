@@ -53,6 +53,11 @@ public class PlexUserServiceImpl implements PlexUserService {
         return plexUser;
     }
 
+    @Override
+    public PlexUser savePlexUser(PlexUser plexUser) {
+        return this.plexRepository.save(plexUser);
+    }
+
     public PlexRepository getPlexRepository() {
         return plexRepository;
     }

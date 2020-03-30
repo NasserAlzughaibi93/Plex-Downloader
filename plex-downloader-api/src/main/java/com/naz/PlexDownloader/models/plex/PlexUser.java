@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -106,6 +107,11 @@ public class PlexUser {
     private Subscription subscription;
     @OneToOne(cascade = CascadeType.ALL)
     private Roles roles;
+
+    private String libraryAuthToken;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Device> accessibleServers;
 
     private transient String jwtToken;
 
@@ -363,5 +369,21 @@ public class PlexUser {
 
     public void setJwtToken(String jwtToken) {
         this.jwtToken = jwtToken;
+    }
+
+    public String getLibraryAuthToken() {
+        return libraryAuthToken;
+    }
+
+    public void setLibraryAuthToken(String libraryAuthToken) {
+        this.libraryAuthToken = libraryAuthToken;
+    }
+
+    public List<Device> getAccessibleServers() {
+        return accessibleServers;
+    }
+
+    public void setAccessibleServers(List<Device> accessibleServers) {
+        this.accessibleServers = accessibleServers;
     }
 }

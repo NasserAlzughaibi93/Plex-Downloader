@@ -9,8 +9,6 @@ public interface PlexAuthService {
 
     PlexUser loginByAuthToken(String authToken);
 
-    PlexUser savePlexUser(PlexUser plexUser);
-
     Pin retrievePlexOAuthPin();
 
     Pin retrieveOAuthToken(String oAuthPin);

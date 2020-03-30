@@ -110,7 +110,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
                 HeaderMapRequestWrapper requestWrapper = new HeaderMapRequestWrapper(request);
 
-                requestWrapper.addHeader("PLEX-TOKEN", plexUser.getAuthToken());
+                requestWrapper.addHeader("PLEX-TOKEN", plexUser.getLibraryAuthToken());
 
                 chain.doFilter(requestWrapper, response);
 

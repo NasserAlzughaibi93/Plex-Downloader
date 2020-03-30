@@ -1,10 +1,12 @@
 package com.naz.PlexDownloader.services.plex;
 
+import com.naz.PlexDownloader.models.plex.Connection;
 import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Director;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Part;
+import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.models.plex.Video;
 import com.naz.PlexDownloader.util.CollectionUtil;
 import com.naz.PlexDownloader.util.PlexRestTemplate;
@@ -35,10 +37,14 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     private static final String PLEX_SEARCH = "/search?query=";
 
     private static final String PHOTO_HEIGHT = "height=500&";
+
     private static final String PHOTO_WIDTH = "width=500&";
 
     @Autowired
     private PlexRestTemplate plexRestTemplate;
+
+    @Autowired
+    private PlexUserService plexUserService;
 
     /**
      * Find available resources of a given server instance.
@@ -64,6 +70,12 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
             }
 
             mediaContainer.setDevice(serverDevices);
+
+            PlexUser plexUser = this.plexUserService.retrieveUserByAuthToken(plexAuthToken);
+            plexUser.setAccessibleServers(serverDevices);
+            plexUser.setLibraryAuthToken(plexAuthToken);
+
+            this.plexUserService.savePlexUser(plexUser);
         }
 
         return mediaContainer;
@@ -116,6 +128,8 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
      */
     @Override
     public List<Directory> retrieveLibrarySections(String plexAuthToken, String serverIp) {
+
+        plexAuthToken = this.updateLibraryAuthToken(plexAuthToken, serverIp);
 
         String url = serverIp + PLEX_SECTIONS;
 
@@ -303,6 +317,30 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
                 show.setTranscodedPhoto(transcodedPhoto);
             }
         }
+    }
+
+    private String updateLibraryAuthToken(final String plexAuthToken, final String serverIp) {
+
+        PlexUser plexUser = this.plexUserService.retrieveUserByAuthToken(plexAuthToken);
+
+        if (!CollectionUtil.isNullOrEmpty(plexUser.getAccessibleServers())) {
+            for (Device device : plexUser.getAccessibleServers()) {
+                if (!CollectionUtil.isNullOrEmpty(device.getConnection())) {
+                    for (Connection connection : device.getConnection()) {
+                        if (serverIp.contains(connection.getAddress())) {
+
+                            plexUser.setLibraryAuthToken(device.getAccessToken());
+                            this.plexUserService.savePlexUser(plexUser);
+
+                            return device.getAccessToken();
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return plexAuthToken;
     }
 }
 

@@ -1,38 +1,40 @@
-<div *ngIf="video" title="{{video.title}}">
+<div *ngIf="video">
   <div class="mobile" *ngIf="mobile">
     <app-mobile-card [video]="video"></app-mobile-card>
   </div>
   <div class="desktop" *ngIf="!mobile">
-    <div class="card-header poster-container">
+    <div class="card" *ngIf="video" style="display: inline-block; width: 15em;" title="{{video.title}}">
+      <div class="card-header poster-container">
 
-      <img *ngIf="video.type === 'episode'" (click)="openDialog(video)"
-           class="card-img" src="{{video.transcodedPhoto}}"
-           alt="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}"
-           title="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}">
-
-
-      <img *ngIf="video.type === 'movie'" (click)="openDialog(video)"
-           class="card-img" src="{{video.transcodedPhoto}}" alt="{{video.title}}" title="{{video.title}}">
+        <img *ngIf="video.type === 'episode'" (click)="openDialog(video)"
+             class="card-img" src="{{video.transcodedPhoto}}"
+             alt="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}"
+             title="{{video.grandparentTitle}} - S{{video.parentIndex}}E{{video.index}}">
 
 
-      <div *ngIf="!video.viewCount" class="unwatched-overlay"></div>
+        <img *ngIf="video.type === 'movie'" (click)="openDialog(video)"
+             class="card-img" src="{{video.transcodedPhoto}}" alt="{{video.title}}" title="{{video.title}}">
 
 
-    </div>
-    <div class="card-body" *ngIf="video.type === 'episode'">
-      <h4 class="card-title"></h4>
-      <div class="container">
-        <div class="row">
-          <div class="col-8 metadata">
-            <p>S{{video.parentIndex}}E{{video.index}}</p>
-          </div>
-          <div class="col-4 metadata">
-            <p>{{video.year}}</p>
+        <div *ngIf="!video.viewCount" class="unwatched-overlay"></div>
+
+
+      </div>
+      <div class="card-body" *ngIf="video.type === 'episode'">
+<!--        <h4 class="card-title"></h4>-->
+        <div class="container">
+          <div class="row">
+            <div class="col-8 metadata">
+              <p>S{{video.parentIndex}}E{{video.index}}</p>
+            </div>
+            <div class="col-4 metadata">
+              <p>{{video.year}}</p>
+            </div>
           </div>
         </div>
+        <p class="card-text" style="text-align: center"
+           title="{{video.summary}}">{{video.type === 'episode' ? video.title : null}}</p>
       </div>
-      <p class="card-text" style="text-align: center"
-         title="{{video.summary}}">{{video.type === 'episode' ? video.title : null}}</p>
     </div>
   </div>
 </div>
@@ -56,7 +58,7 @@
         </div>
       </div>
       <div class="card-body">
-        <h2 class="card-title"></h2>
+<!--        <h2 class="card-title"></h2>-->
         <div class="container">
           <div class="row">
             <div class="card-text">

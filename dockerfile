@@ -9,7 +9,7 @@ COPY . .
 RUN ./gradlew build
 
 FROM openjdk:8
-LABEL PROJECT_VERSION=0.0.1-e181e7f
+LABEL PROJECT_VERSION=0.0.1-cae257e
 ENV ARTIFACT_DIR=/plex-downloader-api/build/libs
 ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
