@@ -20,7 +20,7 @@ export class MobileCardComponent implements OnInit {
   seasons = new Array<Directory>();
 
   static tempId = 0;
-  private id = 0;
+  id = 0;
 
   constructor(private router: Router,
               private alertify: AlertifyService,
@@ -29,7 +29,6 @@ export class MobileCardComponent implements OnInit {
 
   ngOnInit() {
     this.id = ++MobileCardComponent.tempId;
-    // this.loadSeriesSeasons();
   }
 
   startDownloadingMedia(video: Video) {

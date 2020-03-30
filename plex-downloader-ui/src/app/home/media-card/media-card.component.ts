@@ -19,7 +19,7 @@ export class MediaCardComponent implements OnInit {
   @Input() video: Video;
   @Input() show: Directory;
 
-  private mobile = false;
+  mobile = false;
   // static count = 0;
 
   constructor(private router: Router,

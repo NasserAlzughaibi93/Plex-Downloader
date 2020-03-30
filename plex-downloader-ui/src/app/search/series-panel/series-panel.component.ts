@@ -20,8 +20,8 @@ export class SeriesPanelComponent implements OnInit {
   @Input() show: Directory;
   video: Video;
 
-  private mediaPhotoUrl: string;
-  private seriesPhotoUrl: string;
+  mediaPhotoUrl: string;
+  seriesPhotoUrl: string;
 
   seasons = new Array<Directory>();
 
