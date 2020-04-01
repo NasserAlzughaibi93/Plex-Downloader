@@ -10,7 +10,7 @@ RUN ./gradlew build
 
 # Reduce final image size.
 FROM openjdk:8-alpine
-LABEL PROJECT_VERSION=0.0.1-9ef245c
+LABEL PROJECT_VERSION=0.0.1-16c78e2
 ENV ARTIFACT_DIR=/plex-downloader-api/build/libs
 ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
