@@ -26,7 +26,7 @@ jobs:
       # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3g
       TERM: dumb
-      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx3g" -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2'
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx3g" -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.workers.max=2'
 
     steps:
       - checkout
