@@ -27,6 +27,8 @@ jobs:
       JVM_OPTS: -Xmx4g
       TERM: dumb
       GRADLE_OPTS: '-Dorg.gradle.daemon=false'
+      TOOL_NODE_FLAGS: --max_old_space_size=4096
+      NODE_OPTIONS: --max_old_space_size=4096
 #      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx3g" -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.daemon=false'
 
     steps:
