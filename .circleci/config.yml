@@ -7,11 +7,11 @@ executors:
   docker-publisher:
     environment:
       IMAGE_NAME: halahala/plex-downloader
-      JVM_OPTS: -Xmx4g
+      _JAVA_OPTIONS: -Xmx2g
       TERM: dumb
       GRADLE_OPTS: '-Dorg.gradle.daemon=false'
-      TOOL_NODE_FLAGS: --max_old_space_size=4096
-      NODE_OPTIONS: --max_old_space_size=4096
+      TOOL_NODE_FLAGS: --max_old_space_size=2048
+      NODE_OPTIONS: --max_old_space_size=2048
     docker:
       - image: circleci/buildpack-deps:stretch
 jobs:
@@ -29,7 +29,7 @@ jobs:
 
     environment:
       # Customize the JVM maximum heap limit
-      JVM_OPTS: -Xmx2g
+      _JAVA_OPTIONS: -Xmx2g
       TERM: dumb
       GRADLE_OPTS: '-Dorg.gradle.daemon=false'
       TOOL_NODE_FLAGS: --max_old_space_size=2048
