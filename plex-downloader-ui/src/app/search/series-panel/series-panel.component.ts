@@ -3,7 +3,7 @@ import {Directory} from "../../models/directory.model";
 import {LibraryService} from "../../_service/library.service";
 import {Video} from "../../models/video.model";
 import {Constants} from "../../util/constants";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 
 export class ModalData {
   video: Video;
