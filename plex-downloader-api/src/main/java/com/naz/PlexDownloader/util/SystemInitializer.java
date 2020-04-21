@@ -21,7 +21,6 @@ public class SystemInitializer implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-
         this.initializeSystemSettings();
     }
 

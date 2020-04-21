@@ -9,6 +9,8 @@ public enum LoggingLevel {
 
     DEBUG("Debug"),
 
+    TRACE("Trace"),
+
     ERROR("Error");
 
     private String loggingLevel;

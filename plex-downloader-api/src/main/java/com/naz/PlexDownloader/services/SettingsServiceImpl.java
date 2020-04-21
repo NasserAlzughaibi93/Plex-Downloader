@@ -1,22 +1,27 @@
 package com.naz.PlexDownloader.services;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import com.naz.PlexDownloader.dtos.SystemSettingsDTO;
 import com.naz.PlexDownloader.exceptions.rest.RecordNotFoundException;
 import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.models.settings.About;
+import com.naz.PlexDownloader.models.settings.LoggingLevel;
 import com.naz.PlexDownloader.models.settings.SystemSettings;
 import com.naz.PlexDownloader.repositories.SettingsRepository;
 import com.naz.PlexDownloader.services.plex.PlexUserService;
 import com.naz.PlexDownloader.util.BuildVersion;
-import com.naz.PlexDownloader.util.JwtTokenUtil;
 import com.naz.PlexDownloader.util.ValidationUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
-
 @Service
 public class SettingsServiceImpl implements SettingsService {
+
+    private static final Log logger = LogFactory.getLog(SettingsServiceImpl.class);
 
     @Autowired
     private PlexUserService plexUserService;
@@ -25,6 +30,11 @@ public class SettingsServiceImpl implements SettingsService {
     private SettingsRepository settingsRepository;
 
 
+    /**
+     * Find the system settings by ID
+     * @param systemSettingsId - the system setting ID.
+     * @return {@link SystemSettings}
+     */
     @Override
     public SystemSettings retrieveSystemSettingsById(final Long systemSettingsId) {
 
@@ -34,6 +44,12 @@ public class SettingsServiceImpl implements SettingsService {
         return this.settingsRepository.findById(systemSettingsId).get();
     }
 
+    /**
+     * Retrieves the system settings for that specific user.
+     *
+     * @param authToken - the user auth token
+     * @return {@link SystemSettings}
+     */
     @Override
     public SystemSettings retrieveSystemSettingsByPlexUserAuthToken(String authToken) {
 
@@ -54,6 +70,14 @@ public class SettingsServiceImpl implements SettingsService {
         return systemSettings;
     }
 
+    /**
+     * Save the system settings for that user (user must be a server owner)
+     *
+     * @param systemSettingsDTO - {@link SystemSettingsDTO}
+     * @param authToken - the user auth token
+     *
+     * @return {@link SystemSettings}
+     */
     @Override
     public SystemSettings saveSystemSettingsForPlexUser(SystemSettingsDTO systemSettingsDTO, String authToken) {
 
@@ -81,9 +105,15 @@ public class SettingsServiceImpl implements SettingsService {
 
     @Override
     public SystemSettings saveSystemSettings(SystemSettings systemSettings) {
+
         return this.settingsRepository.save(systemSettings);
     }
 
+    /**
+     * Retrieve application info such as build version and OS info
+     *
+     * @return {@link About}
+     */
     @Override
     public About retrieveAppInfo() {
 
@@ -98,7 +128,12 @@ public class SettingsServiceImpl implements SettingsService {
         return about;
     }
 
-
+    /**
+     * Validate the user can access the full system settings.
+     *
+     * @param authToken - the plex user auth token
+     * @return boolean
+     */
     @Override
     public boolean validateFullSettingsAccess(final String authToken) {
 
@@ -116,6 +151,20 @@ public class SettingsServiceImpl implements SettingsService {
      */
     private boolean validateIfUserIsServerOwner(final PlexUser plexUser) {
         return plexUser.getLibraryAuthToken().equals(plexUser.getAuthToken());
+    }
+
+    /**
+     * Updates the application logging level
+     *
+     * @param loggingLevel - {@link LoggingLevel}
+     */
+    private void updateApplicationLogLevel(LoggingLevel loggingLevel) {
+        try {
+            Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+            root.setLevel(Level.toLevel(loggingLevel.toString()));
+        } catch (RuntimeException e) {
+            logger.error("Could not update application logging level: " + e.getLocalizedMessage());
+        }
     }
 
     public PlexUserService getPlexUserService() {
