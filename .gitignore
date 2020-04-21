@@ -181,3 +181,8 @@ $RECYCLE.BIN/
 *.mv.db
 *.trace.db
 *.trace.mv.db
+
+/config
+/logs
+*/config
+*/logs

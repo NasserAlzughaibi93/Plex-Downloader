@@ -77,6 +77,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         } else {
             logger.warn("JWT Token does not begin with Bearer String");
 
+            //TODO fix issue where first request is missing the bearer token from angular app.
             //throw new JwtInvalidException("jwt.token.missing.bearer.token.header");
         }
 

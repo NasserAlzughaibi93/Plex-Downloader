@@ -58,6 +58,11 @@ public class PlexUserServiceImpl implements PlexUserService {
         return this.plexRepository.save(plexUser);
     }
 
+    @Override
+    public PlexUser findPlexUserByUsername(final String username) {
+        return this.plexRepository.findPlexUserByUsername(username);
+    }
+
     public PlexRepository getPlexRepository() {
         return plexRepository;
     }
