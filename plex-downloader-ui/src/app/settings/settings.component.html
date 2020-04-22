@@ -9,6 +9,9 @@
         <li class="nav-item active">
           <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
         </li>
+        <li *ngIf="isAdmin">
+          <a class="nav-link" routerLink="/system-settings" routerLinkActive="active">System Settings</a>
+        </li>
       </ul>
     </nav>
   </div>

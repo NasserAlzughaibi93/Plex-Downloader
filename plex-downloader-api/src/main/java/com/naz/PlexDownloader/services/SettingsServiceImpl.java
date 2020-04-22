@@ -105,7 +105,7 @@ public class SettingsServiceImpl implements SettingsService {
 
     @Override
     public SystemSettings saveSystemSettings(SystemSettings systemSettings) {
-
+        updateApplicationLogLevel(systemSettings.getLoggingLevel());
         return this.settingsRepository.save(systemSettings);
     }
 
@@ -150,6 +150,11 @@ public class SettingsServiceImpl implements SettingsService {
      * @return Whether the user is the server owner or not.
      */
     private boolean validateIfUserIsServerOwner(final PlexUser plexUser) {
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Validating if user '" + plexUser.getUsername() + "' is the server owner");
+        }
+
         return plexUser.getLibraryAuthToken().equals(plexUser.getAuthToken());
     }
 
@@ -160,6 +165,7 @@ public class SettingsServiceImpl implements SettingsService {
      */
     private void updateApplicationLogLevel(LoggingLevel loggingLevel) {
         try {
+            logger.info("Updating logging level to " + loggingLevel.getLoggingLevel());
             Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
             root.setLevel(Level.toLevel(loggingLevel.toString()));
         } catch (RuntimeException e) {

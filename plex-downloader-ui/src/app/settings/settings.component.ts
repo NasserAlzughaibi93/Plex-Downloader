@@ -11,11 +11,21 @@ import {SettingsService} from "../_service/settings.service";
 })
 export class SettingsComponent implements OnInit {
 
+  isAdmin  = false;
+
   constructor(private router: Router,
               private alertify: AlertifyService,
               private settingsService: SettingsService,
               private componentMessagingService: ComponentMessagingService) { }
 
-  ngOnInit() {}
 
+  ngOnInit() {
+    this.validateFullSettingsAccess();
+  }
+
+  validateFullSettingsAccess() {
+    this.settingsService.validateFullSettingsAccess().subscribe(access => {
+      this.isAdmin = access.status === 200;
+    }, error => console.log('Error getting settings access: ' + error));
+  }
 }
