@@ -1,10 +1,14 @@
 package com.naz.PlexDownloader.models.plex;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -63,6 +67,10 @@ public class MediaContainer {
 
     @XmlAttribute
     private String mixedParents;
+
+    @XmlElement(name = "Track")
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Track> track;
 
     public Long getMediaContainerId() {
         return mediaContainerId;
@@ -174,5 +182,13 @@ public class MediaContainer {
 
     public void setUser(List<PlexUser> user) {
         this.user = user;
+    }
+
+    public List<Track> getTrack() {
+        return track;
+    }
+
+    public void setTrack(List<Track> track) {
+        this.track = track;
     }
 }

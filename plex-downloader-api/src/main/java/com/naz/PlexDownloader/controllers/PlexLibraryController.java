@@ -77,7 +77,7 @@ public class PlexLibraryController {
 
     @GetMapping("/{serverIp}/metadata")
     @ResponseStatus(HttpStatus.OK)
-    public List<Video> retrieveMediaMetadata(@PathVariable String serverIp,
+    public MediaContainer retrieveMediaMetadata(@PathVariable String serverIp,
                                        @RequestHeader("PLEX-TOKEN") String authToken,
                                        @RequestParam String libraryKey) {
         return this.plexLibraryService.retrieveMediaMetadata(authToken, serverIp, libraryKey);
@@ -85,7 +85,7 @@ public class PlexLibraryController {
 
     @GetMapping("/{serverIp}/metadata_children")
     @ResponseStatus(HttpStatus.OK)
-    public List<Directory> retrieveMediaMetadataChildren(@PathVariable String serverIp,
+    public MediaContainer retrieveMediaMetadataChildren(@PathVariable String serverIp,
                                                          @RequestHeader("PLEX-TOKEN") String authToken,
                                                          @RequestParam String libraryKey) {
         return this.plexLibraryService.retrieveMediaMetadataChildren(authToken, serverIp, libraryKey);

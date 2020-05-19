@@ -3,12 +3,12 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {AlertifyService} from './alertify.service';
 import {map} from 'rxjs/operators';
-import {Constants} from "../util/constants";
-import {MediaContainer} from "../models/mediacontainer.model";
-import {Observable} from "rxjs";
-import {Video} from "../models/video.model";
-import {Directory} from "../models/directory.model";
-import {Device} from "../models/device.model";
+import {Constants} from '../util/constants';
+import {MediaContainer} from '../models/mediacontainer.model';
+import {Observable} from 'rxjs';
+import {Video} from '../models/video.model';
+import {Directory} from '../models/directory.model';
+import {Device} from '../models/device.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class LibraryService {
 
   constructor(private  http: HttpClient, private router: Router, private alertify: AlertifyService) { }
 
-  retrievePlexResources() : Observable<Device[]> {
+  retrievePlexResources(): Observable<Device[]> {
 
     return this.http.get<Device[]>(this.baseUrl)
       .pipe(
@@ -32,44 +32,44 @@ export class LibraryService {
       );
   }
 
-  retrieveLibraryOnDeck() : Observable<Video[]> {
+  retrieveLibraryOnDeck(): Observable<Video[]> {
 
     return this.http.get<Video[]>(this.baseUrl + '/{{serverIp}}/onDeck')
       .pipe(
         map((response: any) => {
 
           // this.alertify.message('Videos loaded!');
-          console.log("retrieved videos");
+          console.log('retrieved videos');
 
           return response;
         })
       );
   }
 
-  retrieveLibrarySections() : Observable<Directory[]> {
+  retrieveLibrarySections(): Observable<Directory[]> {
 
     return this.http.get<Directory[]>(this.baseUrl + '/{{serverIp}}/sections')
       .pipe(
         map((response: any) => {
 
           // this.alertify.message('Retrieved all sections!');
-          console.log("retrieved sections");
+          console.log('retrieved sections');
 
           return response;
         })
       );
   }
 
-  retrieveLibrarySectionBySectionKey(sectionKey: string) : Observable<Directory[]> {
+  retrieveLibrarySectionBySectionKey(sectionKey: string): Observable<Directory[]> {
 
     return this.http.get<Directory[]>(this.baseUrl + '/{{serverIp}}/sections/' + sectionKey)
       .pipe(
         map((response: Directory[]) => {
 
           // this.alertify.message('Retrieved Section by section key');
-          console.log("retrieved sections");
+          console.log('retrieved sections');
 
-          let directories: Directory[] = [];
+          const directories: Directory[] = [];
 
           response.forEach(directory => {
             /*if (directory.secondary === null && directory.key != 'folder' && directory) {
@@ -93,16 +93,16 @@ export class LibraryService {
       );
   }
 
-  retrieveLibrarySectionBySectionKeyAndDirectoryKey(sectionKey: string, directoryKey: string) : Observable<MediaContainer> {
+  retrieveLibrarySectionBySectionKeyAndDirectoryKey(sectionKey: string, directoryKey: string): Observable<MediaContainer> {
 
-    console.log("test section key: " + sectionKey);
+    console.log('test section key: ' + sectionKey);
 
     return this.http.get<MediaContainer>(this.baseUrl + '/{{serverIp}}/sections/' + sectionKey + '/directory/' + directoryKey)
       .pipe(
         map((response: any) => {
 
           // this.alertify.message('Retrieved section by section key and directory key!');
-          console.log("retrieved sections");
+          console.log('retrieved sections');
 
           return response;
         })
@@ -113,7 +113,7 @@ export class LibraryService {
 
 
 
-    let httpOptions = {
+    const httpOptions = {
       responseType: 'text' as 'json'
     };
 
@@ -127,14 +127,14 @@ export class LibraryService {
             url = 'http://' + url;
           }
 
-          //console.log("Download link retrieved: " + url);
+          // console.log("Download link retrieved: " + url);
 
           return url;
         })
       );
   }
 
-  retrieveSearchResults(searchQuery: string) : Observable<MediaContainer> {
+  retrieveSearchResults(searchQuery: string): Observable<MediaContainer> {
 
     return this.http.get<MediaContainer>(this.baseUrl + '/{{serverIp}}/search/' + searchQuery)
       .pipe(
@@ -148,49 +148,52 @@ export class LibraryService {
       );
   }
 
-  retrieveMediaMetaData(libraryKey: string) : Observable<Video[]>{
+  retrieveMediaMetaData(libraryKey: string): Observable<MediaContainer> {
 
     const params = new HttpParams().set('libraryKey', libraryKey);
 
-    return this.http.get<Video[]>(this.baseUrl + '/{{serverIp}}/metadata', {params})
+    return this.http.get<MediaContainer>(this.baseUrl + '/{{serverIp}}/metadata', {params})
       .pipe(
-        map((videos: any) => {
+        map((mediaContainer: MediaContainer) => {
 
-          if (videos) {
-            console.log("Retrieved video metadata!");
+          if (mediaContainer) {
+            console.log('Retrieved media metadata!, testing2...');
+            // console.log(mediaContainer);
           } else {
-            console.log("Video metadata is null");
+            console.log('Metadata is null');
           }
 
-          return videos;
+          console.log(mediaContainer);
+
+          return mediaContainer;
         })
       );
   }
 
-  retrieveMediaMetaDataChildren(libraryKey: string) : Observable<Directory[]>{
+  retrieveMediaMetaDataChildren(libraryKey: string): Observable<MediaContainer> {
 
     const params = new HttpParams().set('libraryKey', libraryKey);
 
-    return this.http.get<Directory[]>(this.baseUrl + '/{{serverIp}}/metadata_children', {params})
+    return this.http.get<MediaContainer>(this.baseUrl + '/{{serverIp}}/metadata_children', {params})
       .pipe(
-        map((directories: any) => {
+        map((mediaContainer: any) => {
 
-          if (directories) {
-            console.log("Retrieved video metadata!");
+          if (mediaContainer) {
+            console.log('Retrieved media metadata!');
           } else {
-            console.log("Video metadata is null");
+            console.log('Metadata is null');
           }
 
-          return directories;
+          return mediaContainer;
         })
       );
   }
 
-  retrievePhotoFromPlexServer(metadataKey: string) : Observable<string> {
+  retrievePhotoFromPlexServer(metadataKey: string): Observable<string> {
 
     console.log('Getting photo with metaDataKey: ' + metadataKey);
 
-    let httpOptions = {
+    const httpOptions = {
       responseType: 'text' as 'json',
       params: new HttpParams().set('metadataKey', metadataKey)
     };
@@ -200,9 +203,9 @@ export class LibraryService {
         map((photoUrl: any) => {
 
           if (photoUrl) {
-            console.log("Retrieved transcoded photo!");
+            console.log('Retrieved transcoded photo!');
           } else {
-            console.log("Photo is null!");
+            console.log('Photo is null!');
           }
 
           return photoUrl;

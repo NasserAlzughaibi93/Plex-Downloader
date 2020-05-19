@@ -23,7 +23,7 @@
       <img src="{{show.transcodedPhoto}}" (click)="openShowDialog(show)" class="card-img" alt="{{show.title}}"
            title="{{show.title}}"/>
 
-      <div *ngIf="!show.viewedLeafCount || show.viewedLeafCount && (show.leafCount - show.viewedLeafCount != 0)"
+      <div *ngIf="show.type === 'show' &&  !show.viewedLeafCount || show.viewedLeafCount && (show.leafCount - show.viewedLeafCount != 0)"
            class="unwatched-series-overlay">
         <div class="container">
           {{show.viewedLeafCount == null ? show.leafCount : show.leafCount - show.viewedLeafCount}}
@@ -59,13 +59,10 @@
               <div class="card-body">
                 <table class="table-bordered">
                   <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Title</th>
-<!--                    <th scope="col">Watched</th>-->
-                    <!--        <th scope="col">Summary</th>-->
-                    <!--        <th scope="col">Handle</th>-->
-                  </tr>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Title</th>
+                    </tr>
                   </thead>
                   <tbody>
                   <tr *ngFor="let episode of season.videos">
@@ -73,13 +70,26 @@
                     <td *ngIf="season.title === 'All episodes'">S{{episode.parentIndex}}E{{episode.index}}</td>
                     <td *ngIf="season.title != 'All episodes'">{{episode.index}}</td>
                     <td>{{episode.title}}</td>
-<!--                    <td>{{episode.viewCount ? 'Yes' : 'No'}}</td>-->
                     <td>
                       <button type="button" class="btn btn-primary" (click)="startDownloadingMedia(episode)">
                         Download
                       </button>
                     </td>
-                    <!--        <td>@mdo</td>-->
+                  </tr>
+                  <tr *ngFor="let track of season.track">
+                    <!--        <th scope="row">1</th>-->
+                    <td>{{track.index}}</td>
+                    <td *ngIf="track.originalTitle != null">{{track.title}} - {{track.originalTitle}}</td>
+                    <td *ngIf="track.originalTitle === null">{{track.title}}</td>
+                    <td>
+                      <!-- TODO add music download button -->
+                      <button type="button" class="btn btn-primary" (click)="alertify.warning('Music downloading not yet implemented')">
+                        Download
+                      </button>
+                      <!--<button type="button" class="btn btn-primary" (click)="startDownloadingMedia(track)">
+                        Download
+                      </button>-->
+                    </td>
                   </tr>
                   </tbody>
                 </table>

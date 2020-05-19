@@ -47,12 +47,16 @@
     <div class="card" *ngIf="show" style="display: inline-block; width: 15em;" title="{{show.title}}">
       <div class="card-header poster-container">
 
-        <img src="{{show.transcodedPhoto}}" (click)="openShowDialog(show)" class="card-img" alt="{{show.title}}"
+        <img *ngIf="show.type === 'artist'" src="{{show.transcodedPhoto}}" (click)="openShowDialog(show)" class="card-img-album" alt="{{show.title}}"
              title="{{show.title}}"/>
 
-        <div *ngIf="!show.viewedLeafCount || show.viewedLeafCount && (show.leafCount - show.viewedLeafCount != 0)"
+        <img *ngIf="show.type === 'show'" src="{{show.transcodedPhoto}}" (click)="openShowDialog(show)" class="card-img" alt="{{show.title}}"
+             title="{{show.title}}"/>
+
+        <div *ngIf="show.type === 'show' && !show.viewedLeafCount || show.viewedLeafCount &&
+             (show.leafCount - show.viewedLeafCount != 0)"
              class="unwatched-series-overlay">
-          <div class="container">
+          <div *ngIf="show.type === 'show'" class="container">
             {{show.viewedLeafCount == null ? show.leafCount : show.leafCount - show.viewedLeafCount}}
           </div>
         </div>
@@ -62,7 +66,8 @@
         <div class="container">
           <div class="row">
 <!--            <div class="card-text">-->
-              <p>{{show.childCount}} Season(s) - {{!show.year ? 'N/A' : show.year}}</p>
+              <p *ngIf="show.type === 'show'">{{show.childCount}} Season(s) - {{!show.year ? 'N/A' : show.year}}</p>
+              <h3 *ngIf="show.type === 'artist'">{{show.title}}</h3>
 <!--            </div>-->
           </div>
         </div>

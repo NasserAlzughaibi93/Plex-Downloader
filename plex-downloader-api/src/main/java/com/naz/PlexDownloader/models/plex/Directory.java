@@ -15,8 +15,7 @@ import java.util.List;
 
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Directory
-{
+public class Directory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long directoryId;
@@ -121,6 +120,52 @@ public class Directory
 
     @XmlAttribute
     private Integer viewedLeafCount;
+
+    @XmlAttribute
+    private String addedAt;
+
+    @XmlAttribute
+    private String index;
+
+    @XmlAttribute
+    private String ratingKey;
+
+    @XmlAttribute
+    private String guid;
+
+    @XmlAttribute
+    private String studio;
+
+    @XmlAttribute
+    private String parentRatingKey;
+
+    @XmlAttribute
+    private String librarySectionID;
+
+    @XmlElement(name = "Director")
+    @OneToOne
+    private Director Director;
+
+    @XmlAttribute
+    private String originallyAvailableAt;
+
+    @XmlAttribute
+    private String parentTitle;
+
+    @XmlAttribute
+    private String parentThumb;
+
+    @XmlAttribute
+    private String librarySectionUUID;
+
+    @XmlAttribute
+    private String parentKey;
+
+    @XmlAttribute
+    private String librarySectionTitle;
+
+    @XmlAttribute
+    private String parentGuid;
 
     public Long getDirectoryId() {
         return directoryId;
@@ -394,9 +439,123 @@ public class Directory
         this.viewedLeafCount = viewedLeafCount;
     }
 
-    @Override
-    public String toString()
-    {
-        return "ClassPojo [art = "+art+", agent = "+agent+", scannedAt = "+scannedAt+", thumb = "+thumb+", contentChangedAt = "+contentChangedAt+", allowSync = "+allowSync+", language = "+language+", filters = "+filters+", type = "+type+", title = "+title+", uuid = "+uuid+", directory = "+directory+", content = "+content+", createdAt = "+createdAt+", composite = "+composite+", refreshing = "+refreshing+", scanner = "+scanner+", key = "+key+", updatedAt = "+updatedAt+", Location = "+Location+"]";
+    public String getAddedAt() {
+        return addedAt;
+    }
+
+    public void setAddedAt(String addedAt) {
+        this.addedAt = addedAt;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
+    public String getRatingKey() {
+        return ratingKey;
+    }
+
+    public void setRatingKey(String ratingKey) {
+        this.ratingKey = ratingKey;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
+    public String getStudio() {
+        return studio;
+    }
+
+    public void setStudio(String studio) {
+        this.studio = studio;
+    }
+
+    public String getParentRatingKey() {
+        return parentRatingKey;
+    }
+
+    public void setParentRatingKey(String parentRatingKey) {
+        this.parentRatingKey = parentRatingKey;
+    }
+
+    public String getLibrarySectionID() {
+        return librarySectionID;
+    }
+
+    public void setLibrarySectionID(String librarySectionID) {
+        this.librarySectionID = librarySectionID;
+    }
+
+    public com.naz.PlexDownloader.models.plex.Director getDirector() {
+        return Director;
+    }
+
+    public void setDirector(com.naz.PlexDownloader.models.plex.Director director) {
+        Director = director;
+    }
+
+    public String getOriginallyAvailableAt() {
+        return originallyAvailableAt;
+    }
+
+    public void setOriginallyAvailableAt(String originallyAvailableAt) {
+        this.originallyAvailableAt = originallyAvailableAt;
+    }
+
+    public String getParentTitle() {
+        return parentTitle;
+    }
+
+    public void setParentTitle(String parentTitle) {
+        this.parentTitle = parentTitle;
+    }
+
+    public String getParentThumb() {
+        return parentThumb;
+    }
+
+    public void setParentThumb(String parentThumb) {
+        this.parentThumb = parentThumb;
+    }
+
+    public String getLibrarySectionUUID() {
+        return librarySectionUUID;
+    }
+
+    public void setLibrarySectionUUID(String librarySectionUUID) {
+        this.librarySectionUUID = librarySectionUUID;
+    }
+
+    public String getParentKey() {
+        return parentKey;
+    }
+
+    public void setParentKey(String parentKey) {
+        this.parentKey = parentKey;
+    }
+
+    public String getLibrarySectionTitle() {
+        return librarySectionTitle;
+    }
+
+    public void setLibrarySectionTitle(String librarySectionTitle) {
+        this.librarySectionTitle = librarySectionTitle;
+    }
+
+    public String getParentGuid() {
+        return parentGuid;
+    }
+
+    public void setParentGuid(String parentGuid) {
+        this.parentGuid = parentGuid;
     }
 }

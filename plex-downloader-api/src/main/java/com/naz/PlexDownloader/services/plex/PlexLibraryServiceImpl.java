@@ -146,15 +146,15 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
      * @return - The {@link MediaContainer}
      */
     @Override
-    public List<Video> retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey) {
+    public MediaContainer retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey) {
 
         String url = serverIp + libraryKey;
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer, mediaContainer.getVideo());
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer);
 
-        return mediaContainer.getVideo();
+        return mediaContainer;
     }
 
     /**
@@ -166,14 +166,14 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
      * @return - The {@link MediaContainer}
      */
     @Override
-    public List<Directory> retrieveMediaMetadataChildren(String plexAuthToken, String serverIp, String libraryKey) {
+    public MediaContainer retrieveMediaMetadataChildren(String plexAuthToken, String serverIp, String libraryKey) {
         String url = serverIp + libraryKey;
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer, mediaContainer.getDirectory());
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer);
 
-        return mediaContainer.getDirectory();
+        return mediaContainer;
     }
 
     /**
@@ -192,7 +192,8 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
         ValidationUtil.NotNullOrEmpty("missing.required.parameter", new Object[]{"Video"}, video);
 
         if (null == video.getMedia() || null == video.getMedia().getPart()) {
-            video = CollectionUtil.getFirstElement(this.retrieveMediaMetadata(plexAuthToken, serverIp, video.getKey()));
+            MediaContainer mediaContainer = this.retrieveMediaMetadata(plexAuthToken, serverIp, video.getKey());
+            video = CollectionUtil.getFirstElement(mediaContainer.getVideo());
         }
 
         Part part = video.getMedia().getPart();

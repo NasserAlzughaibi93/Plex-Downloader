@@ -1,9 +1,10 @@
 import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
-import {Directory} from "../../models/directory.model";
-import {LibraryService} from "../../_service/library.service";
-import {Video} from "../../models/video.model";
-import {Constants} from "../../util/constants";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import {Directory} from '../../models/directory.model';
+import {LibraryService} from '../../_service/library.service';
+import {Video} from '../../models/video.model';
+import {Constants} from '../../util/constants';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {AlertifyService} from "../../_service/alertify.service";
 
 export class ModalData {
   video: Video;
@@ -26,6 +27,7 @@ export class SeriesPanelComponent implements OnInit {
   seasons = new Array<Directory>();
 
   constructor(private libraryService: LibraryService,
+              public alertify: AlertifyService,
               public dialogRef: MatDialogRef<SeriesPanelComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: ModalData) {}
 
@@ -37,22 +39,18 @@ export class SeriesPanelComponent implements OnInit {
       this.show = this.data.show;
     }
     if (this.show) {
-      console.log("calling for more");
-      this.libraryService.retrieveMediaMetaDataChildren(this.show.key).subscribe((directories) => {
+      console.log('calling for more');
+      this.libraryService.retrieveMediaMetaDataChildren(this.show.key).subscribe((mediaContainer) => {
 
-        this.seasons = directories;
+        this.seasons = mediaContainer.directory;
 
         console.log('testing, season sizes: ' + this.seasons.length);
 
-        // let indexToRemove  = this.seasons.findIndex(season => season.title === 'All episodes');
-        //
-        // if (indexToRemove)
-        //   this.seasons.splice(indexToRemove, 1);
-
         this.seasons.forEach(season => {
           console.log('getting season no.' + season.title);
-          this.libraryService.retrieveMediaMetaData(season.key).subscribe((videos) => {
-            season.videos = videos;
+          this.libraryService.retrieveMediaMetaData(season.key).subscribe((media) => {
+            season.videos = media.video;
+            season.track = media.track;
           });
         });
 
@@ -67,37 +65,38 @@ export class SeriesPanelComponent implements OnInit {
 
   /**
    *
-   * @param video
+   * @param video - the video for download
    */
   startDownloadingMedia(video: Video) {
 
     this.libraryService.retrieveMediaDownloadLink(video).subscribe(downloadLink => {
+      this.alertify.success('Downloading starting...');
       this.beginDownload(downloadLink);
     });
 
   }
 
   beginDownload(url: string) {
-    var link = document.createElement("a");
-    link.download = "a";
+    const link = document.createElement('a');
+    link.download = 'a';
     link.href = url;
     document.body.appendChild(link);
     link.click();
     this.onNoClick();
-    //window.open(url);
+    // window.open(url);
   }
 
   resolveBannerURL(video: Video): string {
-    let authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
-    let thumb = video.type === 'movie' ? video.art : video.grandparentArt;
-    let url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
-    //console.log("calling: " + url);
+    const authTokenHeader = '?X-Plex-Token=' + localStorage.getItem(Constants.PLEX_AUTH_TOKEN);
+    const thumb = video.type === 'movie' ? video.art : video.grandparentArt;
+    const url = localStorage.getItem(Constants.PLEX_SELECTED_SERVER_FULL_URI) + thumb + authTokenHeader;
+    // console.log("calling: " + url);
     return url;
   }
 
   resolvePosterURL(video: Video) {
 
-    let thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
+    const thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
 
     this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
       this.mediaPhotoUrl = photoUrl;
@@ -108,10 +107,10 @@ export class SeriesPanelComponent implements OnInit {
   }
 
   resolveSeriesPosterURL(directory: Directory) {
-    let thumb = directory.thumb;
+    const thumb = directory.thumb;
     this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
       // return photoUrl;
-      this.seriesPhotoUrl = photoUrl
+      this.seriesPhotoUrl = photoUrl;
     }, () => {
       console.log('Error loading photo url');
     });
