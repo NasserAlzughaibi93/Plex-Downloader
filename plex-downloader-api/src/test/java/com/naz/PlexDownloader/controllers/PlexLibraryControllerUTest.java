@@ -1,6 +1,8 @@
 package com.naz.PlexDownloader.controllers;
 
 import com.naz.PlexDownloader.BaseUnitTest;
+import com.naz.PlexDownloader.models.DownloadRequest;
+import com.naz.PlexDownloader.models.MediaType;
 import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.Media;
@@ -142,14 +144,15 @@ class PlexLibraryControllerUTest extends BaseUnitTest {
     @Test
     void retrieveMediaMetadata() {
 
-        List<Video> videos = CollectionUtil.createList(this.video);
+        MediaContainer mediaContainer = new MediaContainer();
+        mediaContainer.setVideo(CollectionUtil.createList(this.video));
 
-        when(plexLibraryService.retrieveMediaMetadata(anyString(), anyString(), anyString())).thenReturn(videos);
+        when(plexLibraryService.retrieveMediaMetadata(anyString(), anyString(), anyString())).thenReturn(mediaContainer);
 
         List<Video> result =
-                plexLibraryController.retrieveMediaMetadata("serverIp", "authToken", "libraryKey");
+                plexLibraryController.retrieveMediaMetadata("serverIp", "authToken", "libraryKey").getVideo();
 
-        assertEquals(videos.size(), result.size());
+        assertEquals(mediaContainer.getVideo().size(), result.size());
     }
 
     @Test
@@ -157,9 +160,13 @@ class PlexLibraryControllerUTest extends BaseUnitTest {
 
         String downloadURL = "DownloadLink";
 
-        when(plexLibraryService.retrieveMediaDownloadLink(anyString(), anyString(), any(Video.class))).thenReturn(downloadURL);
+        when(plexLibraryService.retrieveMediaDownloadLink(anyString(), anyString(), any(DownloadRequest.class))).thenReturn(downloadURL);
 
-        String result = plexLibraryController.retrieveMediaDownloadLink("serverIP", "authToken", this.video);
+        DownloadRequest downloadRequest = new DownloadRequest();
+        downloadRequest.setKey("key");
+        downloadRequest.setMediaType(MediaType.Video);
+
+        String result = plexLibraryController.retrieveMediaDownloadLink("serverIP", "authToken", downloadRequest);
 
         assertEquals(downloadURL, result);
     }
