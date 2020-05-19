@@ -9,6 +9,7 @@ import {Observable} from 'rxjs';
 import {Video} from '../models/video.model';
 import {Directory} from '../models/directory.model';
 import {Device} from '../models/device.model';
+import {DownloadRequest} from "../models/download-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -109,16 +110,14 @@ export class LibraryService {
       );
   }
 
-  retrieveMediaDownloadLink(video: Video): Observable<string> {
-
-
+  retrieveMediaDownloadLink(downloadRequest: DownloadRequest): Observable<string> {
 
     const httpOptions = {
       responseType: 'text' as 'json'
     };
 
 
-    return this.http.post(this.baseUrl + '/{{serverIp}}/metadata', video, httpOptions)
+    return this.http.post(this.baseUrl + '/{{serverIp}}/metadata', downloadRequest, httpOptions)
       .pipe(
         map((response: any) => {
 

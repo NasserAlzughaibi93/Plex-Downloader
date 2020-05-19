@@ -3,8 +3,10 @@ import {Directory} from '../../models/directory.model';
 import {LibraryService} from '../../_service/library.service';
 import {Video} from '../../models/video.model';
 import {Constants} from '../../util/constants';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {AlertifyService} from "../../_service/alertify.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {AlertifyService} from '../../_service/alertify.service';
+import {DownloadRequest, MediaType} from '../../models/download-request.model';
+import {Track} from '../../models/track.model';
 
 export class ModalData {
   video: Video;
@@ -65,11 +67,28 @@ export class SeriesPanelComponent implements OnInit {
 
   /**
    *
-   * @param video - the video for download
+   * @param video - the video for download.
    */
-  startDownloadingMedia(video: Video) {
+  startDownloadingVideo(video: Video) {
 
-    this.libraryService.retrieveMediaDownloadLink(video).subscribe(downloadLink => {
+    const downloadRequest: DownloadRequest = {key: video.key, mediaType: MediaType.Video};
+
+    this.libraryService.retrieveMediaDownloadLink(downloadRequest).subscribe(downloadLink => {
+      this.alertify.success('Downloading starting...');
+      this.beginDownload(downloadLink);
+    });
+
+  }
+
+  /**
+   *
+   * @param track - the track requesting download.
+   */
+  startDownloadingMusic(track: Track) {
+
+    const downloadRequest: DownloadRequest = {key: track.key, mediaType: MediaType.Music};
+
+    this.libraryService.retrieveMediaDownloadLink(downloadRequest).subscribe(downloadLink => {
       this.alertify.success('Downloading starting...');
       this.beginDownload(downloadLink);
     });

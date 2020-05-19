@@ -1,5 +1,6 @@
 package com.naz.PlexDownloader.services.plex;
 
+import com.naz.PlexDownloader.models.DownloadRequest;
 import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.Media;
@@ -26,7 +27,7 @@ public interface PlexLibraryService {
 
     MediaContainer retrieveMediaMetadataChildren(String plexAuthToken, String serverIp, String libraryKey);
 
-    String retrieveMediaDownloadLink(String plexAuthToken, String serverIp, Video video);
+    String retrieveMediaDownloadLink(final String plexAuthToken, final String serverIp, final DownloadRequest downloadRequest);
 
     String retrievePhotoFromPlexServer(String plexAuthToken, String serverIp, String metadataKey);
 

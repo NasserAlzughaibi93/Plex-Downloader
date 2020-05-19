@@ -71,7 +71,7 @@
                     <td *ngIf="season.title != 'All episodes'">{{episode.index}}</td>
                     <td>{{episode.title}}</td>
                     <td>
-                      <button type="button" class="btn btn-primary" (click)="startDownloadingMedia(episode)">
+                      <button type="button" class="btn btn-primary" (click)="startDownloadingVideo(episode)">
                         Download
                       </button>
                     </td>
@@ -82,13 +82,9 @@
                     <td *ngIf="track.originalTitle != null">{{track.title}} - {{track.originalTitle}}</td>
                     <td *ngIf="track.originalTitle === null">{{track.title}}</td>
                     <td>
-                      <!-- TODO add music download button -->
-                      <button type="button" class="btn btn-primary" (click)="alertify.warning('Music downloading not yet implemented')">
+                      <button type="button" class="btn btn-primary" (click)="startDownloadingMusic(track)">
                         Download
                       </button>
-                      <!--<button type="button" class="btn btn-primary" (click)="startDownloadingMedia(track)">
-                        Download
-                      </button>-->
                     </td>
                   </tr>
                   </tbody>

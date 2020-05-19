@@ -6,6 +6,8 @@ import {AlertifyService} from '../../_service/alertify.service';
 import {LibraryService} from '../../_service/library.service';
 import {SeriesPanelComponent} from '../../search/series-panel/series-panel.component';
 import {MatDialog} from '@angular/material/dialog';
+import {DownloadRequest, MediaType} from "../../models/download-request.model";
+import {Track} from "../../models/track.model";
 
 @Component({
   selector: 'app-mobile-card',
@@ -31,9 +33,31 @@ export class MobileCardComponent implements OnInit {
     this.id = ++MobileCardComponent.tempId;
   }
 
-  startDownloadingMedia(video: Video) {
+  /**
+   *
+   * @param video - the video for download.
+   */
+  startDownloadingVideo(video: Video) {
 
-    this.libraryService.retrieveMediaDownloadLink(video).subscribe(downloadLink => {
+    const downloadRequest: DownloadRequest = {key: video.key, mediaType: MediaType.Video};
+
+    this.libraryService.retrieveMediaDownloadLink(downloadRequest).subscribe(downloadLink => {
+      this.alertify.success('Downloading starting...');
+      this.beginDownload(downloadLink);
+    });
+
+  }
+
+  /**
+   *
+   * @param track - the track requesting download.
+   */
+  startDownloadingMusic(track: Track) {
+
+    const downloadRequest: DownloadRequest = {key: track.key, mediaType: MediaType.Music};
+
+    this.libraryService.retrieveMediaDownloadLink(downloadRequest).subscribe(downloadLink => {
+      this.alertify.success('Downloading starting...');
       this.beginDownload(downloadLink);
     });
 

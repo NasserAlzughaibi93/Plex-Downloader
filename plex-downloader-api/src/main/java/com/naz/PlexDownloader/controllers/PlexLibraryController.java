@@ -1,6 +1,7 @@
 package com.naz.PlexDownloader.controllers;
 
 
+import com.naz.PlexDownloader.models.DownloadRequest;
 import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
@@ -95,8 +96,8 @@ public class PlexLibraryController {
     @ResponseStatus(HttpStatus.OK)
     public String retrieveMediaDownloadLink(@PathVariable String serverIp,
                                             @RequestHeader("PLEX-TOKEN") String authToken,
-                                            @RequestBody Video video) {
-        return this.plexLibraryService.retrieveMediaDownloadLink(authToken, serverIp, video);
+                                            @RequestBody DownloadRequest downloadRequest) {
+        return this.plexLibraryService.retrieveMediaDownloadLink(authToken, serverIp, downloadRequest);
     }
 
     @GetMapping("/{serverIp}/metadata/photo")

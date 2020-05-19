@@ -59,23 +59,4 @@ export class MediaCardComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
-
-  startDownloadingMedia(video: Video) {
-
-    this.libraryService.retrieveMediaDownloadLink(video).subscribe(downloadLink => {
-      this.beginDownload(downloadLink);
-    });
-
-  }
-
-  beginDownload(url: string) {
-    var link = document.createElement("a");
-    link.download = "a";
-    link.href = url;
-    document.body.appendChild(link);
-    link.click();
-    //window.open(url);
-  }
-
-
 }

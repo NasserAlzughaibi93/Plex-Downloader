@@ -55,7 +55,7 @@
                             <td>{{episode.title}}</td>
                             <td>{{episode.viewCount ? 'Yes' : 'No'}}</td>
                             <td>
-                              <button type="button" class="btn btn-primary" (click)="startDownloadingMedia(episode)">
+                              <button type="button" class="btn btn-primary" (click)="startDownloadingVideo(episode)">
                                 Download
                               </button>
                             </td>
@@ -68,13 +68,9 @@
                             <td *ngIf="track.originalTitle != null">{{track.title}} - {{track.originalTitle}}</td>
                             <td *ngIf="track.originalTitle === null">{{track.title}}</td>
                             <td>
-                              <!-- TODO add music download button -->
-                              <button type="button" class="btn btn-primary" (click)="alertify.warning('Music downloading not yet implemented')">
+                              <button type="button" class="btn btn-primary" (click)="startDownloadingMusic(track)">
                                 Download
                               </button>
-                              <!--<button type="button" class="btn btn-primary" (click)="startDownloadingMedia(track)">
-                                Download
-                              </button>-->
                             </td>
                           </tr>
                           </tbody>
@@ -112,7 +108,7 @@
           <h5 class="card-title">{{video.type === 'episode' ? video.title : null}}</h5>
           <p class="card-text">{{video.summary}}</p>
           <p style="position: absolute; bottom: 0; right: 0">
-            <button class="btn btn-primary" (click)="startDownloadingMedia(video)">
+            <button class="btn btn-primary" (click)="startDownloadingVideo(video)">
               Download {{video.type === 'movie' ? 'Movie' : 'Episode'}}</button>
           </p>
         </div>

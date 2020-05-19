@@ -1,11 +1,13 @@
 package com.naz.PlexDownloader.services.plex;
 
+import com.naz.PlexDownloader.models.DownloadRequest;
 import com.naz.PlexDownloader.models.plex.Connection;
 import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Part;
 import com.naz.PlexDownloader.models.plex.PlexUser;
+import com.naz.PlexDownloader.models.plex.Track;
 import com.naz.PlexDownloader.models.plex.Video;
 import com.naz.PlexDownloader.util.CollectionUtil;
 import com.naz.PlexDownloader.util.PlexRestTemplate;
@@ -179,28 +181,45 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     /**
      * Generate the download link for the given media.
      *
-     * @param plexAuthToken - The plex auth token.
-     * @param serverIp      - The plex instance server IP.
-     * @param video         - The media
+     * @param plexAuthToken   - The plex auth token.
+     * @param serverIp        - The plex instance server IP.
+     * @param downloadRequest - The download request key and type
      * @return - The download link
      */
     @Override
-    public String retrieveMediaDownloadLink(String plexAuthToken, String serverIp, Video video) {
+    public String retrieveMediaDownloadLink(final String plexAuthToken, final String serverIp, final DownloadRequest downloadRequest) {
 
-        String downloadUrl;
+        String downloadUrl = "";
 
-        ValidationUtil.NotNullOrEmpty("missing.required.parameter", new Object[]{"Video"}, video);
+        ValidationUtil.NotNullOrEmpty("missing.required.parameter",
+                new Object[]{"downloadRequest"}, downloadRequest);
 
-        if (null == video.getMedia() || null == video.getMedia().getPart()) {
-            MediaContainer mediaContainer = this.retrieveMediaMetadata(plexAuthToken, serverIp, video.getKey());
-            video = CollectionUtil.getFirstElement(mediaContainer.getVideo());
+        MediaContainer mediaContainer = this.retrieveMediaMetadata(plexAuthToken, serverIp, downloadRequest.getKey());
+
+        switch (downloadRequest.getMediaType()) {
+
+            case Video:
+                Video video = CollectionUtil.getFirstElement(mediaContainer.getVideo());
+                Part part = video.getMedia().getPart();
+
+                ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", video.getMedia(), video.getMedia().getPart());
+
+                downloadUrl = serverIp + part.getKey() + "?download=1&X-Plex-Token=" + plexAuthToken;
+                break;
+            case Music:
+                Track track = CollectionUtil.getFirstElement(mediaContainer.getTrack());
+                Part musicPart = track.getMedia().getPart();
+
+                ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", track.getMedia(), track.getMedia().getPart());
+
+                downloadUrl = serverIp + musicPart.getKey() + "?download=1&X-Plex-Token=" + plexAuthToken;
+            case Series:
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + downloadRequest.getMediaType());
         }
 
-        Part part = video.getMedia().getPart();
-
-        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", video.getMedia(), video.getMedia().getPart());
-
-        downloadUrl = serverIp + part.getKey() + "?download=1&X-Plex-Token=" + plexAuthToken;
+        ValidationUtil.NotNullOrEmpty(downloadUrl);
 
         return downloadUrl;
     }
