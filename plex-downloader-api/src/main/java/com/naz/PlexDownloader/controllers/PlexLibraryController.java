@@ -1,6 +1,7 @@
 package com.naz.PlexDownloader.controllers;
 
 
+import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Video;
@@ -28,7 +29,7 @@ public class PlexLibraryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public MediaContainer findPlexResources(@RequestHeader("PLEX-TOKEN") String authToken) {
+    public List<Device> findPlexResources(@RequestHeader("PLEX-TOKEN") String authToken) {
         return this.plexLibraryService.findPlexResources(authToken);
     }
 

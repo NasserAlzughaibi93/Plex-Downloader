@@ -65,9 +65,9 @@ export class NavbarComponent implements OnInit {
 
   retrievePlexResources() {
 
-    this.libraryService.retrievePlexResources().subscribe((mediaContainer) => {
+    this.libraryService.retrievePlexResources().subscribe((devices) => {
       // console.log('worked');
-      this.devices = mediaContainer.device;
+      this.devices = devices;
       localStorage.setItem(Constants.PLEX_SELECTED_SERVERS, JSON.stringify(this.devices));
       // console.log("devices size: " + this.devices.length);
     }, () => {

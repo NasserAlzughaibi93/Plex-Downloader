@@ -130,7 +130,7 @@ a:hover
   position:absolute;
   top:0;
   border-left: 42px solid transparent;
-  border-right: 42px solid orange;
+  border-right: 42px solid #ffa500;
   border-bottom: 42px solid transparent;
   width: 0;
   right: 0;

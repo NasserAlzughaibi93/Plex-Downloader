@@ -2,7 +2,6 @@ package com.naz.PlexDownloader.services.plex;
 
 import com.naz.PlexDownloader.models.plex.Connection;
 import com.naz.PlexDownloader.models.plex.Device;
-import com.naz.PlexDownloader.models.plex.Director;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Part;
@@ -14,7 +13,6 @@ import com.naz.PlexDownloader.util.ValidationUtil;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,23 +51,20 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
      * @return {@link MediaContainer}
      */
     @Override
-    public MediaContainer findPlexResources(String plexAuthToken) {
+    public List<Device> findPlexResources(String plexAuthToken) {
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, PLEX_RESOURCES_URL, false);
-
+        List<Device> serverDevices = new ArrayList<>();
 
         ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer);
 
         if (!CollectionUtil.isNullOrEmpty(mediaContainer.getDevice())) {
-            List<Device> serverDevices = new ArrayList<>();
 
             for (Device device : mediaContainer.getDevice()) {
                 if (device.getProvides().contains("server")) {
                     serverDevices.add(device);
                 }
             }
-
-            mediaContainer.setDevice(serverDevices);
 
             PlexUser plexUser = this.plexUserService.retrieveUserByAuthToken(plexAuthToken);
             plexUser.setAccessibleServers(serverDevices);
@@ -78,7 +73,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
             this.plexUserService.savePlexUser(plexUser);
         }
 
-        return mediaContainer;
+        return serverDevices;
     }
 
     /**

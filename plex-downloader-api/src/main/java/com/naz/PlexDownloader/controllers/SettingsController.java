@@ -51,11 +51,15 @@ public class SettingsController {
         return this.settingsService.retrieveSystemSettingsByPlexUserAuthToken(authToken);
     }
 
-
-
     @GetMapping("/about")
     @ResponseStatus(HttpStatus.OK)
     public About retrieveAppInfo() {
         return settingsService.retrieveAppInfo();
+    }
+
+    @GetMapping("/status")
+    @ResponseStatus(HttpStatus.OK)
+    public String statusCheck() {
+        return HttpStatus.OK.getReasonPhrase();
     }
 }

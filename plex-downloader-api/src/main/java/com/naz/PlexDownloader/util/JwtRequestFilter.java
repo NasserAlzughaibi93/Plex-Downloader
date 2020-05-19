@@ -35,6 +35,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final String[] allowedEndPoints = {"/basiclogin", "/oAuth", "/status"};
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 
@@ -48,8 +50,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         StringBuffer requestUrl = request.getRequestURL();
 
-        if (requestUrl.indexOf("/basiclogin") != -1
-                || requestUrl.indexOf("/oAuth") != -1) {
+        if (checkRequestRequiresToken(requestUrl)) {
             chain.doFilter(request, response);
             return;
         }
@@ -131,6 +132,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         chain.doFilter(request, response);
 
+    }
+
+    private boolean checkRequestRequiresToken(StringBuffer requestUrl) {
+        for (String endPoint :
+                allowedEndPoints) {
+            if (requestUrl.indexOf(endPoint) != -1)
+                return true;
+        }
+
+        return false;
     }
 
     public PlexAuthService getPlexAuthService() {

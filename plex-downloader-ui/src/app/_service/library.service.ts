@@ -8,6 +8,7 @@ import {MediaContainer} from "../models/mediacontainer.model";
 import {Observable} from "rxjs";
 import {Video} from "../models/video.model";
 import {Directory} from "../models/directory.model";
+import {Device} from "../models/device.model";
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,9 @@ export class LibraryService {
 
   constructor(private  http: HttpClient, private router: Router, private alertify: AlertifyService) { }
 
-  retrievePlexResources() : Observable<MediaContainer> {
+  retrievePlexResources() : Observable<Device[]> {
 
-    return this.http.get<MediaContainer>(this.baseUrl)
+    return this.http.get<Device[]>(this.baseUrl)
       .pipe(
         map((response: any) => {
 

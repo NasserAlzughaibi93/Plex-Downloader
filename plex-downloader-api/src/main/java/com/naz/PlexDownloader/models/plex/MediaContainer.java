@@ -140,7 +140,7 @@ public class MediaContainer {
         return Video;
     }
 
-    public void setVideo(List<com.naz.PlexDownloader.models.plex.Video> video) {
+    public void setVideo(List<Video> video) {
         Video = video;
     }
 

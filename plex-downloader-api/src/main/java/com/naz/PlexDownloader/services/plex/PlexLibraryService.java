@@ -1,5 +1,6 @@
 package com.naz.PlexDownloader.services.plex;
 
+import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Video;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public interface PlexLibraryService {
 
-    MediaContainer findPlexResources(String plexAuthToken);
+    List<Device> findPlexResources(String plexAuthToken);
 
     List<Video> retrieveLibraryOnDeck(String plexAuthToken, String serverIp);
 

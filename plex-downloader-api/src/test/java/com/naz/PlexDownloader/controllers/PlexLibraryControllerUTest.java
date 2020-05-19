@@ -1,6 +1,7 @@
 package com.naz.PlexDownloader.controllers;
 
 import com.naz.PlexDownloader.BaseUnitTest;
+import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.Media;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
@@ -34,17 +35,20 @@ class PlexLibraryControllerUTest extends BaseUnitTest {
 
     private Video video;
     private Directory directory;
+    private Device device;
 
     @BeforeEach
     protected void setUp() {
         this.video = new Video();
         this.video.setId(1L);
 
-        directory = new Directory();
-        directory.setDirectoryId(1L);
+        this.directory = new Directory();
+        this.directory.setDirectoryId(1L);
+
+        this.device = new Device();
+        this.device.setDeviceId(1L);
 
         super.setUp();
-
     }
 
     @AfterEach
@@ -54,14 +58,14 @@ class PlexLibraryControllerUTest extends BaseUnitTest {
     @Test
     void findPlexResources() {
 
-        MediaContainer mediaContainer = new MediaContainer();
-        mediaContainer.setIdentifier("1");
+        List<Device> devices = CollectionUtil.createList(this.device);
 
-        when(plexLibraryService.findPlexResources(anyString())).thenReturn(mediaContainer);
 
-        MediaContainer result = plexLibraryController.findPlexResources("token");
+        when(plexLibraryService.findPlexResources(anyString())).thenReturn(devices);
 
-        assertEquals(mediaContainer, result);
+        List<Device> result = plexLibraryController.findPlexResources("token");
+
+        assertEquals(devices, result);
 
     }
 
