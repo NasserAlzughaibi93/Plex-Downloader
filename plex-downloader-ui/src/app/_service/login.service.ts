@@ -30,7 +30,7 @@ export class LoginService {
         map((user: User) => {
 
           if (user) {
-            console.log('JWT Token: ' + user.jwtToken);
+            // console.log('JWT Token: ' + user.jwtToken);
             localStorage.setItem(Constants.PLEX_AUTH_TOKEN, user.jwtToken);
             localStorage.setItem(Constants.PLEX_USER_ICON, user.thumb);
             return user;

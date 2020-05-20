@@ -1,6 +1,7 @@
 package com.naz.PlexDownloader.controllers;
 
 import com.naz.PlexDownloader.dtos.SystemSettingsDTO;
+import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.models.settings.About;
 import com.naz.PlexDownloader.models.settings.SystemSettings;
 import com.naz.PlexDownloader.services.SettingsService;
@@ -36,6 +37,7 @@ public class SettingsController {
         return HttpStatus.OK;
     }
 
+    //TODO extract to it's own controller with token refresh
     @PostMapping("/system")
     @ResponseStatus(HttpStatus.OK)
     public SystemSettings saveSystemSettings(@RequestHeader("PLEX-TOKEN") String authToken,
@@ -49,6 +51,12 @@ public class SettingsController {
     public SystemSettings retrieveSystemSettings(@RequestHeader("PLEX-TOKEN") String authToken) {
 
         return this.settingsService.retrieveSystemSettingsByPlexUserAuthToken(authToken);
+    }
+
+    @GetMapping("/refreshToken")
+    @ResponseStatus(HttpStatus.OK)
+    public PlexUser refreshJWTToken(@RequestHeader("Authorization") String jwtToken) {
+        return this.settingsService.refreshJWTToken(jwtToken);
     }
 
     @GetMapping("/about")

@@ -11,7 +11,10 @@ import com.naz.PlexDownloader.models.settings.SystemSettings;
 import com.naz.PlexDownloader.repositories.SettingsRepository;
 import com.naz.PlexDownloader.services.plex.PlexUserService;
 import com.naz.PlexDownloader.util.BuildVersion;
+import com.naz.PlexDownloader.util.JwtTokenUtil;
 import com.naz.PlexDownloader.util.ValidationUtil;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.slf4j.LoggerFactory;
@@ -29,6 +32,8 @@ public class SettingsServiceImpl implements SettingsService {
     @Autowired
     private SettingsRepository settingsRepository;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     /**
      * Find the system settings by ID
@@ -107,6 +112,37 @@ public class SettingsServiceImpl implements SettingsService {
     public SystemSettings saveSystemSettings(SystemSettings systemSettings) {
         updateApplicationLogLevel(systemSettings.getLoggingLevel());
         return this.settingsRepository.save(systemSettings);
+    }
+
+    @Override
+    public PlexUser refreshJWTToken(String jwtToken) {
+
+        if (jwtToken == null || !jwtToken.startsWith("Bearer ")) {
+            throw new JwtException("invalid.auth.token");
+        }
+
+        logger.debug("Attempting to refresh jwt token");
+        jwtToken = jwtToken.substring(7);
+
+        if (jwtTokenUtil.isTokenExpired(jwtToken)) {
+            throw new JwtException("token.expire");//TODO add custom expired exception
+        }
+
+        String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+
+        if (username == null) {
+            throw new JwtException("username.null");
+        }
+
+        PlexUser plexUser = this.plexUserService.findPlexUserByUsername(username);
+
+        if (plexUser == null) {
+            throw new RecordNotFoundException("user.not.found.in.database", new Object[]{username});
+        }
+
+        plexUser.setJwtToken(jwtTokenUtil.generateToken(plexUser));
+
+        return plexUserService.savePlexUser(plexUser);
     }
 
     /**

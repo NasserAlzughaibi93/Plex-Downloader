@@ -36,7 +36,6 @@ export class SeriesPanelComponent implements OnInit {
   ngOnInit() {
     if (this.data.video != null) {
       this.video = this.data.video;
-      console.log('Call 1')
       this.resolvePosterURL(this.video);
     } else {
       this.show = this.data.show;
@@ -118,7 +117,6 @@ export class SeriesPanelComponent implements OnInit {
 
     const thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
 
-    console.log('Call 2')
     this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
       this.mediaPhotoUrl = photoUrl;
     }, () => {
@@ -128,8 +126,6 @@ export class SeriesPanelComponent implements OnInit {
   }
 
   resolveSeriesPosterURL(directory: Directory) {
-    console.log('Call 3')
-
     const thumb = directory.thumb;
     this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
       // return photoUrl;
