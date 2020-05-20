@@ -20,6 +20,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   @Input() libraryKey: string;
 
   readonly MAX_ROWS = 4;
+  count = 1;
 
   videosList: Video[];
   // videosList = [];
@@ -51,7 +52,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       }
 
       this.libraryKey = libraryKey;
-      this.retrieveLibrary();
+      //this.retrieveLibrary();
 
     }
 
@@ -72,6 +73,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       sessionStorage.setItem(Constants.PLEX_SELECTED_LIBRARY_KEY, this.libraryKey);
     }
 
+    console.log('count ' + this.count++);
     this.libraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(this.libraryKey, 'all').subscribe(mediaContainer => {
 
       let years = new Array<number>();

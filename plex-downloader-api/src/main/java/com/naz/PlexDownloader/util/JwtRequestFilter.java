@@ -42,6 +42,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             throws ServletException, IOException {
 
+        //Needed since this filter comes before CORS filter. This handles pre flight requests.
+        if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         final String requestTokenHeader = request.getHeader("Authorization");
 
         String username = null;
@@ -76,10 +82,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
 
         } else {
-            logger.warn("JWT Token does not begin with Bearer String");
-
-            //TODO fix issue where first request is missing the bearer token from angular app.
-            //throw new JwtInvalidException("jwt.token.missing.bearer.token.header");
+            logger.error("JWT Token does not begin with Bearer String");
+            throw new JwtInvalidException("jwt.token.missing.bearer.token.header");
         }
 
         // Once we get the token validate it.

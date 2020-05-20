@@ -37,9 +37,7 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router,
               private alertify: AlertifyService,
               private libraryService: LibraryService,
-              private componentMessagingService: ComponentMessagingService,
-              private loadingScreenService: LoadingScreenService) {
-    this.loadingScreenService.startLoading();
+              private componentMessagingService: ComponentMessagingService) {
     this.firstTimeSetupCompleted = localStorage.getItem(Constants.FIRST_TIME_SETUP_COMPLETE) === 'true';
     if (!this.firstTimeSetupCompleted) {
       console.log("getting server lists.");

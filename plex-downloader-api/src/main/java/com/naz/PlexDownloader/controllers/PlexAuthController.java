@@ -24,6 +24,7 @@ public class PlexAuthController {
     @Autowired
     private PlexAuthService plexAuthService;
 
+    @Deprecated
     @PostMapping("/basiclogin")//TODO resolve springs default login screen
     @ResponseStatus(HttpStatus.OK)
     public PlexUser loginBasicAuth(@RequestBody UserDTO userDTO) {
