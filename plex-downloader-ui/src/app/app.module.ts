@@ -1,19 +1,20 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatTabsModule} from '@angular/material/tabs';
+import {RouterModule} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import { StoreModule } from "@ngrx/store";
 
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './login/login.component';
-import {FormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NavbarComponent} from './navbar/navbar.component';
-import {RouterModule} from '@angular/router';
 import {appRoutes} from './routes';
 import {AlertifyService} from './_service/alertify.service';
 import {LoginService} from './_service/login.service';
 import {LibraryService} from './_service/library.service';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatTabsModule} from '@angular/material/tabs';
 import {RestInterceptor} from "./util/rest-interceptor";
 import {SettingsComponent} from './settings/settings.component';
 import {AboutComponent} from './settings/about/about.component';
@@ -31,6 +32,7 @@ import { LibrarySearchCriteriaFilterPipe } from './library/library-search-criter
 import {LibrarySeriesSearchCriteriaFilterPipe} from "./library/library-series-search-criteria-filter.pipe";
 import { MobileCardComponent } from './home/mobile-card/mobile-card.component';
 import { SystemSettingsComponent } from './settings/system-settings/system-settings.component';
+import {counterReducer} from "./+state/reducer";
 
 
 @NgModule({
@@ -61,7 +63,8 @@ import { SystemSettingsComponent } from './settings/system-settings/system-setti
     BrowserAnimationsModule,
     MatTabsModule,
     NgbModule,
-    MatDialogModule
+    MatDialogModule,
+    StoreModule.forRoot({ count: counterReducer })
   ],
   providers: [
     LoginService,

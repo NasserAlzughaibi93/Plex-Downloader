@@ -33,6 +33,19 @@
     <br><br>
   </div>
   <div class="col-md-1"></div>
+
+<!--  STATE MANAGEMENT TEST-->
+
+  <div class="state-management">
+    <h3>STATE MANAGEMENT TEST</h3>
+    <div class="state-management-container">
+      <div>Current Count: {{ count$ | async }}</div>
+      <button id="increment" (click)="increment()">Increment</button>
+      <button id="decrement" (click)="decrement()">Decrement</button>
+      <button id="reset" (click)="reset()">Reset Counter</button>
+    </div>
+  </div>
+
 </div>
 
 

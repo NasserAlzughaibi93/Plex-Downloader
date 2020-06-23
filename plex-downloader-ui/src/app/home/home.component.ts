@@ -11,6 +11,9 @@ import {Directory} from "../models/directory.model";
 import {ComponentMessage} from "../models/component-message.model";
 import {FormControl} from "@angular/forms";
 import {LoadingScreenService} from "../_service/loading.service";
+import {select, Store} from "@ngrx/store";
+import {Observable} from "rxjs";
+import * as testActions from '../+state'
 
 @Component({
   selector: 'app-home',
@@ -30,6 +33,8 @@ export class HomeComponent implements OnInit {
   sectionVideoMap = new Map<Directory, Video[]>();
   sectionVideoMapKeys: Directory[];
 
+  count$: Observable<number>;
+
   //subscription: any;
 
   //tabSelected = new FormControl(0);
@@ -37,7 +42,9 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router,
               private alertify: AlertifyService,
               private libraryService: LibraryService,
-              private componentMessagingService: ComponentMessagingService) {
+              private componentMessagingService: ComponentMessagingService,
+              private store: Store<{ count: number }>
+              ) {
     this.firstTimeSetupCompleted = localStorage.getItem(Constants.FIRST_TIME_SETUP_COMPLETE) === 'true';
     if (!this.firstTimeSetupCompleted) {
       console.log("getting server lists.");
@@ -57,6 +64,8 @@ export class HomeComponent implements OnInit {
       console.log('Moving to library view');
       this.router.navigate(['/library'])
     }
+
+    this.count$ = store.pipe(select('count'));
 
   }
 
@@ -116,6 +125,18 @@ export class HomeComponent implements OnInit {
       }
 
     });
+  }
+
+  increment() {
+    this.store.dispatch(testActions.increment());
+  }
+
+  decrement() {
+    this.store.dispatch(testActions.decrement());
+  }
+
+  reset() {
+    this.store.dispatch(testActions.reset());
   }
 
   clearSectionMaps() {
