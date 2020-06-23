@@ -1,0 +1,194 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+@import url("https://fonts.googleapis.com/css?family=Fredericka+the+Great");
+body {
+  background-color: #f8fafb;
+  font-family: "Open Sans", sans-serif;
+  padding-top: 10%;
+}
+.col-md-5, .description {
+  padding: 0;
+}
+.description {
+  font-family: "Fredericka the Great", cursive;
+  text-align: center;
+}
+.card-header, .metadata {
+  background: none;
+  padding: 0;
+  position: relative;
+  border-style: none;
+}
+.metadata {
+  font-size: 16px;
+  margin-top: 4px;
+  margin-bottom: -5px;
+}
+.metadata i, .metadata p {
+  float: left;
+}
+.metadata p {
+  margin-top: 0;
+  margin-left: 10px;
+}
+.metadata i {
+  color: #ff9d00;
+  margin-top: 5px;
+  margin-left: 1px;
+}
+.card-body {
+  position: relative;
+  margin-top: -3%;
+  color: #9fa7a9;
+}
+
+.card-body .card-title {
+  font-weight: 600;
+  color: #414345;
+  margin-top: +25%;
+  /*font-size: 28px;*/
+  text-align: center;
+  white-space: initial;
+  word-wrap: break-word;
+}
+
+.card-body .card-title h4{
+  font-size: calc((75vw - 4.5rem) / 7)
+}
+
+
+.card-body .card-text {
+  margin-top: 4px;
+  font-weight: 600;
+  line-height: 30px;
+  text-overflow: ellipsis;
+}
+.card, .trailer-preview {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.card:hover, .trailer-preview:hover {
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1), 0 8px 8px rgba(0, 0, 0, 0.18);
+}
+.card {
+  border-radius: 8pt;
+  border-style: none;
+  overflow: hidden;
+  transform: scale(0.8);
+  margin-top: -60px;
+}
+.trailer-preview {
+  background-color: #ff3d49;
+  position: absolute;
+  top: -46px;
+  right: 24px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  color: white;
+  font-size: 36px;
+  text-align: center;
+  padding-top: 13px;
+  margin-top: +25%;
+}
+.trailer-preview:hover, .trailer-preview:disabled, .trailer-preview:active, .trailer-preview:focus {
+  background-color: #ff3d49;
+  color: white;
+}
+.trailer-preview i {
+  margin-left: 5px;
+}
+
+.card-img {
+  width: 250px;
+  height: 375px;
+}
+
+.card-img-album {
+  width: 250px;
+  height: 250px;
+}
+
+a {
+  color: #0060B6;
+  text-decoration: none;
+}
+
+a:hover
+{
+  color:#00A0C6;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.poster-container {
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.unwatched-overlay {
+  opacity:0;
+  position:absolute;
+  top:0;
+  border-left: 42px solid transparent;
+  border-right: 42px solid #ffa500;
+  border-bottom: 42px solid transparent;
+  width: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.poster-container .unwatched-overlay {
+  opacity: 1;
+}
+
+.inner-triangle{
+  border-left: 20px solid transparent;
+  border-right: 20px solid green;
+  border-bottom: 20px solid transparent;
+  height: 0;
+  background-color: orange;
+  width: 0;
+  position: absolute;
+  right: 0px;
+  z-index: 2;
+}
+.poster-container .inner-triangle {
+  opacity: 1;
+}
+.outer-triangle{
+  border-left: 24px solid transparent;
+  border-right: 24px solid gray;
+  border-bottom: 24px solid transparent;
+  height: 0;
+  width: 0;
+  position: absolute;
+  right: 0px;
+  z-index: 1;
+}
+
+.unwatched-series-overlay{
+  top: 0;
+  right: 0;
+  background-color: #cc7b19;
+  position: absolute;
+  padding: 5px 5px;
+  box-shadow: 0 0 4px
+  rgba(0,0,0,.6);
+  line-height: 24px;
+  opacity: 1;
+  transition: all .2s;
+  color: whitesmoke;
+  box-sizing: border-box;
+  border-radius: 8pt;
+
+}
+
+.poster-container .unwatched-series-overlay {
+  text-align: center;
+  opacity: 1;
+}
