@@ -47,5 +47,6 @@ export interface Video {
   year?:                  number;
   genres?:                Genre[];
   transcodedPhoto?:       string;
+  viewCount?:             string;
 }
 

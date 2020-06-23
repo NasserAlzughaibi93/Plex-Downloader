@@ -12,13 +12,14 @@ repositories {
 }
 def details = versionDetails()
 //Version by commit number.
-version = '0.0.1-' + details.lastTag
-
+//version = '0.0.1-' + details.lastTag
+version = 'SNAPSHOT'
+String buildVersion = '0.0.1'
 //Update app version that's visible in the app.
 def configFile = new File('plex-downloader-api/src/main/resources/application.properties')
 //println "updating version to '${version}' in ${configFile}"
 String configContent = configFile.getText('UTF-8')
-configContent = configContent.replaceAll(/info\.build\.version=.*/, "info.build.version=${version}")
+configContent = configContent.replaceAll(/info\.build\.version=.*/, "info.build.version=${buildVersion + '-' + details.lastTag}")
 configContent = configContent.replaceAll(/info\.build\.branch=.*/, "info.build.branch=${details.branchName}")
 configFile.write(configContent, 'UTF-8')
 

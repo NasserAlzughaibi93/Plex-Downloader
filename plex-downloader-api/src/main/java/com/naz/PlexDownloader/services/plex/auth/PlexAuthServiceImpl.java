@@ -5,6 +5,7 @@ import com.naz.PlexDownloader.models.plex.Pin;
 import com.naz.PlexDownloader.models.plex.PlexUser;
 import com.naz.PlexDownloader.models.plex.UserEntity;
 import com.naz.PlexDownloader.repositories.PlexRepository;
+import com.naz.PlexDownloader.services.plex.PlexUserService;
 import com.naz.PlexDownloader.util.CollectionUtil;
 import com.naz.PlexDownloader.util.JwtTokenUtil;
 import com.naz.PlexDownloader.util.PlexRestTemplate;
@@ -27,8 +28,10 @@ public class PlexAuthServiceImpl implements PlexAuthService {
     private static final String PLEX_PIN_URL = "https://plex.tv/api/v2/pins";
 
     @Autowired
-    private PlexRepository plexRepository;
+    private PlexUserService plexUserService;
 
+    @Autowired
+    private PlexRestTemplate plexRestTemplate;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -46,15 +49,11 @@ public class PlexAuthServiceImpl implements PlexAuthService {
     public PlexUser loginBasicAuth(String username, String password) {
 
         UserEntity user = (UserEntity)
-                PlexRestTemplate.buildPlexRestTemplate(PLEX_AUTH_URL, username, password, UserEntity.class, true);
+                plexRestTemplate.buildPlexRestTemplate(PLEX_AUTH_URL, username, password, UserEntity.class, true);
 
         ValidationUtil.NotNullOrEmpty("user.cannot.be.found", user, user.getUser());
 
         PlexUser plexUser = CollectionUtil.getFirstElement(user.getUser());
-
-        if (plexUser == null) {
-            throw new RecordNotFoundException("could.not.login.user.to.plex");
-        }
 
         String token = jwtTokenUtil.generateToken(plexUser);
 
@@ -76,7 +75,7 @@ public class PlexAuthServiceImpl implements PlexAuthService {
     public PlexUser loginByAuthToken(String authToken) {
 
         UserEntity user = (UserEntity)
-                PlexRestTemplate.buildPlexRestTemplate(PLEX_AUTH_URL, authToken, UserEntity.class, true);
+                plexRestTemplate.buildPlexRestTemplate(PLEX_AUTH_URL, authToken, UserEntity.class, true);
 
         ValidationUtil.NotNullOrEmpty("user.cannot.be.found", user, user.getUser());
 
@@ -85,6 +84,7 @@ public class PlexAuthServiceImpl implements PlexAuthService {
         String token = jwtTokenUtil.generateToken(plexUser);
 
         plexUser.setJwtToken(token);
+        plexUser.setLibraryAuthToken(plexUser.getAuthToken());
         /*plexUser.setAuthenticationToken(bCryptPasswordEncoder.encode(plexUser.getAuthenticationToken()));
         plexUser.setAuthToken(bCryptPasswordEncoder.encode(plexUser.getAuthToken()));*/
 
@@ -102,7 +102,7 @@ public class PlexAuthServiceImpl implements PlexAuthService {
 
         String url = PLEX_PIN_URL + "?strong=true";
 
-        Pin pin = (Pin) PlexRestTemplate.buildPlexRestTemplate(url, null, Pin.class, true);
+        Pin pin = (Pin) plexRestTemplate.buildPlexRestTemplate(url, null, Pin.class, true);
 
         ValidationUtil.NotNullOrEmpty("error", pin);
 
@@ -124,31 +124,15 @@ public class PlexAuthServiceImpl implements PlexAuthService {
 
         String url = PLEX_PIN_URL + "/" + oAuthPin;
 
-        Pin pin = (Pin) PlexRestTemplate.buildPlexRestTemplate(url, null, Pin.class, false);
+        Pin pin = (Pin) plexRestTemplate.buildPlexRestTemplate(url, null, Pin.class, false);
 
         ValidationUtil.NotNullOrEmpty("error", pin);
 
         return pin;
     }
 
-    @Override
     public PlexUser savePlexUser(PlexUser plexUser) {
-        return this.plexRepository.save(plexUser);
+        return this.plexUserService.savePlexUser(plexUser);
     }
 
-    public PlexRepository getPlexRepository() {
-        return plexRepository;
-    }
-
-    public void setPlexRepository(PlexRepository plexRepository) {
-        this.plexRepository = plexRepository;
-    }
-
-    public JwtTokenUtil getJwtTokenUtil() {
-        return jwtTokenUtil;
-    }
-
-    public void setJwtTokenUtil(JwtTokenUtil jwtTokenUtil) {
-        this.jwtTokenUtil = jwtTokenUtil;
-    }
 }

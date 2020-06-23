@@ -1,5 +1,6 @@
 package com.naz.PlexDownloader.models.plex;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -57,8 +58,8 @@ public class Device {
     @XmlAttribute
     private String presence;
 
-    @OneToMany
     @XmlElement(name = "Connection")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Connection> connection;
     @XmlAttribute
     private String ownerID;

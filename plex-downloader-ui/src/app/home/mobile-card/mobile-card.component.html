@@ -1,0 +1,98 @@
+<div *ngIf="video" class="card container-fluid" (click)="startDownloadingMedia(video)">
+  <div class="row flex-nowrap">
+    <div class="col-xs-4 poster-container">
+      <img src="{{video.transcodedPhoto}}" class="card-img" alt="{{video.title}}">
+      <div *ngIf="!video.viewCount" class="unwatched-overlay"></div>
+
+    </div>
+    <div class="col-xs-8">
+      <div class="card-body">
+<!--        <div class="card-text"></div>-->
+        <h4 class="card-title">{{video.title}}</h4>
+        <p class="card-text max-lines"><small class="text-muted">{{video.summary}}</small></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="show" class="card container-fluid">
+  <div class="row flex-nowrap" (click)="loadSeriesSeasons()"
+       data-toggle="collapse" aria-expanded="false" [attr.data-target]="'#collapseExample-' + id">
+    <div class="col-xs-4 poster-container">
+
+      <img src="{{show.transcodedPhoto}}" (click)="openShowDialog(show)" class="card-img" alt="{{show.title}}"
+           title="{{show.title}}"/>
+
+      <div *ngIf="show.type === 'show' &&  !show.viewedLeafCount || show.viewedLeafCount && (show.leafCount - show.viewedLeafCount != 0)"
+           class="unwatched-series-overlay">
+        <div class="container">
+          {{show.viewedLeafCount == null ? show.leafCount : show.leafCount - show.viewedLeafCount}}
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-8">
+      <div class="card-body">
+<!--        <div class="card-text"></div>-->
+        <h4 class="card-title">{{show.title}}</h4>
+        <p class="card-text max-lines"><small class="text-muted">{{show.summary}}</small></p>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row flex-nowrap">
+    <div class="collapse row no-gutters" *ngIf="seasons" aria-labelledby="headingOne" id="collapseExample-{{id}}">
+      <br>
+        <div *ngFor="let season of seasons; let i = index" [attr.data-index]="i">
+          <div class="col-xs-12 container-fluid accordion" id="seasonAccordion">
+            <div class="card-header" style="width: 100%" id="headingOne">
+              <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" [attr.data-target]="'#season-target'+i"
+                        data-toggle="collapse" aria-expanded="false">
+                  <h5>{{season.title}}</h5>
+                </button>
+              </h2>
+            </div>
+
+            <div id="season-target{{i}}" class="collapse" aria-labelledby="headingOne"
+                 data-parent="#seasonAccordion">
+              <div class="card-body">
+                <table class="table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Title</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let episode of season.videos">
+                    <!--        <th scope="row">1</th>-->
+                    <td *ngIf="season.title === 'All episodes'">S{{episode.parentIndex}}E{{episode.index}}</td>
+                    <td *ngIf="season.title != 'All episodes'">{{episode.index}}</td>
+                    <td>{{episode.title}}</td>
+                    <td>
+                      <button type="button" class="btn btn-primary" (click)="startDownloadingVideo(episode)">
+                        Download
+                      </button>
+                    </td>
+                  </tr>
+                  <tr *ngFor="let track of season.track">
+                    <!--        <th scope="row">1</th>-->
+                    <td>{{track.index}}</td>
+                    <td *ngIf="track.originalTitle != null">{{track.title}} - {{track.originalTitle}}</td>
+                    <td *ngIf="track.originalTitle === null">{{track.title}}</td>
+                    <td>
+                      <button type="button" class="btn btn-primary" (click)="startDownloadingMusic(track)">
+                        Download
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

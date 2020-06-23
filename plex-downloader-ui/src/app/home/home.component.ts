@@ -37,15 +37,13 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router,
               private alertify: AlertifyService,
               private libraryService: LibraryService,
-              private componentMessagingService: ComponentMessagingService,
-              private loadingScreenService: LoadingScreenService) {
-    this.loadingScreenService.startLoading();
+              private componentMessagingService: ComponentMessagingService) {
     this.firstTimeSetupCompleted = localStorage.getItem(Constants.FIRST_TIME_SETUP_COMPLETE) === 'true';
     if (!this.firstTimeSetupCompleted) {
       console.log("getting server lists.");
-      this.libraryService.retrievePlexResources().subscribe((mediaContainer) => {
+      this.libraryService.retrievePlexResources().subscribe((devices) => {
         // console.log('worked');
-        this.devices = mediaContainer.device;
+        this.devices = devices;
         localStorage.setItem(Constants.PLEX_SELECTED_SERVERS, JSON.stringify(this.devices));
         // console.log("devices size: " + this.devices.length);
       }, () => {
@@ -63,56 +61,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  retrieveLibrarySectionBySectionKey(libraryKey: string) {
-
-    //Clear map for new section
-    this.clearSectionMaps();
-
-    this.libraryService.retrieveLibrarySectionBySectionKey(libraryKey).subscribe((directories) => {
-      directories.forEach(directory => {
-        console.log('By section key: ' + directory.title);
-        this.sectionMap.set(directory, null);
-      });
-
-      this.retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey);
-
-    });
-
-  }
-
-  retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey: string) {
-
-    if (!this.sectionMap) {
-      //TODO throw error
-      console.log("ERROR: section issue");
-    }
-
-    console.log('Library key test: ' + libraryKey);
-
-    for (let directory of this.sectionMap.keys()) {
-      let directoryKey = directory.key;
-
-      console.log('Directory key test: ' + directoryKey);
-
-
-      this.libraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(libraryKey, directoryKey).subscribe((mediaContainer) => {
-
-        if (mediaContainer.video != null && mediaContainer.video.length != 0) {
-          let videos = mediaContainer.video;
-          console.log('Amount of videos for section ' + directory.title + ": " + videos.length);
-          this.sectionVideoMap.set(directory, videos);
-
-          this.sectionVideoMapKeys = Array.from(this.sectionVideoMap.keys());
-          // console.log("sectionVideoMapKeys: " + this.sectionVideoMapKeys.length);
-        } else if (mediaContainer.directory != null && mediaContainer.directory.length != 0) {
-          //TODO figure out displaying directory alongside videos in home page.
-          //this.sectionVideoMap.set(mediaContainer.directory, null);
-        }
-
-      });
-    }
   }
 
   retrieveLibrarySections() {

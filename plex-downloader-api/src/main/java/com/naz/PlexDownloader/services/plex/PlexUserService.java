@@ -10,4 +10,8 @@ public interface PlexUserService {
     List<PlexUser> retrieveUsers(final String authToken);
 
     PlexUser retrieveUserByAuthToken(final String authToken);
+
+    PlexUser savePlexUser(PlexUser plexUser);
+
+    PlexUser findPlexUserByUsername(final String username);
 }

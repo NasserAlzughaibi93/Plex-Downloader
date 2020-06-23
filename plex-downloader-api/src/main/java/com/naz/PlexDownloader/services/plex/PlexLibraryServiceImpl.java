@@ -1,17 +1,20 @@
 package com.naz.PlexDownloader.services.plex;
 
+import com.naz.PlexDownloader.models.DownloadRequest;
+import com.naz.PlexDownloader.models.plex.Connection;
 import com.naz.PlexDownloader.models.plex.Device;
-import com.naz.PlexDownloader.models.plex.Director;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Part;
+import com.naz.PlexDownloader.models.plex.PlexUser;
+import com.naz.PlexDownloader.models.plex.Track;
 import com.naz.PlexDownloader.models.plex.Video;
 import com.naz.PlexDownloader.util.CollectionUtil;
 import com.naz.PlexDownloader.util.PlexRestTemplate;
 import com.naz.PlexDownloader.util.ValidationUtil;
 import org.hibernate.cfg.NotYetImplementedException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +37,14 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     private static final String PLEX_SEARCH = "/search?query=";
 
     private static final String PHOTO_HEIGHT = "height=500&";
+
     private static final String PHOTO_WIDTH = "width=500&";
+
+    @Autowired
+    private PlexRestTemplate plexRestTemplate;
+
+    @Autowired
+    private PlexUserService plexUserService;
 
     /**
      * Find available resources of a given server instance.
@@ -43,15 +53,14 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
      * @return {@link MediaContainer}
      */
     @Override
-    public MediaContainer findPlexResources(String plexAuthToken) {
+    public List<Device> findPlexResources(String plexAuthToken) {
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, PLEX_RESOURCES_URL, false);
-
+        List<Device> serverDevices = new ArrayList<>();
 
         ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer);
 
         if (!CollectionUtil.isNullOrEmpty(mediaContainer.getDevice())) {
-            List<Device> serverDevices = new ArrayList<>();
 
             for (Device device : mediaContainer.getDevice()) {
                 if (device.getProvides().contains("server")) {
@@ -59,10 +68,14 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
                 }
             }
 
-            mediaContainer.setDevice(serverDevices);
+            PlexUser plexUser = this.plexUserService.retrieveUserByAuthToken(plexAuthToken);
+            plexUser.setAccessibleServers(serverDevices);
+            plexUser.setLibraryAuthToken(plexAuthToken);
+
+            this.plexUserService.savePlexUser(plexUser);
         }
 
-        return mediaContainer;
+        return serverDevices;
     }
 
     /**
@@ -113,6 +126,8 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
     @Override
     public List<Directory> retrieveLibrarySections(String plexAuthToken, String serverIp) {
 
+        plexAuthToken = this.updateLibraryAuthToken(plexAuthToken, serverIp);
+
         String url = serverIp + PLEX_SECTIONS;
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
@@ -133,15 +148,15 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
      * @return - The {@link MediaContainer}
      */
     @Override
-    public List<Video> retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey) {
+    public MediaContainer retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey) {
 
         String url = serverIp + libraryKey;
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer, mediaContainer.getVideo());
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer);
 
-        return mediaContainer.getVideo();
+        return mediaContainer;
     }
 
     /**
@@ -153,40 +168,58 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
      * @return - The {@link MediaContainer}
      */
     @Override
-    public List<Directory> retrieveMediaMetadataChildren(String plexAuthToken, String serverIp, String libraryKey) {
+    public MediaContainer retrieveMediaMetadataChildren(String plexAuthToken, String serverIp, String libraryKey) {
         String url = serverIp + libraryKey;
 
         MediaContainer mediaContainer = this.buildPlexRestCall(plexAuthToken, url, false);
 
-        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer, mediaContainer.getDirectory());
+        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", mediaContainer);
 
-        return mediaContainer.getDirectory();
+        return mediaContainer;
     }
 
     /**
      * Generate the download link for the given media.
      *
-     * @param plexAuthToken - The plex auth token.
-     * @param serverIp      - The plex instance server IP.
-     * @param video         - The media
+     * @param plexAuthToken   - The plex auth token.
+     * @param serverIp        - The plex instance server IP.
+     * @param downloadRequest - The download request key and type
      * @return - The download link
      */
     @Override
-    public String retrieveMediaDownloadLink(String plexAuthToken, String serverIp, Video video) {
+    public String retrieveMediaDownloadLink(final String plexAuthToken, final String serverIp, final DownloadRequest downloadRequest) {
 
-        String downloadUrl;
+        String downloadUrl = "";
 
-        ValidationUtil.NotNullOrEmpty("missing.required.parameter", new Object[]{"Video"}, video);
+        ValidationUtil.NotNullOrEmpty("missing.required.parameter",
+                new Object[]{"downloadRequest"}, downloadRequest);
 
-        if (null == video.getMedia() || null == video.getMedia().getPart()) {
-            video = CollectionUtil.getFirstElement(this.retrieveMediaMetadata(plexAuthToken, serverIp, video.getKey()));
+        MediaContainer mediaContainer = this.retrieveMediaMetadata(plexAuthToken, serverIp, downloadRequest.getKey());
+
+        switch (downloadRequest.getMediaType()) {
+
+            case Video:
+                Video video = CollectionUtil.getFirstElement(mediaContainer.getVideo());
+                Part part = video.getMedia().getPart();
+
+                ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", video.getMedia(), video.getMedia().getPart());
+
+                downloadUrl = serverIp + part.getKey() + "?download=1&X-Plex-Token=" + plexAuthToken;
+                break;
+            case Music:
+                Track track = CollectionUtil.getFirstElement(mediaContainer.getTrack());
+                Part musicPart = track.getMedia().getPart();
+
+                ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", track.getMedia(), track.getMedia().getPart());
+
+                downloadUrl = serverIp + musicPart.getKey() + "?download=1&X-Plex-Token=" + plexAuthToken;
+            case Series:
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + downloadRequest.getMediaType());
         }
 
-        Part part = video.getMedia().getPart();
-
-        ValidationUtil.NotNullOrEmpty("could.not.retrieve.media", video.getMedia(), video.getMedia().getPart());
-
-        downloadUrl = serverIp + part.getKey() + "?download=1&X-Plex-Token=" + plexAuthToken;
+        ValidationUtil.NotNullOrEmpty(downloadUrl);
 
         return downloadUrl;
     }
@@ -265,7 +298,7 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
             url = "http://" + url;
         }
 
-        return (MediaContainer) PlexRestTemplate.buildPlexRestTemplateForXMLResponse(url, plexAuthToken, MediaContainer.class, isPostCall);
+        return (MediaContainer) plexRestTemplate.buildPlexRestTemplateForXMLResponse(url, plexAuthToken, MediaContainer.class, isPostCall);
     }
 
     private void retrieveTranscodedPhotosForMedia(MediaContainer mediaContainer, String serverIp, String plexAuthToken) {
@@ -299,6 +332,30 @@ public class PlexLibraryServiceImpl implements PlexLibraryService {
                 show.setTranscodedPhoto(transcodedPhoto);
             }
         }
+    }
+
+    private String updateLibraryAuthToken(final String plexAuthToken, final String serverIp) {
+
+        PlexUser plexUser = this.plexUserService.retrieveUserByAuthToken(plexAuthToken);
+
+        if (!CollectionUtil.isNullOrEmpty(plexUser.getAccessibleServers())) {
+            for (Device device : plexUser.getAccessibleServers()) {
+                if (!CollectionUtil.isNullOrEmpty(device.getConnection())) {
+                    for (Connection connection : device.getConnection()) {
+                        if (serverIp.contains(connection.getAddress())) {
+
+                            plexUser.setLibraryAuthToken(device.getAccessToken());
+                            this.plexUserService.savePlexUser(plexUser);
+
+                            return device.getAccessToken();
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return plexAuthToken;
     }
 }
 

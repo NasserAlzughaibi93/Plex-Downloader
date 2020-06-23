@@ -6,17 +6,6 @@ import java.util.Collection;
 
 public class ValidationUtil {
 
-    /*public static void NotNullOrEmpty(Object object, String message) {
-
-        if (object == null) {
-            throw new BaseRuntimeException(message);
-        } else if (object instanceof String) {
-            if (((String) object).isEmpty()) {
-                throw new BaseRuntimeException(message);
-            }
-        }
-    }*/
-
     public static void NotNullOrEmpty(String message, Object... objects) {
 
         for (Object object : objects) {

@@ -1,6 +1,9 @@
 package com.naz.PlexDownloader.services.plex;
 
+import com.naz.PlexDownloader.models.DownloadRequest;
+import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
+import com.naz.PlexDownloader.models.plex.Media;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Video;
 
@@ -8,7 +11,7 @@ import java.util.List;
 
 public interface PlexLibraryService {
 
-    MediaContainer findPlexResources(String plexAuthToken);
+    List<Device> findPlexResources(String plexAuthToken);
 
     List<Video> retrieveLibraryOnDeck(String plexAuthToken, String serverIp);
 
@@ -20,11 +23,11 @@ public interface PlexLibraryService {
 
     MediaContainer retrieveLibrarySectionBySectionKeyAndDirectoryKey(String plexAuthToken, String serverIp, String librarySectionKey, String directoryKey);
 
-    List<Video> retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey);
+    MediaContainer retrieveMediaMetadata(String plexAuthToken, String serverIp, String libraryKey);
 
-    List<Directory> retrieveMediaMetadataChildren(String plexAuthToken, String serverIp, String libraryKey);
+    MediaContainer retrieveMediaMetadataChildren(String plexAuthToken, String serverIp, String libraryKey);
 
-    String retrieveMediaDownloadLink(String plexAuthToken, String serverIp, Video video);
+    String retrieveMediaDownloadLink(final String plexAuthToken, final String serverIp, final DownloadRequest downloadRequest);
 
     String retrievePhotoFromPlexServer(String plexAuthToken, String serverIp, String metadataKey);
 

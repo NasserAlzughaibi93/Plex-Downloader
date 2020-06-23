@@ -3,7 +3,7 @@
 
 <br><br><br>
 
-<div class="form-group">
+<div class="container form-group">
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10 col-sm-12">
@@ -16,20 +16,34 @@
 
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 
-              <div class="dropdown-submenu">
-                <li>
-                  <a class="dropdown-toggle" data-toggle="dropdown-toggle">Genre</a>
-                </li>
-                <ul class="dropdown-menu" *ngIf="genres">
-                  <li *ngFor="let genre of genres">
-                    <a class="dropdown"  (click)="genreFilter(genre)">{{genre}}</a>
+              <li class="dropdown-submenu">
+                <a class="dropdown-toggle" data-toggle="dropdown">Genre</a>
+                <ul class="dropdown-menu dropdown-content" *ngIf="genres">
+                  <li *ngFor="let genre of genres" (click)="fillSearchCriteria(null, genre)">
+                    <a class="dropdown"  >{{genre}}</a>
                   </li>
                   <li class="divider"></li>
-                  <li>
+                  <!--<li>
                     <a class="dropdown" (click)="clearFilters()">Show All</a>
-                  </li>
+                  </li>-->
                 </ul>
-              </div>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-toggle" data-toggle="dropdown">Year</a>
+                <ul class="dropdown-menu dropdown-content" *ngIf="years">
+                  <li *ngFor="let year of years" (click)="fillSearchCriteria(year, null)">
+                    <a class="dropdown">{{year}}</a>
+                  </li>
+                  <li class="divider"></li>
+                  <!--<li>
+                    <a class="dropdown" (click)="clearFilters()">Show All</a>
+                  </li>-->
+                </ul>
+              </li>
+              <li class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown" (click)="clearFilters()">Clear Filter</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -50,17 +64,17 @@
 <div class="container">
 
     <div class="row" *ngIf="videosList">
-      <div class="col-md-3 col-sm-6" *ngFor="let video of videosList | libraryFilter:searchQuery | libraryGenreFilter:genreSelection">
+      <div class="col-md-3 col-sm-6" *ngFor="let video of videosList | libraryFilter:searchQuery | librarySearchCriteriaFilterPipe:searchCriteria">
         <div class="h-100">
-            <app-media-card class="col-xs-6 col-md-3" [video]="video"></app-media-card>
+            <app-media-card class="col-sm-6 col-md-3" [video]="video"></app-media-card>
         </div>
       </div>
     </div>
 
     <div class="row" *ngIf="showsList">
-      <div class="col-md-3 col-sm-6" *ngFor="let show of showsList | librarySeriesFilter:searchQuery">
+      <div class="col-md-3 col-sm-6" *ngFor="let show of showsList | librarySeriesFilter:searchQuery | librarySeriesSearchCriteriaFilterPipe: searchCriteria">
         <div class="h-100">
-            <app-media-card class="col-xs-6 col-md-3" [show]="show"></app-media-card>
+            <app-media-card class="col-sm-6 col-md-3" [show]="show"></app-media-card>
         </div>
       </div>
     </div>

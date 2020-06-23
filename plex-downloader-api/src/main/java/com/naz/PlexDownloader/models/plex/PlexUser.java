@@ -2,20 +2,19 @@ package com.naz.PlexDownloader.models.plex;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,6 +23,7 @@ import java.util.List;
 public class PlexUser {
 
     @Id
+    @Column(name = "id")
     private long id;
 
     @XmlAttribute
@@ -107,7 +107,16 @@ public class PlexUser {
     @OneToOne(cascade = CascadeType.ALL)
     private Roles roles;
 
+    private String libraryAuthToken;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Device> accessibleServers;
+
     private transient String jwtToken;
+
+    private Date lastDownloadRequestTime;
+
+    private Integer downloadRequestsCount;
 
     public long getId() {
         return id;
@@ -363,5 +372,37 @@ public class PlexUser {
 
     public void setJwtToken(String jwtToken) {
         this.jwtToken = jwtToken;
+    }
+
+    public String getLibraryAuthToken() {
+        return libraryAuthToken;
+    }
+
+    public void setLibraryAuthToken(String libraryAuthToken) {
+        this.libraryAuthToken = libraryAuthToken;
+    }
+
+    public List<Device> getAccessibleServers() {
+        return accessibleServers;
+    }
+
+    public void setAccessibleServers(List<Device> accessibleServers) {
+        this.accessibleServers = accessibleServers;
+    }
+
+    public Date getLastDownloadRequestTime() {
+        return lastDownloadRequestTime;
+    }
+
+    public void setLastDownloadRequestTime(Date lastDownloadRequestTime) {
+        this.lastDownloadRequestTime = lastDownloadRequestTime;
+    }
+
+    public Integer getDownloadRequestsCount() {
+        return downloadRequestsCount;
+    }
+
+    public void setDownloadRequestsCount(Integer downoadRequestsCount) {
+        this.downloadRequestsCount = downoadRequestsCount;
     }
 }

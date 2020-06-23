@@ -37,7 +37,7 @@ body {
 }
 .card-body {
   position: relative;
-  margin-top: -30%;
+  margin-top: -3%;
   color: #9fa7a9;
 }
 
@@ -102,6 +102,11 @@ body {
   height: 375px;
 }
 
+.card-img-album {
+  width: 250px;
+  height: 250px;
+}
+
 a {
   color: #0060B6;
   text-decoration: none;
@@ -112,4 +117,78 @@ a:hover
   color:#00A0C6;
   text-decoration:none;
   cursor:pointer;
+}
+
+.poster-container {
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.unwatched-overlay {
+  opacity:0;
+  position:absolute;
+  top:0;
+  border-left: 42px solid transparent;
+  border-right: 42px solid #ffa500;
+  border-bottom: 42px solid transparent;
+  width: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.poster-container .unwatched-overlay {
+  opacity: 1;
+}
+
+.inner-triangle{
+  border-left: 20px solid transparent;
+  border-right: 20px solid green;
+  border-bottom: 20px solid transparent;
+  height: 0;
+  background-color: orange;
+  width: 0;
+  position: absolute;
+  right: 0px;
+  z-index: 2;
+}
+.poster-container .inner-triangle {
+  opacity: 1;
+}
+.outer-triangle{
+  border-left: 24px solid transparent;
+  border-right: 24px solid gray;
+  border-bottom: 24px solid transparent;
+  height: 0;
+  width: 0;
+  position: absolute;
+  right: 0px;
+  z-index: 1;
+}
+
+.unwatched-series-overlay{
+  top: 0;
+  right: 0;
+  background-color: #cc7b19;
+  position: absolute;
+  padding: 5px 5px;
+  box-shadow: 0 0 4px
+  rgba(0,0,0,.6);
+  line-height: 24px;
+  opacity: 1;
+  transition: all .2s;
+  color: whitesmoke;
+  box-sizing: border-box;
+  border-radius: 8pt;
+
+}
+
+.poster-container .unwatched-series-overlay {
+  text-align: center;
+  opacity: 1;
 }

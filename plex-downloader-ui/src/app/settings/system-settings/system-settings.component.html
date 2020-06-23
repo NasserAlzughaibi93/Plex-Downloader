@@ -1,0 +1,45 @@
+<app-settings></app-settings>
+<app-loading></app-loading>
+<br><br>
+
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <form *ngIf="systemSettingsToSave" class="form-horizontal">
+      <div class="form-group row">
+        <label for="logging-level" class="col-sm-6 col-form-label">Logging Level</label>
+        <div class="col-sm-2">
+          <select class="custom-select" id="logging-level" [(ngModel)]="systemSettingsToSave.loggingLevel" [value]="systemSettingsToSave.loggingLevel"
+                  name="logging-level" (ngModelChange)="systemSettingsToSave.loggingLevel">
+            <option *ngFor="let loggingLevel of getLogginglevelKeys()" [ngValue]="loggingLevel">{{loggingLevel}}</option>
+          </select>        </div>
+      </div>
+      <div class="form-group row">
+        <label for="max-downloads" class="col-sm-6 col-form-label">Max downloads per user</label>
+        <div class="col-sm-2">
+          <input type="number" [(ngModel)]="systemSettingsToSave.maxDownloadsPerUser" (ngModelChange)="systemSettingsToSave.maxDownloadsPerUser"
+                 class="form-control" id="max-downloads" name="max-downloads" placeholder="{{systemSettingsToSave.maxDownloadsPerUser}}">
+        </div>
+      </div>
+      <div class="form-group row">
+
+        <label for="download-interval" class="col-sm-6 col-form-label">
+          Interval between downloads in minutes.
+          <button type="button" class="btn" data-toggle="tooltip" data-placement="top" title="How many concurrent downloads a user can have in a certain time frame">
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+          </button>
+        </label>
+        <div class="col-sm-2">
+          <input type="number" [(ngModel)]="systemSettingsToSave.downloadIntervalInMinutes" (ngModelChange)="systemSettingsToSave.downloadIntervalInMinutes"
+                 class="form-control" id="download-interval" name="download-interval" placeholder="{{systemSettingsToSave.downloadIntervalInMinutes}}">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-secondary" (click)="saveSystemSettings()">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-2"></div>
+</div>

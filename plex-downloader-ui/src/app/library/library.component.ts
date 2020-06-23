@@ -7,6 +7,8 @@ import {LibrarySeriesFilterPipe} from "./library-series-filter.pipe";
 import {Genre} from "../models/genre.model";
 import {Video} from "../models/video.model";
 import {Directory} from "../models/directory.model";
+import {SearchCriteriaModel} from "../models/search-criteria.model";
+import {ignoreElements} from "rxjs/operators";
 
 @Component({
   selector: 'app-library',
@@ -24,7 +26,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
   showsList: Directory[];//Series directory
   searchQuery: string;
   genreSelection: string;
+  searchCriteria: SearchCriteriaModel;
   genres = new Set<string>();
+  years = new Set<number>();
+  ratings = new Set<number>();
 
   constructor(private libraryService: LibraryService,
               private route: ActivatedRoute,
@@ -46,7 +51,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       }
 
       this.libraryKey = libraryKey;
-      this.retrieveLibrary();
+      //this.retrieveLibrary();
 
     }
 
@@ -68,16 +73,23 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
 
     this.libraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(this.libraryKey, 'all').subscribe(mediaContainer => {
+
+      let years = new Array<number>();
+      let ratings = new Array<number>();
+      let genreTags = new Array<string>();
+
       if (mediaContainer.video != null && mediaContainer.video.length != 0) {
         // this.videos = mediaContainer.video;
         let videos = mediaContainer.video;
         this.videosList = mediaContainer.video;
 
-        this.genres.clear();
+        //this.searchCriteria = {rating: null, genreTag: null, year: null};
         for (let video of videos) {
+          years.push(video.year);
+          ratings.push(video.rating);
           if (video.genres != null) {
             for (let genre of video.genres) {
-              this.genres.add(genre.tag);
+              genreTags.push(genre.tag);
             }
           }
         }
@@ -87,30 +99,53 @@ export class LibraryComponent implements OnInit, OnDestroy {
         let shows = mediaContainer.directory;
         this.showsList = mediaContainer.directory;
 
-        this.genres.clear();
         for (let show of shows) {
-          if (show.genres != null) {
-            for (let genre of show.genres) {
+          years.push(show.year);
+          ratings.push(show.rating);
+          if (show.genre != null) {
+            for (let genre of show.genre) {
               console.log('Genre: ' + genre);
-              this.genres.add(genre.tag);
+              genreTags.push(genre.tag);
             }
           }
         }
       }
+
+      this.sortFilterLists(genreTags, ratings, years);
+
     }, error => {
 
       console.log('Error with getting all libraries: ' + error);
     });
   }
 
+  sortFilterLists(genreTags: Array<string>, ratings: Array<number>, years: Array<number>) {
+    this.genres = new Set<string>(genreTags.sort());
+
+    this.ratings = new Set<number>(ratings.sort());
+
+    this.years = new Set<number>(years.sort().reverse());
+  }
+
   genreFilter(genreQuery: string){
     console.log('testing 123');
     this.genreSelection = genreQuery;
+    this.searchCriteria = {genreTag: genreQuery};
+  }
+
+  yearFilter(yearQuery: number) {
+    this.searchCriteria = {year: yearQuery};
+  }
+
+  fillSearchCriteria(year: number, genreTag: string) {
+
+    this.searchCriteria = {year: year, genreTag: genreTag};
   }
 
   clearFilters() {
     this.searchQuery = '';
     this.genreSelection = '';
+    this.searchCriteria = null;
   }
 
   ngOnDestroy(): void {

@@ -19,6 +19,10 @@ public class PlexUserServiceImpl implements PlexUserService {
     @Autowired
     private PlexRepository plexRepository;
 
+    @Autowired
+    private PlexRestTemplate plexRestTemplate;
+
+
     /**
      * Retrieve list of users associated with logged in plex user.
      * @param authToken - Plex Authentication Token.
@@ -27,7 +31,7 @@ public class PlexUserServiceImpl implements PlexUserService {
     @Override
     public List<PlexUser> retrieveUsers(String authToken) {
         MediaContainer mediaContainer = (MediaContainer)
-                PlexRestTemplate.buildPlexRestTemplateForXMLResponse(PLEX_USERS_URL, authToken, MediaContainer.class, false);
+                plexRestTemplate.buildPlexRestTemplateForXMLResponse(PLEX_USERS_URL, authToken, MediaContainer.class, false);
 
         ValidationUtil.NotNullOrEmpty("could.not.retrieve.users", mediaContainer, mediaContainer.getUser());
 
@@ -47,6 +51,16 @@ public class PlexUserServiceImpl implements PlexUserService {
         ValidationUtil.NotNullOrEmpty( "user.cannot.be.found", plexUser);
 
         return plexUser;
+    }
+
+    @Override
+    public PlexUser savePlexUser(PlexUser plexUser) {
+        return this.plexRepository.save(plexUser);
+    }
+
+    @Override
+    public PlexUser findPlexUserByUsername(final String username) {
+        return this.plexRepository.findPlexUserByUsername(username);
     }
 
     public PlexRepository getPlexRepository() {

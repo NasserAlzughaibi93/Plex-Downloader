@@ -1,19 +1,23 @@
-import {Video} from "./video.model";
-import {Device} from "./device.model";
-import {Directory} from "./directory.model";
+import {Video} from './video.model';
+import {Device} from './device.model';
+import {Directory} from './directory.model';
+import {Track} from './track.model';
 
 export interface MediaContainer {
-  allowSync?:        string;
-  device?:           Device[];
-  directory?:        Directory[];
-  identifier?:       string;
+  allowSync?: string;
+  device?: Device[];
+  directory?: Directory[];
+  identifier?: string;
   mediaContainerId?: number;
-  mediaTagPrefix?:   string;
-  mediaTagVersion?:  string;
-  mixedParents?:     string;
-  size?:             string;
-  title?:            string;
-  video?:            Video[];
+  mediaTagPrefix?: string;
+  mediaTagVersion?: string;
+  mixedParents?: string;
+  size?: string;
+  title?: string;
+  title1?: string;
+  title2?: string;
+  video?: Video[];
+  track?: Track[];
 }
 
 // Converts JSON strings to/from your types

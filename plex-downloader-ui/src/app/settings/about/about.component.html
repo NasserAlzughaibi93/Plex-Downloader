@@ -6,84 +6,39 @@
   <div class="col-md-8 col-sm-12">
 
     <div *ngIf="about">
-      <fieldset>
-        <legend>About</legend>
-        <hr>
-        <form>
-          <div>
-            <table class="table table-striped table-hover table-responsive table-condensed">
-              <thead>
-              </thead>
-              <tbody>
-              <tr>
-                <td>
-                  <span>Version</span>
-                </td>
-                <td>
-                  <span>{{about.version}}</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span>Branch</span>
-                </td>
-                <td>
-                  <span>{{about.branch}}</span>
-                </td>
-              </tr>
-              <!--<tr>
-                <td>
-                  <span>Github</span>
-                </td>
-                <td>
-                  <a href="https://github.com/tidusjar/Ombi" target="_blank">https://github.com/tidusjar/Ombi</a>
-                </td>
-              </tr>-->
-              <!--<tr>
-                <td>
-                  <span>Issues</span>
-                </td>
-                <td>
-                  <a href="https://github.com/tidusjar/Ombi/issues" target="_blank">https://github.com/tidusjar/Ombi/issues</a>
-                </td>
-              </tr>-->
-              <!--<tr>
-                <td>
-                  <span>Wiki</span>
-                </td>
-                <td>
-                  <a href="https://github.com/tidusjar/Ombi/wiki" target="_blank">https://github.com/tidusjar/Ombi/wiki</a>
-                </td>
-              </tr>-->
-              <tr>
-                <td>
-                  <span>OS Name</span>
-                </td>
-                <td>
-                  <span>{{about.osName}}</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span>OS Architecture</span>
-                </td>
-                <td>
-                  <span>{{about.osArchitecture}}</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span>OS Version</span>
-                </td>
-                <td>
-                  <span>{{about.osVersion}}</span>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </form>
-      </fieldset>
+      <h2>About</h2>
+      <table class="table-striped table table-hover">
+        <thead>
+
+        </thead>
+        <tbody>
+        <tr>
+          <td>Version</td>
+          <td>{{about.version}}</td>
+          <!--<td>
+            <button type="button" class="btn btn-primary" (click)="startDownloadingMedia(episode)">
+              Download
+            </button>
+          </td>-->
+        </tr>
+        <tr>
+          <td>Branch</td>
+          <td>{{about.branch}}</td>
+        </tr>
+        <tr>
+          <td>OS Name</td>
+          <td>{{about.osName}}</td>
+        </tr>
+        <tr>
+          <td>OS Architecture</td>
+          <td>{{about.osArchitecture}}</td>
+        </tr>
+        <tr>
+          <td>OS Version</td>
+          <td>{{about.osVersion}}</td>
+        </tr>
+        </tbody>
+      </table>
     </div>
 
   </div>

@@ -1,6 +1,9 @@
 package com.naz.PlexDownloader.controllers;
 
 import com.naz.PlexDownloader.BaseUnitTest;
+import com.naz.PlexDownloader.models.DownloadRequest;
+import com.naz.PlexDownloader.models.MediaType;
+import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.Media;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
@@ -34,17 +37,20 @@ class PlexLibraryControllerUTest extends BaseUnitTest {
 
     private Video video;
     private Directory directory;
+    private Device device;
 
     @BeforeEach
     protected void setUp() {
         this.video = new Video();
         this.video.setId(1L);
 
-        directory = new Directory();
-        directory.setDirectoryId(1L);
+        this.directory = new Directory();
+        this.directory.setDirectoryId(1L);
+
+        this.device = new Device();
+        this.device.setDeviceId(1L);
 
         super.setUp();
-
     }
 
     @AfterEach
@@ -54,14 +60,14 @@ class PlexLibraryControllerUTest extends BaseUnitTest {
     @Test
     void findPlexResources() {
 
-        MediaContainer mediaContainer = new MediaContainer();
-        mediaContainer.setIdentifier("1");
+        List<Device> devices = CollectionUtil.createList(this.device);
 
-        when(plexLibraryService.findPlexResources(anyString())).thenReturn(mediaContainer);
 
-        MediaContainer result = plexLibraryController.findPlexResources("token");
+        when(plexLibraryService.findPlexResources(anyString())).thenReturn(devices);
 
-        assertEquals(mediaContainer, result);
+        List<Device> result = plexLibraryController.findPlexResources("token");
+
+        assertEquals(devices, result);
 
     }
 
@@ -138,14 +144,15 @@ class PlexLibraryControllerUTest extends BaseUnitTest {
     @Test
     void retrieveMediaMetadata() {
 
-        List<Video> videos = CollectionUtil.createList(this.video);
+        MediaContainer mediaContainer = new MediaContainer();
+        mediaContainer.setVideo(CollectionUtil.createList(this.video));
 
-        when(plexLibraryService.retrieveMediaMetadata(anyString(), anyString(), anyString())).thenReturn(videos);
+        when(plexLibraryService.retrieveMediaMetadata(anyString(), anyString(), anyString())).thenReturn(mediaContainer);
 
         List<Video> result =
-                plexLibraryController.retrieveMediaMetadata("serverIp", "authToken", "libraryKey");
+                plexLibraryController.retrieveMediaMetadata("serverIp", "authToken", "libraryKey").getVideo();
 
-        assertEquals(videos.size(), result.size());
+        assertEquals(mediaContainer.getVideo().size(), result.size());
     }
 
     @Test
@@ -153,9 +160,13 @@ class PlexLibraryControllerUTest extends BaseUnitTest {
 
         String downloadURL = "DownloadLink";
 
-        when(plexLibraryService.retrieveMediaDownloadLink(anyString(), anyString(), any(Video.class))).thenReturn(downloadURL);
+        when(plexLibraryService.retrieveMediaDownloadLink(anyString(), anyString(), any(DownloadRequest.class))).thenReturn(downloadURL);
 
-        String result = plexLibraryController.retrieveMediaDownloadLink("serverIP", "authToken", this.video);
+        DownloadRequest downloadRequest = new DownloadRequest();
+        downloadRequest.setKey("key");
+        downloadRequest.setMediaType(MediaType.Video);
+
+        String result = plexLibraryController.retrieveMediaDownloadLink("serverIP", "authToken", downloadRequest);
 
         assertEquals(downloadURL, result);
     }

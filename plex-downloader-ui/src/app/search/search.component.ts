@@ -1,14 +1,12 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AlertifyService} from "../_service/alertify.service";
 import {LibraryService} from "../_service/library.service";
 import {ComponentMessagingService} from "../_service/component-messaging.service";
-import {Constants} from "../util/constants";
 import {Video} from "../models/video.model";
 import {Directory} from "../models/directory.model";
-import {SeriesPanelComponent} from "./series-panel/series-panel.component";
-import {MatDialog} from "@angular/material/dialog";
 import {LoadingScreenService} from "../_service/loading.service";
+
 declare let $: any;
 
 @Component({
@@ -18,7 +16,7 @@ declare let $: any;
 })
 export class SearchComponent implements OnInit {
 
-  @ViewChild('collapse', null) collapse: ElementRef;
+  // @ViewChild('collapse', null) collapse: ElementRef;
 
   searchComplete = false;
 

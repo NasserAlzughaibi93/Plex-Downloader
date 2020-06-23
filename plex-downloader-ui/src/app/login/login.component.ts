@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   model: any = {};
 
-  isBasicLogin = false;
+  isLoggingIn = false;
 
   oAuthPinTimer: any;
 
@@ -30,15 +30,21 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   basicLogin() {
+
+    this.isLoggingIn = true;
+    this.alertify.notification("Authenticating", "Loading... Please Wait");
+
     this.loginService.login(this.model).subscribe(() => {
       console.log('worked');
       this.router.navigate(['/home']);
     }, error => {
+      this.isLoggingIn = false;
       console.log('Error during a basic login: ' + error);
     });
   }
 
   oAuthLogin() {
+    this.isLoggingIn = true;
     const oAuthWindow = window.open(window.location.toString(), "_blank", `toolbar=0,
         location=0,
         status=0,
@@ -64,6 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.router.navigate(['/home']);
           }
         }, error => {
+          this.isLoggingIn = false;
           console.log("Error while logging in (OAuth): " + error);
           this.router.navigate(['/']);
         })

@@ -32,6 +32,7 @@ div.form-signin {
   right: 0;
   text-align: center;
   margin: auto;
+  color: whitesmoke;
 }
 
 div.sign-in-alternative h2 {
@@ -49,6 +50,29 @@ div.sign-in-alternative h2 span {
 .btn-primary {
   background-color: darkorange;
 }
+
+.dropdown-menu {
+  text-align: center;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
 
 .dropdown-submenu {
   position: relative;
@@ -68,6 +92,8 @@ div.sign-in-alternative h2 span {
   display: block;
 }
 
+
+
 .dropdown-submenu>a:after {
   display: block;
   content: " ";
@@ -80,10 +106,6 @@ div.sign-in-alternative h2 span {
   border-left-color: #ccc;
   margin-top: 5px;
   margin-right: -10px;
-}
-
-.dropdown-submenu:hover>a:after {
-  border-left-color: #fff;
 }
 
 .dropdown-submenu.pull-left {

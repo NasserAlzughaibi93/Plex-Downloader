@@ -35,10 +35,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final String[] allowedEndPoints = {"/basiclogin", "/oAuth", "/status"};
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 
             throws ServletException, IOException {
+
+        //Needed since this filter comes before CORS filter. This handles pre flight requests.
+        if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         final String requestTokenHeader = request.getHeader("Authorization");
 
@@ -48,8 +56,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         StringBuffer requestUrl = request.getRequestURL();
 
-        if (requestUrl.indexOf("/basiclogin") != -1
-                || requestUrl.indexOf("/oAuth") != -1) {
+        if (checkRequestRequiresToken(requestUrl)) {
             chain.doFilter(request, response);
             return;
         }
@@ -75,9 +82,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
 
         } else {
-            logger.warn("JWT Token does not begin with Bearer String");
-
-            //throw new JwtInvalidException("jwt.token.missing.bearer.token.header");
+            logger.error("JWT Token does not begin with Bearer String");
+            throw new JwtInvalidException("jwt.token.missing.bearer.token.header");
         }
 
         // Once we get the token validate it.
@@ -110,7 +116,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
                 HeaderMapRequestWrapper requestWrapper = new HeaderMapRequestWrapper(request);
 
-                requestWrapper.addHeader("PLEX-TOKEN", plexUser.getAuthToken());
+                requestWrapper.addHeader("PLEX-TOKEN", plexUser.getLibraryAuthToken());
 
                 chain.doFilter(requestWrapper, response);
 
@@ -130,6 +136,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         chain.doFilter(request, response);
 
+    }
+
+    private boolean checkRequestRequiresToken(StringBuffer requestUrl) {
+        for (String endPoint :
+                allowedEndPoints) {
+            if (requestUrl.indexOf(endPoint) != -1)
+                return true;
+        }
+
+        return false;
     }
 
     public PlexAuthService getPlexAuthService() {

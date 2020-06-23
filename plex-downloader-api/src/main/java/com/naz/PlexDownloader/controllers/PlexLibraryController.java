@@ -1,6 +1,8 @@
 package com.naz.PlexDownloader.controllers;
 
 
+import com.naz.PlexDownloader.models.DownloadRequest;
+import com.naz.PlexDownloader.models.plex.Device;
 import com.naz.PlexDownloader.models.plex.Directory;
 import com.naz.PlexDownloader.models.plex.MediaContainer;
 import com.naz.PlexDownloader.models.plex.Video;
@@ -28,7 +30,7 @@ public class PlexLibraryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public MediaContainer findPlexResources(@RequestHeader("PLEX-TOKEN") String authToken) {
+    public List<Device> findPlexResources(@RequestHeader("PLEX-TOKEN") String authToken) {
         return this.plexLibraryService.findPlexResources(authToken);
     }
 
@@ -76,7 +78,7 @@ public class PlexLibraryController {
 
     @GetMapping("/{serverIp}/metadata")
     @ResponseStatus(HttpStatus.OK)
-    public List<Video> retrieveMediaMetadata(@PathVariable String serverIp,
+    public MediaContainer retrieveMediaMetadata(@PathVariable String serverIp,
                                        @RequestHeader("PLEX-TOKEN") String authToken,
                                        @RequestParam String libraryKey) {
         return this.plexLibraryService.retrieveMediaMetadata(authToken, serverIp, libraryKey);
@@ -84,7 +86,7 @@ public class PlexLibraryController {
 
     @GetMapping("/{serverIp}/metadata_children")
     @ResponseStatus(HttpStatus.OK)
-    public List<Directory> retrieveMediaMetadataChildren(@PathVariable String serverIp,
+    public MediaContainer retrieveMediaMetadataChildren(@PathVariable String serverIp,
                                                          @RequestHeader("PLEX-TOKEN") String authToken,
                                                          @RequestParam String libraryKey) {
         return this.plexLibraryService.retrieveMediaMetadataChildren(authToken, serverIp, libraryKey);
@@ -94,8 +96,8 @@ public class PlexLibraryController {
     @ResponseStatus(HttpStatus.OK)
     public String retrieveMediaDownloadLink(@PathVariable String serverIp,
                                             @RequestHeader("PLEX-TOKEN") String authToken,
-                                            @RequestBody Video video) {
-        return this.plexLibraryService.retrieveMediaDownloadLink(authToken, serverIp, video);
+                                            @RequestBody DownloadRequest downloadRequest) {
+        return this.plexLibraryService.retrieveMediaDownloadLink(authToken, serverIp, downloadRequest);
     }
 
     @GetMapping("/{serverIp}/metadata/photo")
