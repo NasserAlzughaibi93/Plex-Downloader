@@ -12,7 +12,7 @@ import {MatDialog} from "@angular/material/dialog";
 @Component({
   selector: 'app-media-card',
   templateUrl: './media-card.component.html',
-  styleUrls: ['./media-card.component.css']
+  styleUrls: ['./media-card.component.scss']
 })
 export class MediaCardComponent implements OnInit {
 

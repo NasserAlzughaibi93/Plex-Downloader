@@ -9,7 +9,7 @@ import {AlertifyService} from "../../_service/alertify.service";
 @Component({
   selector: 'app-system-settings',
   templateUrl: './system-settings.component.html',
-  styleUrls: ['./system-settings.component.css']
+  styleUrls: ['./system-settings.component.scss']
 })
 export class SystemSettingsComponent implements OnInit {
 
