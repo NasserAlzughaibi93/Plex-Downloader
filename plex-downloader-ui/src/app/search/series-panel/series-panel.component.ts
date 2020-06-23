@@ -16,7 +16,7 @@ export class ModalData {
 @Component({
   selector: 'app-series-panel',
   templateUrl: './series-panel.component.html',
-  styleUrls: ['./series-panel.component.css']
+  styleUrls: ['./series-panel.component.scss']
 })
 export class SeriesPanelComponent implements OnInit {
 

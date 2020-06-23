@@ -12,7 +12,7 @@ import {Track} from "../../models/track.model";
 @Component({
   selector: 'app-mobile-card',
   templateUrl: './mobile-card.component.html',
-  styleUrls: ['./mobile-card.component.css']
+  styleUrls: ['./mobile-card.component.scss']
 })
 export class MobileCardComponent implements OnInit {
 
