@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit, Optional} from '@angular/core';
+import {Component, Inject, Input, OnDestroy, OnInit, Optional} from '@angular/core';
 import {Directory} from '../../models/directory.model';
 import {LibraryService} from '../../_service/library.service';
 import {Video} from '../../models/video.model';
@@ -7,6 +7,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AlertifyService} from '../../_service/alertify.service';
 import {DownloadRequest, MediaType} from '../../models/download-request.model';
 import {Track} from '../../models/track.model';
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 export class ModalData {
   video: Video;
@@ -18,7 +20,10 @@ export class ModalData {
   templateUrl: './series-panel.component.html',
   styleUrls: ['./series-panel.component.scss']
 })
-export class SeriesPanelComponent implements OnInit {
+export class SeriesPanelComponent implements OnInit, OnDestroy {
+
+  // used unsubscribe from observable
+  private _destroy$: Subject<boolean> = new Subject();
 
   @Input() show: Directory;
   video: Video;
@@ -42,7 +47,9 @@ export class SeriesPanelComponent implements OnInit {
     }
     if (this.show) {
       console.log('calling for more');
-      this.libraryService.retrieveMediaMetaDataChildren(this.show.key).subscribe((mediaContainer) => {
+      this.libraryService.retrieveMediaMetaDataChildren(this.show.key).pipe(
+        takeUntil(this._destroy$)
+      ).subscribe((mediaContainer) => {
 
         this.seasons = mediaContainer.directory;
 
@@ -50,7 +57,9 @@ export class SeriesPanelComponent implements OnInit {
 
         this.seasons.forEach(season => {
           console.log('getting season no.' + season.title);
-          this.libraryService.retrieveMediaMetaData(season.key).subscribe((media) => {
+          this.libraryService.retrieveMediaMetaData(season.key).pipe(
+            takeUntil(this._destroy$)
+          ).subscribe((media) => {
             season.videos = media.video;
             season.track = media.track;
           });
@@ -73,7 +82,9 @@ export class SeriesPanelComponent implements OnInit {
 
     const downloadRequest: DownloadRequest = {key: video.key, mediaType: MediaType.Video};
 
-    this.libraryService.retrieveMediaDownloadLink(downloadRequest).subscribe(downloadLink => {
+    this.libraryService.retrieveMediaDownloadLink(downloadRequest).pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(downloadLink => {
       this.alertify.success('Downloading starting...');
       this.beginDownload(downloadLink);
     });
@@ -88,7 +99,9 @@ export class SeriesPanelComponent implements OnInit {
 
     const downloadRequest: DownloadRequest = {key: track.key, mediaType: MediaType.Music};
 
-    this.libraryService.retrieveMediaDownloadLink(downloadRequest).subscribe(downloadLink => {
+    this.libraryService.retrieveMediaDownloadLink(downloadRequest).pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(downloadLink => {
       this.alertify.success('Downloading starting...');
       this.beginDownload(downloadLink);
     });
@@ -117,7 +130,9 @@ export class SeriesPanelComponent implements OnInit {
 
     const thumb = video.type === 'movie' ? video.thumb : video.grandparentThumb;
 
-    this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
+    this.libraryService.retrievePhotoFromPlexServer(thumb).pipe(
+      takeUntil(this._destroy$)
+    ).subscribe((photoUrl: string) => {
       this.mediaPhotoUrl = photoUrl;
     }, () => {
       console.log('Error loading photo url');
@@ -127,12 +142,19 @@ export class SeriesPanelComponent implements OnInit {
 
   resolveSeriesPosterURL(directory: Directory) {
     const thumb = directory.thumb;
-    this.libraryService.retrievePhotoFromPlexServer(thumb).subscribe((photoUrl: string) => {
+    this.libraryService.retrievePhotoFromPlexServer(thumb).pipe(
+      takeUntil(this._destroy$)
+    ).subscribe((photoUrl: string) => {
       // return photoUrl;
       this.seriesPhotoUrl = photoUrl;
     }, () => {
       console.log('Error loading photo url');
     });
+  }
+
+  ngOnDestroy() {
+    this._destroy$.next(true);
+    this._destroy$.unsubscribe();
   }
 
 }

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AlertifyService} from "../_service/alertify.service";
 import {LibraryService} from "../_service/library.service";
@@ -6,6 +6,8 @@ import {ComponentMessagingService} from "../_service/component-messaging.service
 import {Video} from "../models/video.model";
 import {Directory} from "../models/directory.model";
 import {LoadingScreenService} from "../_service/loading.service";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 declare let $: any;
 
@@ -14,7 +16,10 @@ declare let $: any;
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
+
+  // used unsubscribe from observable
+  private _destroy$: Subject<boolean> = new Subject();
 
   // @ViewChild('collapse', null) collapse: ElementRef;
 
@@ -69,7 +74,9 @@ export class SearchComponent implements OnInit {
 
   retrieveSearchResults(searchQuery: string) {
 
-    this.libraryService.retrieveSearchResults(searchQuery).subscribe(mediaContainer => {
+    this.libraryService.retrieveSearchResults(searchQuery).pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(mediaContainer => {
 
       let videos = mediaContainer.video;
       let directories = mediaContainer.directory;
@@ -95,5 +102,9 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this._destroy$.next(true);
+    this._destroy$.unsubscribe();
+  }
 
 }

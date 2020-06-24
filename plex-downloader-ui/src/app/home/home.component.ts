@@ -14,6 +14,7 @@ import {LoadingScreenService} from "../_service/loading.service";
 import {select, Store} from "@ngrx/store";
 import {Observable} from "rxjs";
 import * as testActions from '../+state'
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-home',
@@ -48,7 +49,9 @@ export class HomeComponent implements OnInit {
     this.firstTimeSetupCompleted = localStorage.getItem(Constants.FIRST_TIME_SETUP_COMPLETE) === 'true';
     if (!this.firstTimeSetupCompleted) {
       console.log("getting server lists.");
-      this.libraryService.retrievePlexResources().subscribe((devices) => {
+      this.libraryService.retrievePlexResources().pipe(
+        take(1)
+      ).subscribe((devices) => {
         // console.log('worked');
         this.devices = devices;
         localStorage.setItem(Constants.PLEX_SELECTED_SERVERS, JSON.stringify(this.devices));
@@ -74,7 +77,9 @@ export class HomeComponent implements OnInit {
 
   retrieveLibrarySections() {
 
-    this.libraryService.retrieveLibrarySections().subscribe((directories) => {
+    this.libraryService.retrieveLibrarySections().pipe(
+      take(1)
+    ).subscribe((directories) => {
       this.plexLibraries = directories;
       localStorage.setItem(Constants.PLEX_SELECTED_LIBRARIES, JSON.stringify(this.plexLibraries));
 
