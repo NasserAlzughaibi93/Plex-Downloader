@@ -3,6 +3,7 @@ import {LoginService} from '../_service/login.service';
 import {Constants} from "../util/constants";
 import {Router} from "@angular/router";
 import {AlertifyService} from "../_service/alertify.service";
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-login',
@@ -34,7 +35,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isLoggingIn = true;
     this.alertify.notification("Authenticating", "Loading... Please Wait");
 
-    this.loginService.login(this.model).subscribe(() => {
+    this.loginService.login(this.model).pipe(
+      take(1)
+    ).subscribe(() => {
       console.log('worked');
       this.router.navigate(['/home']);
     }, error => {
@@ -54,7 +57,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         width=500,
         height=500`);
 
-    this.loginService.retrieveOAuthLoginPinAndUrl().subscribe(plexPin => {
+    this.loginService.retrieveOAuthLoginPinAndUrl().pipe(
+      take(1)
+    ).subscribe(plexPin => {
       console.log("Retrieved Pin: " + plexPin.id);
       console.log("Retrieved resolved URI: " + plexPin.resolvedUri);
       oAuthWindow!.location.replace(plexPin.resolvedUri);

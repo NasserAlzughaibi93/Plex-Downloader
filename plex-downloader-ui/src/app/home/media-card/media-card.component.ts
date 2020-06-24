@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Video} from "../../models/video.model";
 import {Constants} from "../../util/constants";
 import {Router} from "@angular/router";
@@ -8,13 +8,18 @@ import {ComponentMessagingService} from "../../_service/component-messaging.serv
 import {Directory} from "../../models/directory.model";
 import {SeriesPanelComponent} from "../../search/series-panel/series-panel.component";
 import {MatDialog} from "@angular/material/dialog";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-media-card',
   templateUrl: './media-card.component.html',
   styleUrls: ['./media-card.component.scss']
 })
-export class MediaCardComponent implements OnInit {
+export class MediaCardComponent implements OnInit, OnDestroy {
+
+  // used unsubscribe from observable
+  private _destroy$: Subject<boolean> = new Subject();
 
   @Input() video: Video;
   @Input() show: Directory;
@@ -43,7 +48,9 @@ export class MediaCardComponent implements OnInit {
       data: {video: video}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(result => {
       console.log('The dialog was closed');
     });
   }
@@ -55,8 +62,16 @@ export class MediaCardComponent implements OnInit {
       data: {show: show}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(result => {
       console.log('The dialog was closed');
     });
   }
+
+  ngOnDestroy() {
+    this._destroy$.next(true);
+    this._destroy$.unsubscribe();
+  }
+
 }
