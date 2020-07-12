@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Video} from '../../models/video.model';
 import {Directory} from '../../models/directory.model';
 import {Router} from '@angular/router';
@@ -8,13 +8,18 @@ import {SeriesPanelComponent} from '../../search/series-panel/series-panel.compo
 import {MatDialog} from '@angular/material/dialog';
 import {DownloadRequest, MediaType} from "../../models/download-request.model";
 import {Track} from "../../models/track.model";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-mobile-card',
   templateUrl: './mobile-card.component.html',
-  styleUrls: ['./mobile-card.component.css']
+  styleUrls: ['./mobile-card.component.scss']
 })
-export class MobileCardComponent implements OnInit {
+export class MobileCardComponent implements OnInit, OnDestroy {
+
+  // used unsubscribe from observable
+  private _destroy$: Subject<boolean> = new Subject();
 
   constructor(private router: Router,
               private alertify: AlertifyService,
@@ -41,7 +46,9 @@ export class MobileCardComponent implements OnInit {
 
     const downloadRequest: DownloadRequest = {key: video.key, mediaType: MediaType.Video};
 
-    this.libraryService.retrieveMediaDownloadLink(downloadRequest).subscribe(downloadLink => {
+    this.libraryService.retrieveMediaDownloadLink(downloadRequest).pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(downloadLink => {
       this.alertify.success('Downloading starting...');
       this.beginDownload(downloadLink);
     });
@@ -56,7 +63,9 @@ export class MobileCardComponent implements OnInit {
 
     const downloadRequest: DownloadRequest = {key: track.key, mediaType: MediaType.Music};
 
-    this.libraryService.retrieveMediaDownloadLink(downloadRequest).subscribe(downloadLink => {
+    this.libraryService.retrieveMediaDownloadLink(downloadRequest).pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(downloadLink => {
       this.alertify.success('Downloading starting...');
       this.beginDownload(downloadLink);
     });
@@ -79,14 +88,18 @@ export class MobileCardComponent implements OnInit {
       data: {show}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(result => {
       console.log('The dialog was closed');
     });
   }
 
   loadSeriesSeasons() {
 
-    this.libraryService.retrieveMediaMetaDataChildren(this.show.key).subscribe((mediaContainer) => {
+    this.libraryService.retrieveMediaMetaDataChildren(this.show.key).pipe(
+      takeUntil(this._destroy$)
+    ).subscribe((mediaContainer) => {
 
       this.seasons = mediaContainer.directory;
 
@@ -99,6 +112,11 @@ export class MobileCardComponent implements OnInit {
       });
 
     });
+  }
+
+  ngOnDestroy() {
+    this._destroy$.next(true);
+    this._destroy$.unsubscribe();
   }
 
 }

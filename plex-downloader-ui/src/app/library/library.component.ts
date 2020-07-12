@@ -8,14 +8,18 @@ import {Genre} from "../models/genre.model";
 import {Video} from "../models/video.model";
 import {Directory} from "../models/directory.model";
 import {SearchCriteriaModel} from "../models/search-criteria.model";
-import {ignoreElements} from "rxjs/operators";
+import {ignoreElements, takeUntil} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-library',
   templateUrl: './library.component.html',
-  styleUrls: ['./library.component.css']
+  styleUrls: ['./library.component.scss']
 })
 export class LibraryComponent implements OnInit, OnDestroy {
+
+  // used unsubscribe from observable
+  private _destroy$: Subject<boolean> = new Subject();
 
   @Input() libraryKey: string;
 
@@ -72,7 +76,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
       sessionStorage.setItem(Constants.PLEX_SELECTED_LIBRARY_KEY, this.libraryKey);
     }
 
-    this.libraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(this.libraryKey, 'all').subscribe(mediaContainer => {
+    this.libraryService.retrieveLibrarySectionBySectionKeyAndDirectoryKey(this.libraryKey, 'all').pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(mediaContainer => {
 
       let years = new Array<number>();
       let ratings = new Array<number>();
@@ -109,7 +115,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             }
           }
         }
-      }
+    }
 
       this.sortFilterLists(genreTags, ratings, years);
 
@@ -149,6 +155,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this._destroy$.next(true);
+    this._destroy$.unsubscribe();
     this.videosList = null;
     this.showsList = null;
   }

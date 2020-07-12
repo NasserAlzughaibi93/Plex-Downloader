@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Device} from "../models/device.model";
 import {LibraryService} from "../_service/library.service";
 import {Constants} from "../util/constants";
@@ -8,13 +8,18 @@ import {ComponentAction, ComponentName} from "../models/component-name.model";
 import {Directory} from "../models/directory.model";
 import {Router} from "@angular/router";
 import {HttpParams} from "@angular/common/http";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
+
+  // used unsubscribe from observable
+  private _destroy$: Subject<boolean> = new Subject();
 
   user: any = {};
   devices: Device[];
@@ -47,11 +52,12 @@ export class NavbarComponent implements OnInit {
       this.retrievePlexResources();
     }else {
       this.filteredServer = this.devices.filter(t=>t.name == this.selectedServer);
-      this.selectedLibrary = this.directories.find(library => library.title === libraryName);
+      this.selectedLibrary = this.directories ?  this.directories.find(library => library.title === libraryName) : null;
     }
 
-    this.subscription = this.componentMessagingService.getMessage()
-      .subscribe(message => {
+    this.subscription = this.componentMessagingService.getMessage().pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(message => {
         console.log('Printing message from message service: ');
         console.log(message);
         console.log(message.componentAction);
@@ -65,7 +71,9 @@ export class NavbarComponent implements OnInit {
 
   retrievePlexResources() {
 
-    this.libraryService.retrievePlexResources().subscribe((devices) => {
+    this.libraryService.retrievePlexResources().pipe(
+      takeUntil(this._destroy$)
+    ).subscribe((devices) => {
       // console.log('worked');
       this.devices = devices;
       localStorage.setItem(Constants.PLEX_SELECTED_SERVERS, JSON.stringify(this.devices));
@@ -77,7 +85,9 @@ export class NavbarComponent implements OnInit {
 
   retrieveLibrarySections() {
 
-    this.libraryService.retrieveLibrarySections().subscribe((directories) => {
+    this.libraryService.retrieveLibrarySections().pipe(
+      takeUntil(this._destroy$)
+    ).subscribe((directories) => {
       this.directories = directories;
       localStorage.setItem(Constants.PLEX_SELECTED_LIBRARIES, JSON.stringify(this.directories));
 
@@ -128,4 +138,10 @@ export class NavbarComponent implements OnInit {
     localStorage.clear();
     this.router.navigate(['/']);
   }
+
+  ngOnDestroy() {
+    this._destroy$.next(true);
+    this._destroy$.unsubscribe();
+  }
+
 }

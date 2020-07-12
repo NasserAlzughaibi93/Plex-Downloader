@@ -11,11 +11,15 @@ import {Directory} from "../models/directory.model";
 import {ComponentMessage} from "../models/component-message.model";
 import {FormControl} from "@angular/forms";
 import {LoadingScreenService} from "../_service/loading.service";
+import {select, Store} from "@ngrx/store";
+import {Observable} from "rxjs";
+import * as testActions from '../+state'
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
 
@@ -30,6 +34,8 @@ export class HomeComponent implements OnInit {
   sectionVideoMap = new Map<Directory, Video[]>();
   sectionVideoMapKeys: Directory[];
 
+  count$: Observable<number>;
+
   //subscription: any;
 
   //tabSelected = new FormControl(0);
@@ -37,11 +43,15 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router,
               private alertify: AlertifyService,
               private libraryService: LibraryService,
-              private componentMessagingService: ComponentMessagingService) {
+              private componentMessagingService: ComponentMessagingService,
+              private store: Store<{ count: number }>
+              ) {
     this.firstTimeSetupCompleted = localStorage.getItem(Constants.FIRST_TIME_SETUP_COMPLETE) === 'true';
     if (!this.firstTimeSetupCompleted) {
       console.log("getting server lists.");
-      this.libraryService.retrievePlexResources().subscribe((devices) => {
+      this.libraryService.retrievePlexResources().pipe(
+        take(1)
+      ).subscribe((devices) => {
         // console.log('worked');
         this.devices = devices;
         localStorage.setItem(Constants.PLEX_SELECTED_SERVERS, JSON.stringify(this.devices));
@@ -58,6 +68,8 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/library'])
     }
 
+    this.count$ = store.pipe(select('count'));
+
   }
 
   ngOnInit() {
@@ -65,7 +77,9 @@ export class HomeComponent implements OnInit {
 
   retrieveLibrarySections() {
 
-    this.libraryService.retrieveLibrarySections().subscribe((directories) => {
+    this.libraryService.retrieveLibrarySections().pipe(
+      take(1)
+    ).subscribe((directories) => {
       this.plexLibraries = directories;
       localStorage.setItem(Constants.PLEX_SELECTED_LIBRARIES, JSON.stringify(this.plexLibraries));
 
@@ -116,6 +130,18 @@ export class HomeComponent implements OnInit {
       }
 
     });
+  }
+
+  increment() {
+    this.store.dispatch(testActions.increment());
+  }
+
+  decrement() {
+    this.store.dispatch(testActions.decrement());
+  }
+
+  reset() {
+    this.store.dispatch(testActions.reset());
   }
 
   clearSectionMaps() {

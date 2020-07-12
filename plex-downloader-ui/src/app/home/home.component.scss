@@ -1,0 +1,23 @@
+/*img {
+  background-image: url('fallback-image.png');
+  min-height: 289px;
+  min-width: 200px;
+}*/
+
+$homeTextColor: #9fa7a9;
+
+.state-management {
+  h3 {
+    color: $homeTextColor;
+  }
+
+  &-container {
+    white-space: nowrap;
+
+    div {
+      color: $homeTextColor;
+      margin-bottom: 10px;
+    }
+  }
+}
+
